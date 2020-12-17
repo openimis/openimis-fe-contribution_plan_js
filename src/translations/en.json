@@ -1,6 +1,8 @@
 {
     "contributionPlan.contributionPlans.page.title": "Contribution Plans",
     "contributionPlan.contributionPlans.searcher.results.title": "{contributionPlansTotalCount} Contribution Plans Found",
+    "contributionPlan.contributionPlanBundles.page.title": "Contribution Plan Bundles",
+    "contributionPlan.contributionPlanBundles.searcher.results.title": "{contributionPlanBundlesTotalCount} Contribution Plan Bundles Found",
     "contributionPlan.code": "Code",
     "contributionPlan.name": "Name",
     "contributionPlan.calculation": "Calculation Rule",

@@ -8,6 +8,10 @@ const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
     "periodicity", "dateValidFrom", "dateValidTo"
 ];
 
+const CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION = () => [
+    "id", "code", "name", "dateValidFrom", "dateValidTo"
+];
+
 function dateTimeToDate(date) {
     return date.split('T')[0];
 }
@@ -29,6 +33,15 @@ export function fetchContributionPlan(mm, contributionPlanId) {
         CONTRIBUTIONPLAN_FULL_PROJECTION(mm)
     );
     return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLAN");
+}
+
+export function fetchContributionPlanBundles(params) {
+    const payload = formatPageQueryWithCount(
+        "contributionPlanBundle",
+        params,
+        CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION()
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLES");
 }
 
 function formatContributionPlanGQL(contributionPlan) {
