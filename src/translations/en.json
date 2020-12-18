@@ -8,5 +8,6 @@
     "contributionPlan.periodicity": "Periodicity",
     "contributionPlan.dateValidFrom": "Valid from",
     "contributionPlan.dateValidTo": "Valid to",
-    "contributionPlan.isDeleted": "Show Deleted"
+    "contributionPlan.isDeleted": "Show Deleted",
+    "contributionPlan.emptyLabel": " "
 }

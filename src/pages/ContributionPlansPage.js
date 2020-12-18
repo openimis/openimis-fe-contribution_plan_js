@@ -20,7 +20,9 @@ class ContributionPlansPage extends Component {
         return (
             rights.includes(RIGHT_CONTRIBUTION_PLAN_SEARCH) &&
                 <div className={classes.page}>
-                    <ContributionPlanSearcher />
+                    <ContributionPlanSearcher
+                        rights={rights}
+                    />
                 </div>
         )
     }

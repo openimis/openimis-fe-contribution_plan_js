@@ -1,11 +1,14 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessageWithValues, formatDateFromISO, Searcher } from "@openimis/fe-core";
+import { withModulesManager, formatMessageWithValues, formatDateFromISO, Searcher, PublishedComponent } from "@openimis/fe-core";
 import { fetchContributionPlans } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanFilter from "./ContributionPlanFilter"
-import { DATE_TO_DATETIME_SUFFIX } from "../constants"
+import { IconButton } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { RIGHT_CONTRIBUTION_PLAN_UPDATE, RIGHT_CONTRIBUTION_PLAN_DELETE, DATE_TO_DATETIME_SUFFIX } from "../constants"
 
 class ContributionPlanSearcher extends Component {
     fetch = (params) => {
@@ -14,33 +17,42 @@ class ContributionPlanSearcher extends Component {
 
     filtersToQueryParams = state => {
         const { intl, modulesManager } = this.props;
-        let prms = Object.keys(state.filters)
+        let params = Object.keys(state.filters)
             .filter(f => !!state.filters[f]['filter'])
             .map(f => state.filters[f]['filter']);
-        prms.push(`first: ${state.pageSize}`);
+        params.push(`first: ${state.pageSize}`);
         if (!state.filters.hasOwnProperty('isDeleted')) {
-            prms.push("isDeleted: false");
+            params.push("isDeleted: false");
         }
-        if (!state.filters.hasOwnProperty('dateValidFrom') 
-            && !state.filters.hasOwnProperty('dateValidTo')) {
-            let currentDate = new Date();
-            prms.push(`dateValidFrom_Lte: "${formatDateFromISO(modulesManager, intl, currentDate)}${DATE_TO_DATETIME_SUFFIX}"`);
-            prms.push(`dateValidTo_Gte: "${formatDateFromISO(modulesManager, intl, currentDate)}${DATE_TO_DATETIME_SUFFIX}"`);
+        if (!state.filters.hasOwnProperty('dateValidTo')) {
+            let dateValidAt = formatDateFromISO(modulesManager, intl, new Date());
+            if (state.filters.hasOwnProperty('dateValidFrom')) {
+                /**
+                 * If @see dateValidTo is not set but @see dateValidFrom is set,
+                 * then all @see ContributionPlan valid at @see dateValidFrom are shown.
+                 * Default filter on @see dateValidFrom has to be removed from query params. 
+                 */
+                dateValidAt = state.filters['dateValidFrom']['value'];
+                params = params.filter(f => !f.startsWith('dateValidFrom'));
+            }
+            params.push(`dateValidFrom_Lte: "${dateValidAt}${DATE_TO_DATETIME_SUFFIX}"`);
+            params.push(`dateValidTo_Gte: "${dateValidAt}${DATE_TO_DATETIME_SUFFIX}"`);
         }
         if (!!state.afterCursor) {
-            prms.push(`after: "${state.afterCursor}"`);
+            params.push(`after: "${state.afterCursor}"`);
         }
         if (!!state.beforeCursor) {
-            prms.push(`before: "${state.beforeCursor}"`);
+            params.push(`before: "${state.beforeCursor}"`);
         }
         if (!!state.orderBy) {
-            prms.push(`orderBy: ["${state.orderBy}"]`);
+            params.push(`orderBy: ["${state.orderBy}"]`);
         }
-        return prms;
+        return params;
     }
 
     headers = () => {
-        return [
+        const { rights } = this.props;
+        let result = [
             "contributionPlan.code",
             "contributionPlan.name",
             "contributionPlan.calculation",
@@ -49,15 +61,32 @@ class ContributionPlanSearcher extends Component {
             "contributionPlan.dateValidFrom",
             "contributionPlan.dateValidTo"
         ];
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_UPDATE)) {
+            result.push("contributionPlan.emptyLabel");
+        }
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_DELETE)) {
+            result.push("contributionPlan.emptyLabel");
+        }
+        return result;
     }
 
     itemFormatters = () => {
-        const { intl, modulesManager } = this.props;
-        return [
+        const { intl, modulesManager, rights } = this.props;
+        let result = [
             contributionPlan => !!contributionPlan.code ? contributionPlan.code : "",
             contributionPlan => !!contributionPlan.name ? contributionPlan.name : "",
-            contributionPlan => !!contributionPlan.calculation ? contributionPlan.calculation.description : "",
-            contributionPlan => !!contributionPlan.benefitPlan ? contributionPlan.benefitPlan.name : "",
+            /**
+             * empty until @see Calculation module provides a picker
+             */
+            _ => "", 
+            contributionPlan => 
+                <PublishedComponent
+                    pubRef="product.ProductPicker"
+                    withNull={true}
+                    withLabel={false}
+                    value={contributionPlan.benefitPlan}
+                    readOnly
+                />,
             contributionPlan => !!contributionPlan.periodicity ? contributionPlan.periodicity : "",
             contributionPlan => !!contributionPlan.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, contributionPlan.dateValidFrom)
@@ -66,6 +95,25 @@ class ContributionPlanSearcher extends Component {
                 ? formatDateFromISO(modulesManager, intl, contributionPlan.dateValidTo)
                 : ""
         ];
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_UPDATE)) {
+            result.push(
+                () => (
+                    <IconButton disabled>
+                        <EditIcon />
+                    </IconButton>
+                )
+            );
+        }
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_DELETE)) {
+            result.push(
+                () => (
+                    <IconButton disabled>
+                        <DeleteIcon />
+                    </IconButton>
+                )
+            );
+        }
+        return result;
     }
 
     sorts = () => {

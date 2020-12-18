@@ -3,7 +3,7 @@ import {
 } from "@openimis/fe-core";
 
 const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
-    "id", "code", "name", "calculation{description}", 
+    "id", "code", "name", 
     "benefitPlan" + modulesManager.getProjection("product.ProductPicker.projection"),
     "periodicity", "dateValidFrom", "dateValidTo"
 ];

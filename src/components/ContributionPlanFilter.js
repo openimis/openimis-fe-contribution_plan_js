@@ -87,7 +87,7 @@ class ContributionPlanFilter extends Component {
                         min={!!this._filterValue('periodicity') ? MIN_PERIODICITY_FILTER : EMPTY_PERIODICITY_FILTER}
                         max={MAX_PERIODICITY_FILTER}
                         value={this._filterValue('periodicity')}
-                        onChange={v => this._onChangeFilter('periodicity', v)}
+                        onChange={v => this._onChangeFilter('periodicity', !!v ? v : null)}
                     />
                 </Grid>
                 <Grid item xs={2} className={classes.item}>
