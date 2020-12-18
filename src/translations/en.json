@@ -1,0 +1,13 @@
+{
+    "contributionPlan.contributionPlans.page.title": "Contribution Plans",
+    "contributionPlan.contributionPlans.searcher.results.title": "{contributionPlansTotalCount} Contribution Plans Found",
+    "contributionPlan.code": "Code",
+    "contributionPlan.name": "Name",
+    "contributionPlan.calculation": "Calculation Rule",
+    "contributionPlan.benefitPlan": "Insurance Product",
+    "contributionPlan.periodicity": "Periodicity",
+    "contributionPlan.dateValidFrom": "Valid from",
+    "contributionPlan.dateValidTo": "Valid to",
+    "contributionPlan.isDeleted": "Show Deleted",
+    "contributionPlan.emptyLabel": " "
+}
