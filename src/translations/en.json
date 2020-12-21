@@ -9,5 +9,12 @@
     "contributionPlan.dateValidFrom": "Valid from",
     "contributionPlan.dateValidTo": "Valid to",
     "contributionPlan.isDeleted": "Show Deleted",
-    "contributionPlan.emptyLabel": " "
+    "contributionPlan.emptyLabel": " ",
+    "contributionPlan.createButton.tooltip": "Create new Contribution Plan",
+    "contributionPlan.contributionPlan.page.title": "Contribution Plan {label}",
+    "contributionPlan.contributionPlan.headPanel.title": "General Information",
+    "contributionPlan.mandatoryFieldsEmptyError": "* These fields are required",
+    "contributionPlan.saveContributionPlanButton.tooltip.enabled": "Save changes",
+    "contributionPlan.saveContributionPlanButton.tooltip.disabled": "Please fill General Information fields first",
+    "contributionPlan.CreateContributionPlan.mutationLabel": "Create Contribution Plan - {label}"
 }

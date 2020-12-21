@@ -14,9 +14,7 @@
     "build": "rollup -c",
     "start": "rollup -c -w"
   },
-  "peerDependency": {
-    "react-intl": "^5.8.1"
-  },
+  "peerDependency": {},
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
@@ -33,6 +31,7 @@
     "moment": "^2.25.3",
     "prop-types": "^15.7.2",
     "react-autosuggest": "^10.0.2",
+    "react-intl": "^5.8.1",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "redux-api-middleware": "^3.2.1",

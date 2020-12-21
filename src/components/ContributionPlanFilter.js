@@ -3,11 +3,8 @@ import { injectIntl } from 'react-intl';
 import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent } from "@openimis/fe-core";
 import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { DATE_TO_DATETIME_SUFFIX, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP, CONTAINS_LOOKUP } from "../constants"
-
-const EMPTY_PERIODICITY_FILTER = 0;
-const MIN_PERIODICITY_FILTER = 1;
-const MAX_PERIODICITY_FILTER = 12;
+import { DATE_TO_DATETIME_SUFFIX, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP, CONTAINS_LOOKUP,
+    EMPTY_PERIODICITY_FILTER, MIN_PERIODICITY_FILTER, MAX_PERIODICITY_FILTER } from "../constants"
 
 const styles = theme => ({
     dialogTitle: theme.dialog.title,
