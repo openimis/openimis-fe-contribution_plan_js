@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessageWithValues, formatDateFromISO, Searcher, PublishedComponent } from "@openimis/fe-core";
+import { withModulesManager, formatMessageWithValues, formatDateFromISO, Searcher, PublishedComponent, decodeId } from "@openimis/fe-core";
 import { fetchContributionPlans } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -76,9 +76,9 @@ class ContributionPlanSearcher extends Component {
             contributionPlan => !!contributionPlan.code ? contributionPlan.code : "",
             contributionPlan => !!contributionPlan.name ? contributionPlan.name : "",
             /**
-             * empty until @see Calculation module provides a picker
+             * Display calculation's ID until @see Calculation module provides a picker
              */
-            _ => "", 
+            contributionPlan => !!contributionPlan.calculation ? decodeId(contributionPlan.calculation.id) : "",
             contributionPlan => 
                 <PublishedComponent
                     pubRef="product.ProductPicker"

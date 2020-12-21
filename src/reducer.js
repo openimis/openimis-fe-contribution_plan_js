@@ -1,5 +1,6 @@
 import {
-    formatServerError, formatGraphQLError, parseData, pageInfo
+    formatServerError, formatGraphQLError, parseData, pageInfo,
+    dispatchMutationReq, dispatchMutationResp, dispatchMutationErr
 } from "@openimis/fe-core";
 
 function reducer(
@@ -40,6 +41,12 @@ function reducer(
                 fetchingContributionPlans: false,
                 errorContributionPlans: formatServerError(action.payload)
             };
+        case "CONTRIBUTIONPLAN_MUTATION_REQ":
+            return dispatchMutationReq(state, action);
+        case "CONTRIBUTIONPLAN_MUTATION_ERR":
+            return dispatchMutationErr(state, action);
+        case "CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLAN_RESP":
+            return dispatchMutationResp(state, "createContributionPlan", action);
         default:
             return state;
     }
