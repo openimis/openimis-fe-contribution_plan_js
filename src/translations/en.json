@@ -18,5 +18,9 @@
     "contributionPlan.saveContributionPlanButton.tooltip.disabled": "Please fill General Information fields first",
     "contributionPlan.CreateContributionPlan.mutationLabel": "Create Contribution Plan - {label}",
     "contributionPlan.UpdateContributionPlan.mutationLabel": "Update Contribution Plan - {label}",
-    "contributionPlan.editButton.tooltip": "Edit"
+    "contributionPlan.editButton.tooltip": "Edit",
+    "contributionPlan.DeleteContributionPlan.mutationLabel": "Delete Contribution Plan - {label}",
+    "contributionPlan.deleteButton.tooltip": "Delete",
+    "contributionPlan.deleteContributionPlan.confirm.title": "Delete {label}",
+    "contributionPlan.deleteContributionPlan.confirm.message": "Are you sure you want to delete {label}?"
 }

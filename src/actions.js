@@ -71,3 +71,18 @@ export function updateContributionPlan(contributionPlan, clientMutationLabel) {
         }
     );
 }
+
+export function deleteContributionPlan(contributionPlan, clientMutationLabel, clientMutationDetails = null) {
+    let contributionPlanUuids = `uuids: ["${decodeId(contributionPlan.id)}"]`;
+    let mutation = formatMutation("deleteContributionPlan", contributionPlanUuids, clientMutationLabel, clientMutationDetails);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLAN_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
