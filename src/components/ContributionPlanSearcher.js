@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessageWithValues, formatDateFromISO, Searcher, PublishedComponent, decodeId } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher,
+    PublishedComponent, decodeId, withTooltip } from "@openimis/fe-core";
 import { fetchContributionPlans } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -71,7 +72,7 @@ class ContributionPlanSearcher extends Component {
     }
 
     itemFormatters = () => {
-        const { intl, modulesManager, rights } = this.props;
+        const { intl, modulesManager, rights, contributionPlanPageLink } = this.props;
         let result = [
             contributionPlan => !!contributionPlan.code ? contributionPlan.code : "",
             contributionPlan => !!contributionPlan.name ? contributionPlan.name : "",
@@ -97,10 +98,13 @@ class ContributionPlanSearcher extends Component {
         ];
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_UPDATE)) {
             result.push(
-                () => (
-                    <IconButton disabled>
+                contributionPlan => withTooltip(
+                    <IconButton
+                        href={contributionPlanPageLink(contributionPlan)}
+                        onClick={e => e.stopPropagation() && !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}>
                         <EditIcon />
-                    </IconButton>
+                    </IconButton>,
+                    formatMessage(intl, "contributionPlan", "editButton.tooltip")
                 )
             );
         }
@@ -130,7 +134,7 @@ class ContributionPlanSearcher extends Component {
 
     render() {
         const { intl, fetchingContributionPlans, fetchedContributionPlans, errorContributionPlans, 
-            contributionPlans, contributionPlansPageInfo, contributionPlansTotalCount } = this.props;
+            contributionPlans, contributionPlansPageInfo, contributionPlansTotalCount, onDoubleClick } = this.props;
         return (
             <Fragment>
                 <Searcher
@@ -150,6 +154,7 @@ class ContributionPlanSearcher extends Component {
                     rowsPerPageOptions={[10, 20, 50, 100]}
                     defaultPageSize={10}
                     defaultOrderBy="code"
+                    onDoubleClick={contributionPlan => !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}
                 />
             </Fragment>
         )

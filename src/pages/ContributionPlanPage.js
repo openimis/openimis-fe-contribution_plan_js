@@ -4,7 +4,7 @@ import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { createContributionPlan } from "../actions"
+import { createContributionPlan, updateContributionPlan } from "../actions"
 import ContributionPlanForm from "../components/ContributionPlanForm"
 import { RIGHT_CONTRIBUTION_PLAN_CREATE, RIGHT_CONTRIBUTION_PLAN_UPDATE } from "../constants"
 
@@ -18,25 +18,38 @@ class ContributionPlanPage extends Component {
     }
 
     save = contributionPlan => {
-        this.props.createContributionPlan(
-            contributionPlan,
-            formatMessageWithValues(
-                this.props.intl,
-                "contributionPlan",
-                "CreateContributionPlan.mutationLabel",
-                { label: this.titleParams(contributionPlan).label }
-            )
-        );
+        if (!!contributionPlan.id) {
+            this.props.updateContributionPlan(
+                contributionPlan,
+                formatMessageWithValues(
+                    this.props.intl,
+                    "contributionPlan",
+                    "UpdateContributionPlan.mutationLabel",
+                    { label: this.titleParams(contributionPlan).label }
+                )
+            );
+        } else {
+            this.props.createContributionPlan(
+                contributionPlan,
+                formatMessageWithValues(
+                    this.props.intl,
+                    "contributionPlan",
+                    "CreateContributionPlan.mutationLabel",
+                    { label: this.titleParams(contributionPlan).label }
+                )
+            );
+        }
     }
 
     titleParams = contributionPlan => ({ label: !!contributionPlan.name ? contributionPlan.name : null });
 
     render() {
-        const { classes, rights } = this.props;
+        const { classes, rights, contributionPlanId } = this.props;
         return (
             rights.includes(RIGHT_CONTRIBUTION_PLAN_CREATE) && rights.includes(RIGHT_CONTRIBUTION_PLAN_UPDATE) && (
                 <div className={classes.page}>
                     <ContributionPlanForm
+                        contributionPlanId={contributionPlanId}
                         back={this.back}
                         save={this.save}
                         titleParams={this.titleParams}
@@ -47,12 +60,13 @@ class ContributionPlanPage extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : []
+const mapStateToProps = (state, props) => ({
+    rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
+    contributionPlanId: props.match.params.contributionplan_id,
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ createContributionPlan }, dispatch);
+    return bindActionCreators({ createContributionPlan, updateContributionPlan }, dispatch);
 };
 
 export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanPage))))));

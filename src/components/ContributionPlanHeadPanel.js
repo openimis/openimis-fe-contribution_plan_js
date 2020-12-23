@@ -4,7 +4,7 @@ import { withModulesManager, formatMessage, FormPanel, TextInput,
     FormattedMessage, PublishedComponent, NumberInput } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { EMPTY_PERIODICITY_FILTER, MIN_PERIODICITY_FILTER, MAX_PERIODICITY_FILTER } from "../constants"
+import { EMPTY_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE, MAX_PERIODICITY_VALUE } from "../constants"
 
 const styles = theme => ({
     tableTitle: theme.table.title,
@@ -89,8 +89,8 @@ class ContributionPlanHeadPanel extends FormPanel {
                             /**
                              * @see min set to @see EMPTY_PERIODICITY_FILTER when filter unset to avoid @see NumberInput error message
                              */
-                            min={!!edited && !!edited.periodicity ? MIN_PERIODICITY_FILTER : EMPTY_PERIODICITY_FILTER}
-                            max={MAX_PERIODICITY_FILTER}
+                            min={!!edited && !!edited.periodicity ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
+                            max={MAX_PERIODICITY_VALUE}
                             value={!!edited && !!edited.periodicity ? edited.periodicity : null}
                             onChange={v => this.updateAttribute('periodicity', v)}
                         />

@@ -16,5 +16,7 @@
     "contributionPlan.mandatoryFieldsEmptyError": "* These fields are required",
     "contributionPlan.saveContributionPlanButton.tooltip.enabled": "Save changes",
     "contributionPlan.saveContributionPlanButton.tooltip.disabled": "Please fill General Information fields first",
-    "contributionPlan.CreateContributionPlan.mutationLabel": "Create Contribution Plan - {label}"
+    "contributionPlan.CreateContributionPlan.mutationLabel": "Create Contribution Plan - {label}",
+    "contributionPlan.UpdateContributionPlan.mutationLabel": "Update Contribution Plan - {label}",
+    "contributionPlan.editButton.tooltip": "Edit"
 }

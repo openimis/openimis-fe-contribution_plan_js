@@ -1,5 +1,5 @@
 import {
-    graphql, formatPageQueryWithCount, formatMutation, decodeId, formatGQLString
+    graphql, formatPageQuery, formatPageQueryWithCount, formatMutation, decodeId, formatGQLString
 } from "@openimis/fe-core";
 
 const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
@@ -21,6 +21,16 @@ export function fetchContributionPlans(modulesManager, params) {
     return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANS");
 }
 
+export function fetchContributionPlan(mm, contributionPlanId) {
+    let filter = !!contributionPlanId ? `id: "${contributionPlanId}"` : '';
+    const payload = formatPageQuery(
+        "contributionPlan",
+        [filter],
+        CONTRIBUTIONPLAN_FULL_PROJECTION(mm)
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLAN");
+}
+
 function formatContributionPlanGQL(contributionPlan) {
     return `
         ${!!contributionPlan.id ? `id: "${decodeId(contributionPlan.id)}"` : ''}
@@ -40,6 +50,20 @@ export function createContributionPlan(contributionPlan, clientMutationLabel) {
     return graphql(
         mutation.payload,
         ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLAN_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function updateContributionPlan(contributionPlan, clientMutationLabel) {
+    let mutation = formatMutation("updateContributionPlan", formatContributionPlanGQL(contributionPlan), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_UPDATE_CONTRIBUTIONPLAN_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
         {
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,
