@@ -14,7 +14,13 @@ function reducer(
         fetchingContributionPlan: false,
         fetchedContributionPlan: false,
         contributionPlan: {},
-        errorContributionPlan: null
+        errorContributionPlan: null,
+        fetchingContributionPlanBundles: false,
+        errorContributionPlanBundles: null,
+        fetchedContributionPlanBundles: false,
+        contributionPlanBundles: [],
+        contributionPlanBundlesPageInfo: {},
+        contributionPlanBundlesTotalCount: 0,
     },
     action
 ) {
@@ -66,6 +72,32 @@ function reducer(
                 ...state,
                 fetchingContributionPlan: false,
                 errorContributionPlan: formatServerError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLES_REQ":
+            return {
+                ...state,
+                fetchingContributionPlanBundles: true,
+                fetchedContributionPlanBundles: false,
+                contributionPlanBundles: [],
+                contributionPlanBundlesPageInfo: {},
+                contributionPlanBundlesTotalCount: 0,
+                errorContributionPlanBundles: null
+            };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLES_RESP":
+            return {
+                ...state,
+                fetchingContributionPlanBundles: false,
+                fetchedContributionPlanBundles: true,
+                contributionPlanBundles: parseData(action.payload.data.contributionPlanBundle),
+                contributionPlanBundlesPageInfo: pageInfo(action.payload.data.contributionPlanBundle),
+                contributionPlanBundlesTotalCount: !!action.payload.data.contributionPlanBundle ? action.payload.data.contributionPlanBundle.totalCount : null,
+                errorContributionPlanBundles: formatGraphQLError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLES_ERR":
+            return {
+                ...state,
+                fetchingContributionPlanBundles: false,
+                errorContributionPlanBundles: formatServerError(action.payload)
             };
         case "CONTRIBUTIONPLAN_MUTATION_REQ":
             return dispatchMutationReq(state, action);

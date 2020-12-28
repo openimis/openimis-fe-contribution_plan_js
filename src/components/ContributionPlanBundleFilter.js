@@ -1,10 +1,10 @@
 import React, { Component } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent, decodeId } from "@openimis/fe-core";
 import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { DATE_TO_DATETIME_SUFFIX, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP, CONTAINS_LOOKUP,
-    EMPTY_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE, MAX_PERIODICITY_VALUE } from "../constants"
+import { EMPTY_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE, MAX_PERIODICITY_VALUE, DATE_TO_DATETIME_SUFFIX,
+    CONTAINS_LOOKUP, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP } from "../constants"
 
 const styles = theme => ({
     form: {
@@ -15,7 +15,7 @@ const styles = theme => ({
     }
 });
 
-class ContributionPlanFilter extends Component {
+class ContributionPlanBundleFilter extends Component {
     _filterValue = k => {
         const { filters } = this.props;
         return !!filters[k] ? filters[k].value : null
@@ -55,7 +55,7 @@ class ContributionPlanFilter extends Component {
         const { intl, classes } = this.props;
         return (
             <Grid container className={classes.form}>
-                <Grid item xs={2} className={classes.item}>
+                <Grid item xs={3} className={classes.item}>
                     <TextInput
                         module="contributionPlan"
                         label="code"
@@ -63,7 +63,7 @@ class ContributionPlanFilter extends Component {
                         onChange={v => this._onChangeStringFilter('code', v, CONTAINS_LOOKUP)}
                     />
                 </Grid>
-                <Grid item xs={2} className={classes.item}>
+                <Grid item xs={3} className={classes.item}>
                     <TextInput
                         module="contributionPlan"
                         label="name"
@@ -71,20 +71,37 @@ class ContributionPlanFilter extends Component {
                         onChange={v => this._onChangeStringFilter('name', v, CONTAINS_LOOKUP)}
                     />
                 </Grid>
-                <Grid item xs={2} className={classes.item}>
+                <Grid item xs={3} className={classes.item}>
+                    <TextInput
+                        module="contributionPlan"
+                        label="calculation"
+                        value={this._filterValue('calculation')}
+                        onChange={v => this._onChangeFilter('calculation', v)}
+                        /**
+                         * Read-only until @see Calculation module provides a picker
+                         */
+                        readOnly
+                    />
+                </Grid>
+                <Grid item xs={3} className={classes.item}>
+                    <PublishedComponent
+                        pubRef="product.ProductPicker"
+                        withNull={true}
+                        label={formatMessage(intl, "contributionPlan", "benefitPlan")}
+                        onChange={v => this._onChangeFilter('insuranceProduct', !!v ? decodeId(v.id) : null)}
+                    />
+                </Grid>
+                <Grid item xs={3} className={classes.item}>
                     <NumberInput
                         module="contributionPlan"
                         label="periodicity"
-                        /**
-                         * @see min set to @see EMPTY_PERIODICITY_VALUE when filter unset to avoid @see NumberInput error message
-                         */
                         min={!!this._filterValue('periodicity') ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
                         max={MAX_PERIODICITY_VALUE}
                         value={this._filterValue('periodicity')}
                         onChange={v => this._onChangeFilter('periodicity', !!v ? v : null)}
                     />
                 </Grid>
-                <Grid item xs={2} className={classes.item}>
+                <Grid item xs={3} className={classes.item}>
                     <PublishedComponent
                         pubRef="core.DatePicker"
                         module="contributionPlan"
@@ -93,7 +110,7 @@ class ContributionPlanFilter extends Component {
                         onChange={v => this._onChangeDateFilter('dateValidFrom', v, GREATER_OR_EQUAL_LOOKUP)}
                     />
                 </Grid>
-                <Grid item xs={2} className={classes.item}>
+                <Grid item xs={3} className={classes.item}>
                     <PublishedComponent
                         pubRef="core.DatePicker"
                         module="contributionPlan"
@@ -102,12 +119,12 @@ class ContributionPlanFilter extends Component {
                         onChange={v => this._onChangeDateFilter('dateValidTo', v, LESS_OR_EQUAL_LOOKUP)}
                     />
                 </Grid>
-                <Grid item xs={2} className={classes.item}>
+                <Grid item xs={3} className={classes.item}>
                     <FormControlLabel
-                        control={<Checkbox 
+                        control={<Checkbox
                             checked={!!this._filterValue('isDeleted')}
                             onChange={event => this._onChangeFilter('isDeleted', event.target.checked)}
-                            name="isDeleted" 
+                            name="isDeleted"
                         />}
                         label={formatMessage(intl, "contributionPlan", "isDeleted")}
                     />
@@ -117,4 +134,4 @@ class ContributionPlanFilter extends Component {
     }
 }
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(ContributionPlanFilter))));
+export default withModulesManager(injectIntl(withTheme(withStyles(styles)(ContributionPlanBundleFilter))));
