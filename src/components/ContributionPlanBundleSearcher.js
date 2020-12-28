@@ -20,7 +20,7 @@ class ContributionPlanBundleSearcher extends Component {
         if (!state.filters.hasOwnProperty('isDeleted')) {
             prms.push("isDeleted: false");
         }
-        if (!state.filters.hasOwnProperty('dateValidFrom') 
+        if (!state.filters.hasOwnProperty('dateValidFrom')
             && !state.filters.hasOwnProperty('dateValidTo')) {
             let currentDate = new Date();
             prms.push(`dateValidFrom_Lte: "${formatDateFromISO(modulesManager, intl, currentDate)}T00:00:00"`);
@@ -74,7 +74,7 @@ class ContributionPlanBundleSearcher extends Component {
     }
 
     render() {
-        const { intl, fetchingContributionPlanBundles, fetchedContributionPlanBundles, errorContributionPlanBundles, 
+        const { intl, fetchingContributionPlanBundles, fetchedContributionPlanBundles, errorContributionPlanBundles,
             contributionPlanBundles, contributionPlanBundlesPageInfo, contributionPlanBundlesTotalCount } = this.props;
         return (
             <Fragment>

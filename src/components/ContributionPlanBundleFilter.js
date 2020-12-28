@@ -120,10 +120,10 @@ class ContributionPlanBundleFilter extends Component {
                 </Grid>
                 <Grid item xs={3} className={classes.item}>
                     <FormControlLabel
-                        control={<Checkbox 
+                        control={<Checkbox
                             checked={!!this._filterValue('isDeleted')}
                             onChange={event => this._onChangeFilter('isDeleted', event.target.checked)}
-                            name="isDeleted" 
+                            name="isDeleted"
                         />}
                         label={formatMessage(intl, "contributionPlan", "isDeleted")}
                     />
