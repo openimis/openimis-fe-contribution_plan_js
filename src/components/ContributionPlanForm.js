@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from "react";
-import { Form, withModulesManager, withHistory, formatMessage, journalize } from "@openimis/fe-core";
+import { Form, withModulesManager, withHistory, formatMessage, formatMessageWithValues, journalize, decodeId } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanHeadPanel from "./ContributionPlanHeadPanel"
+import { fetchContributionPlan } from "../actions"
+import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
 const styles = theme => ({
     paper: theme.paper.paper,
@@ -22,10 +24,26 @@ class ContributionPlanForm extends Component {
     }
 
     componentDidMount() {
-        document.title = formatMessage(this.props.intl, "contributionPlan", "contributionPlan.page.title")
+        document.title = formatMessage(this.props.intl, "contributionPlan", "contributionPlan.page.title");
+        if (!!this.props.contributionPlanId) {
+            this.props.fetchContributionPlan(this.props.modulesManager, this.props.contributionPlanId)
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.fetchedContributionPlan !== this.props.fetchedContributionPlan && !!this.props.fetchedContributionPlan) {
+            this.setState(
+                (state, props) => ({ 
+                    contributionPlan: { 
+                        ...props.contributionPlan,
+                        /**
+                         * Display calculation's ID until @see Calculation module provides a picker
+                         */
+                        calculation: decodeId(props.contributionPlan.calculation.id) 
+                    }
+                }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", { label: this.titleParams().label })
+            );
+        }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
         }
@@ -44,7 +62,12 @@ class ContributionPlanForm extends Component {
         return true;
     }
 
-    canSave = () => !this.isMandatoryFieldsEmpty();
+    isPeriodicityValid = () => {
+        let periodicityInt = parseInt(this.state.contributionPlan.periodicity);
+        return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
+    }
+
+    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid();
 
     save = contributionPlan => this.props.save(contributionPlan);
 
@@ -67,7 +90,7 @@ class ContributionPlanForm extends Component {
                     onEditedChanged={this.onEditedChanged}
                     HeadPanel={ContributionPlanHeadPanel}
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
-                    saveTooltip={formatMessage(intl, "contributionPlan", `saveContributionPlanButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)} 
+                    saveTooltip={formatMessage(intl, "contributionPlan", `saveContributionPlanButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
                 />
             </Fragment>
         )
@@ -75,12 +98,17 @@ class ContributionPlanForm extends Component {
 }
 
 const mapStateToProps = state => ({
+    fetchingContributionPlan: state.contributionPlan.fetchingContributionPlan,
+    fetchedContributionPlan: state.contributionPlan.fetchedContributionPlan,
+    contributionPlan: state.contributionPlan.contributionPlan,
+    errorContributionPlan: state.contributionPlan.errorContributionPlan,
+    products: state.product.products,
     submittingMutation: state.contributionPlan.submittingMutation,
     mutation: state.contributionPlan.mutation
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ journalize }, dispatch);
+    return bindActionCreators({ fetchContributionPlan, journalize }, dispatch);
 };
 
 export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanForm))))));

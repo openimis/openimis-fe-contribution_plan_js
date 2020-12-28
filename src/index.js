@@ -3,8 +3,8 @@ import reducer from "./reducer";
 import ContributionPlansPage from "./pages/ContributionPlansPage";
 import ContributionPlanPage from "./pages/ContributionPlanPage";
 
-const ROUTE_CONTRIBUTION_PLANS = "contributionPlan/contributionPlans";
-const ROUTE_CONTRIBUTION_PLAN = "contributionPlan/contributionPlan";
+const ROUTE_CONTRIBUTION_PLANS = "contributionPlans";
+const ROUTE_CONTRIBUTION_PLAN = "contributionPlans/contributionPlan";
 
 const DEFAULT_CONFIG = {
     "translations": [{ key: "en", messages: messages_en }],
@@ -15,7 +15,7 @@ const DEFAULT_CONFIG = {
     ],
     "core.Router": [
         { path: ROUTE_CONTRIBUTION_PLANS, component: ContributionPlansPage },
-        { path: ROUTE_CONTRIBUTION_PLAN, component: ContributionPlanPage }
+        { path: ROUTE_CONTRIBUTION_PLAN  + "/:contributionplan_id?", component: ContributionPlanPage }
     ]
 }
 

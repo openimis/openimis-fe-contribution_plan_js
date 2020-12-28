@@ -8,7 +8,7 @@ It is dedicated to be deployed as a module of [openimis-fe_js](https://github.co
 None
 
 ## Other Contributions
-* `core.Router`: registering `contributionPlan/contributionPlans` route in openIMIS client-side router
+* `core.Router`: registering `contributionPlans`, `contributionPlans/contributionPlan` routes in openIMIS client-side router
 
 ## Available Contribution Points
 None
@@ -18,9 +18,12 @@ None
 
 ## Dispatched Redux Actions
 * `CONTRIBUTIONPLAN_CONTRIBUTIONPLANS_{REQ|RESP|ERR}`, fetching contribution plans (as triggered by the searcher)
+* `CONTRIBUTIONPLAN_MUTATION_{REQ|ERR}`, sending a mutation
+* `CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLAN_RESP`, receiving a result of create Contribution Plan mutation
+* `CONTRIBUTIONPLAN_UPDATE_CONTRIBUTIONPLAN_RESP`, receiving a result of update Contribution Plan mutation
 
 ## Other Modules Listened Redux Actions
-None
+* `PRODUCT_PRODUCT_PICKER_RESP`, fetching products
 
 ## Other Modules Redux State Bindings
 * `state.core.user`, to access user info (rights,...)

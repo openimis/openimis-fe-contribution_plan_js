@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { withModulesManager, formatMessage, withTooltip, historyPush } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, withTooltip, historyPush, decodeId } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { RIGHT_CONTRIBUTION_PLAN_SEARCH, RIGHT_CONTRIBUTION_PLAN_CREATE } from "../constants"
+import { RIGHT_CONTRIBUTION_PLAN_SEARCH, RIGHT_CONTRIBUTION_PLAN_CREATE, RIGHT_CONTRIBUTION_PLAN_UPDATE } from "../constants"
 import ContributionPlanSearcher from "../components/ContributionPlanSearcher";
 import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -22,12 +22,25 @@ class ContributionPlansPage extends Component {
         historyPush(this.props.modulesManager, this.props.history, "contributionPlan.route.contributionPlan");
     }
 
+    contributionPlanPageLink = contributionPlan => {
+        return `${this.props.modulesManager.getRef("contributionPlan.route.contributionPlan")}${"/" + decodeId(contributionPlan.id)}`;
+    }
+
+    onDoubleClick = (contributionPlan, newTab = false) => {
+        const { rights, modulesManager, history } = this.props;
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_UPDATE)) {
+            historyPush(modulesManager, history, "contributionPlan.route.contributionPlan", [decodeId(contributionPlan.id)], newTab);
+        }
+    }
+
     render() {
         const { intl, classes, rights } = this.props;
         return (
             rights.includes(RIGHT_CONTRIBUTION_PLAN_SEARCH) &&
                 <div className={classes.page}>
                     <ContributionPlanSearcher
+                        onDoubleClick={this.onDoubleClick}
+                        contributionPlanPageLink={this.contributionPlanPageLink}
                         rights={rights}
                     />
                     {rights.includes(RIGHT_CONTRIBUTION_PLAN_CREATE) && withTooltip(
