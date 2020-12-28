@@ -5,6 +5,7 @@ import { fetchContributionPlanBundles } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanBundleFilter from "./ContributionPlanBundleFilter"
+import { DATE_TO_DATETIME_SUFFIX } from "../constants"
 
 class ContributionPlanBundleSearcher extends Component {
     fetch = (params) => {
@@ -13,40 +14,46 @@ class ContributionPlanBundleSearcher extends Component {
 
     filtersToQueryParams = state => {
         const { intl, modulesManager } = this.props;
-        let prms = Object.keys(state.filters)
+        let params = Object.keys(state.filters)
             .filter(f => !!state.filters[f]['filter'])
             .map(f => state.filters[f]['filter']);
-        prms.push(`first: ${state.pageSize}`);
+        params.push(`first: ${state.pageSize}`);
         if (!state.filters.hasOwnProperty('isDeleted')) {
-            prms.push("isDeleted: false");
+            params.push("isDeleted: false");
         }
-        if (!state.filters.hasOwnProperty('dateValidFrom')
-            && !state.filters.hasOwnProperty('dateValidTo')) {
-            let currentDate = new Date();
-            prms.push(`dateValidFrom_Lte: "${formatDateFromISO(modulesManager, intl, currentDate)}T00:00:00"`);
-            prms.push(`dateValidTo_Gte: "${formatDateFromISO(modulesManager, intl, currentDate)}T00:00:00"`);
+        if (!state.filters.hasOwnProperty('dateValidTo')) {
+            let dateValidAt = formatDateFromISO(modulesManager, intl, new Date());
+            if (state.filters.hasOwnProperty('dateValidFrom')) {
+                /**
+                 * If @see dateValidTo is not set but @see dateValidFrom is set,
+                 * then all @see ContributionPlan valid at @see dateValidFrom are shown.
+                 * Default filter on @see dateValidFrom has to be removed from query params. 
+                 */
+                dateValidAt = state.filters['dateValidFrom']['value'];
+                params = params.filter(f => !f.startsWith('dateValidFrom'));
+            }
+            params.push(`dateValidFrom_Lte: "${dateValidAt}${DATE_TO_DATETIME_SUFFIX}"`);
+            params.push(`dateValidTo_Gte: "${dateValidAt}${DATE_TO_DATETIME_SUFFIX}"`);
         }
         if (!!state.afterCursor) {
-            prms.push(`after: "${state.afterCursor}"`);
+            params.push(`after: "${state.afterCursor}"`);
         }
         if (!!state.beforeCursor) {
-            prms.push(`before: "${state.beforeCursor}"`);
+            params.push(`before: "${state.beforeCursor}"`);
         }
         if (!!state.orderBy) {
-            prms.push(`orderBy: ["${state.orderBy}"]`);
+            params.push(`orderBy: ["${state.orderBy}"]`);
         }
-        return prms;
+        return params;
     }
 
-    headers = () => {
-        return [
-            "contributionPlan.code",
-            "contributionPlan.name",
-            "contributionPlan.periodicity",
-            "contributionPlan.dateValidFrom",
-            "contributionPlan.dateValidTo"
-        ];
-    }
+    headers = () => [
+        "contributionPlan.code",
+        "contributionPlan.name",
+        "contributionPlan.periodicity",
+        "contributionPlan.dateValidFrom",
+        "contributionPlan.dateValidTo"
+    ];
 
     itemFormatters = () => {
         const { intl, modulesManager } = this.props;
@@ -63,15 +70,13 @@ class ContributionPlanBundleSearcher extends Component {
         ];
     }
 
-    sorts = () => {
-        return [
-            ['code', true],
-            ['name', true],
-            ['periodicity', true],
-            ['dateValidFrom', true],
-            ['dateValidTo', true]
-        ]
-    }
+    sorts = () => [
+        ['code', true],
+        ['name', true],
+        ['periodicity', true],
+        ['dateValidFrom', true],
+        ['dateValidTo', true]
+    ];
 
     render() {
         const { intl, fetchingContributionPlanBundles, fetchedContributionPlanBundles, errorContributionPlanBundles,

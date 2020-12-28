@@ -6,7 +6,7 @@ import ContributionPlanBundlesPage from "./pages/ContributionPlanBundlesPage";
 
 const ROUTE_CONTRIBUTION_PLANS = "contributionPlans";
 const ROUTE_CONTRIBUTION_PLAN = "contributionPlans/contributionPlan";
-const ROUTE_CONTRIBUTION_PLAN_BUNDLES = "contributionPlan/contributionPlanBundles";
+const ROUTE_CONTRIBUTION_PLAN_BUNDLES = "contributionPlanBundles";
 
 const DEFAULT_CONFIG = {
     "translations": [{ key: "en", messages: messages_en }],

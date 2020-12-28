@@ -1,19 +1,18 @@
 import React, { Component } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent, decodeId } from "@openimis/fe-core";
 import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
+import { EMPTY_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE, MAX_PERIODICITY_VALUE, DATE_TO_DATETIME_SUFFIX,
+    CONTAINS_LOOKUP, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP } from "../constants"
 
 const styles = theme => ({
-    dialogTitle: theme.dialog.title,
-    dialogContent: theme.dialog.content,
     form: {
         padding: 0
     },
     item: {
         padding: theme.spacing(1)
-    },
-    paperDivider: theme.paper.divider,
+    }
 });
 
 class ContributionPlanBundleFilter extends Component {
@@ -47,13 +46,13 @@ class ContributionPlanBundleFilter extends Component {
             {
                 id: k,
                 value: v,
-                filter: `${k}_${lookup}: "${v}T00:00:00"`
+                filter: `${k}_${lookup}: "${v}${DATE_TO_DATETIME_SUFFIX}"`
             }
         ])
     }
 
     render() {
-        const { intl, classes, filters, onChangeFilters } = this.props;
+        const { intl, classes } = this.props;
         return (
             <Grid container className={classes.form}>
                 <Grid item xs={3} className={classes.item}>
@@ -61,7 +60,7 @@ class ContributionPlanBundleFilter extends Component {
                         module="contributionPlan"
                         label="code"
                         value={this._filterValue('code')}
-                        onChange={v => this._onChangeStringFilter('code', v, 'Icontains')}
+                        onChange={v => this._onChangeStringFilter('code', v, CONTAINS_LOOKUP)}
                     />
                 </Grid>
                 <Grid item xs={3} className={classes.item}>
@@ -69,7 +68,7 @@ class ContributionPlanBundleFilter extends Component {
                         module="contributionPlan"
                         label="name"
                         value={this._filterValue('name')}
-                        onChange={v => this._onChangeStringFilter('name', v, 'Icontains')}
+                        onChange={v => this._onChangeStringFilter('name', v, CONTAINS_LOOKUP)}
                     />
                 </Grid>
                 <Grid item xs={3} className={classes.item}>
@@ -78,6 +77,9 @@ class ContributionPlanBundleFilter extends Component {
                         label="calculation"
                         value={this._filterValue('calculation')}
                         onChange={v => this._onChangeFilter('calculation', v)}
+                        /**
+                         * Read-only until @see Calculation module provides a picker
+                         */
                         readOnly
                     />
                 </Grid>
@@ -86,18 +88,17 @@ class ContributionPlanBundleFilter extends Component {
                         pubRef="product.ProductPicker"
                         withNull={true}
                         label={formatMessage(intl, "contributionPlan", "benefitPlan")}
-                        value={this._filterValue('benefitPlan')}
-                        onChange={v => this._onChangeFilter('benefitPlan', v)}
+                        onChange={v => this._onChangeFilter('insuranceProduct', !!v ? decodeId(v.id) : null)}
                     />
                 </Grid>
                 <Grid item xs={3} className={classes.item}>
                     <NumberInput
                         module="contributionPlan"
                         label="periodicity"
-                        min={1}
-                        max={12}
-                        value={!!this._filterValue('periodicity') ? this._filterValue('periodicity') : 1}
-                        onChange={v => this._onChangeFilter('periodicity', v)}
+                        min={!!this._filterValue('periodicity') ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
+                        max={MAX_PERIODICITY_VALUE}
+                        value={this._filterValue('periodicity')}
+                        onChange={v => this._onChangeFilter('periodicity', !!v ? v : null)}
                     />
                 </Grid>
                 <Grid item xs={3} className={classes.item}>
@@ -106,7 +107,7 @@ class ContributionPlanBundleFilter extends Component {
                         module="contributionPlan"
                         label="dateValidFrom"
                         value={this._filterValue('dateValidFrom')}
-                        onChange={v => this._onChangeDateFilter('dateValidFrom', v, 'Gte')}
+                        onChange={v => this._onChangeDateFilter('dateValidFrom', v, GREATER_OR_EQUAL_LOOKUP)}
                     />
                 </Grid>
                 <Grid item xs={3} className={classes.item}>
@@ -115,7 +116,7 @@ class ContributionPlanBundleFilter extends Component {
                         module="contributionPlan"
                         label="dateValidTo"
                         value={this._filterValue('dateValidTo')}
-                        onChange={v => this._onChangeDateFilter('dateValidTo', v, 'Lte')}
+                        onChange={v => this._onChangeDateFilter('dateValidTo', v, LESS_OR_EQUAL_LOOKUP)}
                     />
                 </Grid>
                 <Grid item xs={3} className={classes.item}>

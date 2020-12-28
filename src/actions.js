@@ -9,7 +9,7 @@ const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
 ];
 
 const CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION = () => [
-    "id", "code", "name", "dateValidFrom", "dateValidTo"
+    "id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo"
 ];
 
 function dateTimeToDate(date) {

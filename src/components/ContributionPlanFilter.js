@@ -7,15 +7,12 @@ import { DATE_TO_DATETIME_SUFFIX, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP,
     EMPTY_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE, MAX_PERIODICITY_VALUE } from "../constants"
 
 const styles = theme => ({
-    dialogTitle: theme.dialog.title,
-    dialogContent: theme.dialog.content,
     form: {
         padding: 0
     },
     item: {
         padding: theme.spacing(1)
-    },
-    paperDivider: theme.paper.divider,
+    }
 });
 
 class ContributionPlanFilter extends Component {

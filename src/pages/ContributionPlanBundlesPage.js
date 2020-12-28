@@ -19,7 +19,7 @@ class ContributionPlanBundlesPage extends Component {
     render() {
         const { classes, rights } = this.props;
         return (
-            !rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) &&
+            rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) &&
                 <div className={classes.page}>
                     <ContributionPlanBundleSearcher />
                 </div>
