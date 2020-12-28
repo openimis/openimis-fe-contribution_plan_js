@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
 import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher,
-    PublishedComponent, decodeId, withTooltip } from "@openimis/fe-core";
-import { fetchContributionPlans } from "../actions"
+    PublishedComponent, decodeId, withTooltip, coreConfirm, journalize } from "@openimis/fe-core";
+import { fetchContributionPlans, deleteContributionPlan } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanFilter from "./ContributionPlanFilter"
@@ -12,6 +12,23 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { RIGHT_CONTRIBUTION_PLAN_UPDATE, RIGHT_CONTRIBUTION_PLAN_DELETE, DATE_TO_DATETIME_SUFFIX } from "../constants"
 
 class ContributionPlanSearcher extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            toDelete: null,
+            deleted: []
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.submittingMutation && !this.props.submittingMutation) {
+            this.props.journalize(this.props.mutation);
+            this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
+        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
+            this.state.confirmedAction();
+        }
+    }
+
     fetch = (params) => {
         this.props.fetchContributionPlans(this.props.modulesManager, params);
     }
@@ -101,7 +118,8 @@ class ContributionPlanSearcher extends Component {
                 contributionPlan => withTooltip(
                     <IconButton
                         href={contributionPlanPageLink(contributionPlan)}
-                        onClick={e => e.stopPropagation() && !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}>
+                        onClick={e => e.stopPropagation() && !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}
+                        disabled={this.state.deleted.includes(contributionPlan.id)}>
                         <EditIcon />
                     </IconButton>,
                     formatMessage(intl, "contributionPlan", "editButton.tooltip")
@@ -110,15 +128,44 @@ class ContributionPlanSearcher extends Component {
         }
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_DELETE)) {
             result.push(
-                () => (
-                    <IconButton disabled>
+                contributionPlan => withTooltip(
+                    <IconButton
+                        onClick={() => this.onDelete(contributionPlan)}
+                        disabled={this.state.deleted.includes(contributionPlan.id)}>
                         <DeleteIcon />
-                    </IconButton>
+                    </IconButton>,
+                    formatMessage(this.props.intl, "contributionPlan", "deleteButton.tooltip")
                 )
             );
         }
         return result;
     }
+
+    onDelete = contributionPlan => {
+        const { intl, coreConfirm, deleteContributionPlan } = this.props;
+        let confirm = () => coreConfirm(
+            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.title", { label: contributionPlan.name }),
+            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.message", { label: contributionPlan.name })
+        );
+        let confirmedAction = () => {
+            deleteContributionPlan(
+                contributionPlan,
+                formatMessageWithValues(
+                    intl,
+                    "contributionPlan",
+                    "DeleteContributionPlan.mutationLabel",
+                    { label: contributionPlan.name }
+                )
+            );
+            this.setState({ toDelete: contributionPlan.id });
+        }
+        this.setState(
+            { confirmedAction },
+            confirm
+        )
+    }
+
+    rowDeleted = (_, contributionPlan) => this.state.deleted.includes(contributionPlan.id);
 
     sorts = () => {
         return [
@@ -133,7 +180,7 @@ class ContributionPlanSearcher extends Component {
     }
 
     render() {
-        const { intl, fetchingContributionPlans, fetchedContributionPlans, errorContributionPlans, 
+        const { intl, fetchingContributionPlans, fetchedContributionPlans, errorContributionPlans,
             contributionPlans, contributionPlansPageInfo, contributionPlansTotalCount, onDoubleClick } = this.props;
         return (
             <Fragment>
@@ -155,6 +202,8 @@ class ContributionPlanSearcher extends Component {
                     defaultPageSize={10}
                     defaultOrderBy="code"
                     onDoubleClick={contributionPlan => !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}
+                    rowDisabled={this.rowDeleted}
+                    rowLocked={this.rowDeleted}
                 />
             </Fragment>
         )
@@ -167,11 +216,14 @@ const mapStateToProps = state => ({
     errorContributionPlans: state.contributionPlan.errorContributionPlans,
     contributionPlans: state.contributionPlan.contributionPlans,
     contributionPlansPageInfo: state.contributionPlan.contributionPlansPageInfo,
-    contributionPlansTotalCount: state.contributionPlan.contributionPlansTotalCount
+    contributionPlansTotalCount: state.contributionPlan.contributionPlansTotalCount,
+    confirmed: state.core.confirmed,
+    submittingMutation: state.contributionPlan.submittingMutation,
+    mutation: state.contributionPlan.mutation
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchContributionPlans }, dispatch);
+    return bindActionCreators({ fetchContributionPlans, coreConfirm, deleteContributionPlan, journalize }, dispatch);
 };
 
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanSearcher)));

@@ -31,7 +31,6 @@
     "moment": "^2.25.3",
     "prop-types": "^15.7.2",
     "react-autosuggest": "^10.0.2",
-    "react-intl": "^5.8.1",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "redux-api-middleware": "^3.2.1",
@@ -39,5 +38,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "react-intl": "^5.8.1"
+  }
 }

@@ -75,6 +75,8 @@ function reducer(
             return dispatchMutationResp(state, "createContributionPlan", action);
         case "CONTRIBUTIONPLAN_UPDATE_CONTRIBUTIONPLAN_RESP":
             return dispatchMutationResp(state, "updateContributionPlan", action);
+        case "CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLAN_RESP":
+            return dispatchMutationResp(state, "deleteContributionPlan", action);
         default:
             return state;
     }

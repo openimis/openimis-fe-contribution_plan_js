@@ -21,6 +21,7 @@ None
 * `CONTRIBUTIONPLAN_MUTATION_{REQ|ERR}`, sending a mutation
 * `CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLAN_RESP`, receiving a result of create Contribution Plan mutation
 * `CONTRIBUTIONPLAN_UPDATE_CONTRIBUTIONPLAN_RESP`, receiving a result of update Contribution Plan mutation
+* `CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLAN_RESP`, receiving a result of delete Contribution Plan mutation
 
 ## Other Modules Listened Redux Actions
 * `PRODUCT_PRODUCT_PICKER_RESP`, fetching products
