@@ -118,7 +118,8 @@ class ContributionPlanSearcher extends Component {
                 contributionPlan => withTooltip(
                     <IconButton
                         href={contributionPlanPageLink(contributionPlan)}
-                        onClick={e => e.stopPropagation() && !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}>
+                        onClick={e => e.stopPropagation() && !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}
+                        disabled={this.state.deleted.includes(contributionPlan.id)}>
                         <EditIcon />
                     </IconButton>,
                     formatMessage(intl, "contributionPlan", "editButton.tooltip")
@@ -131,7 +132,7 @@ class ContributionPlanSearcher extends Component {
                     <IconButton
                         onClick={() => this.onDelete(contributionPlan)}
                         disabled={this.state.deleted.includes(contributionPlan.id)}>
-                            <DeleteIcon />
+                        <DeleteIcon />
                     </IconButton>,
                     formatMessage(this.props.intl, "contributionPlan", "deleteButton.tooltip")
                 )
@@ -179,7 +180,7 @@ class ContributionPlanSearcher extends Component {
     }
 
     render() {
-        const { intl, fetchingContributionPlans, fetchedContributionPlans, errorContributionPlans, 
+        const { intl, fetchingContributionPlans, fetchedContributionPlans, errorContributionPlans,
             contributionPlans, contributionPlansPageInfo, contributionPlansTotalCount, onDoubleClick } = this.props;
         return (
             <Fragment>
@@ -222,7 +223,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchContributionPlans, coreConfirm, deleteContributionPlan,journalize }, dispatch);
+    return bindActionCreators({ fetchContributionPlans, coreConfirm, deleteContributionPlan, journalize }, dispatch);
 };
 
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanSearcher)));
