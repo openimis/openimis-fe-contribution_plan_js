@@ -18,13 +18,9 @@ class ContributionPlansPage extends Component {
         document.title = formatMessage(this.props.intl, "contributionPlan", "contributionPlans.page.title");
     }
 
-    onAdd = () => {
-        historyPush(this.props.modulesManager, this.props.history, "contributionPlan.route.contributionPlan");
-    }
+    onAdd = () => historyPush(this.props.modulesManager, this.props.history, "contributionPlan.route.contributionPlan");
 
-    contributionPlanPageLink = contributionPlan => {
-        return `${this.props.modulesManager.getRef("contributionPlan.route.contributionPlan")}${"/" + decodeId(contributionPlan.id)}`;
-    }
+    contributionPlanPageLink = contributionPlan => `${this.props.modulesManager.getRef("contributionPlan.route.contributionPlan")}${"/" + decodeId(contributionPlan.id)}`;
 
     onDoubleClick = (contributionPlan, newTab = false) => {
         const { rights, modulesManager, history } = this.props;
@@ -49,7 +45,7 @@ class ContributionPlansPage extends Component {
                                 <AddIcon />
                             </Fab>
                         </div>,
-                        formatMessage(intl, "contributionPlan", "createButton.tooltip")
+                        formatMessage(intl, "contributionPlan", "contributionPlan.createButton.tooltip")
                     )}
                 </div>
         )

@@ -8,9 +8,7 @@ import ContributionPlanBundleFilter from "./ContributionPlanBundleFilter"
 import { DATE_TO_DATETIME_SUFFIX } from "../constants"
 
 class ContributionPlanBundleSearcher extends Component {
-    fetch = (params) => {
-        this.props.fetchContributionPlanBundles(params);
-    }
+    fetch = (params) => this.props.fetchContributionPlanBundles(params);
 
     filtersToQueryParams = state => {
         const { intl, modulesManager } = this.props;

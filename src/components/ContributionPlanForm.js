@@ -24,7 +24,7 @@ class ContributionPlanForm extends Component {
     }
 
     componentDidMount() {
-        document.title = formatMessage(this.props.intl, "contributionPlan", "contributionPlan.page.title");
+        document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams());
         if (!!this.props.contributionPlanId) {
             this.props.fetchContributionPlan(this.props.modulesManager, this.props.contributionPlanId)
         }
@@ -41,7 +41,7 @@ class ContributionPlanForm extends Component {
                          */
                         calculation: decodeId(props.contributionPlan.calculation.id) 
                     }
-                }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", { label: this.titleParams().label })
+                }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())
             );
         }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
@@ -90,7 +90,7 @@ class ContributionPlanForm extends Component {
                     onEditedChanged={this.onEditedChanged}
                     HeadPanel={ContributionPlanHeadPanel}
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
-                    saveTooltip={formatMessage(intl, "contributionPlan", `saveContributionPlanButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
+                    saveTooltip={formatMessage(intl, "contributionPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
                 />
             </Fragment>
         )
@@ -102,7 +102,6 @@ const mapStateToProps = state => ({
     fetchedContributionPlan: state.contributionPlan.fetchedContributionPlan,
     contributionPlan: state.contributionPlan.contributionPlan,
     errorContributionPlan: state.contributionPlan.errorContributionPlan,
-    products: state.product.products,
     submittingMutation: state.contributionPlan.submittingMutation,
     mutation: state.contributionPlan.mutation
 });
