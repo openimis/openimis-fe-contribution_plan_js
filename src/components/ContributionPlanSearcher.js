@@ -29,9 +29,7 @@ class ContributionPlanSearcher extends Component {
         }
     }
 
-    fetch = (params) => {
-        this.props.fetchContributionPlans(this.props.modulesManager, params);
-    }
+    fetch = (params) => this.props.fetchContributionPlans(this.props.modulesManager, params);
 
     filtersToQueryParams = state => {
         const { intl, modulesManager } = this.props;
@@ -167,17 +165,15 @@ class ContributionPlanSearcher extends Component {
 
     rowDeleted = (_, contributionPlan) => this.state.deleted.includes(contributionPlan.id);
 
-    sorts = () => {
-        return [
-            ['code', true],
-            ['name', true],
-            ['calculation', true],
-            ['benefitPlan', true],
-            ['periodicity', true],
-            ['dateValidFrom', true],
-            ['dateValidTo', true]
-        ]
-    }
+    sorts = () => [
+        ['code', true],
+        ['name', true],
+        ['calculation', true],
+        ['benefitPlan', true],
+        ['periodicity', true],
+        ['dateValidFrom', true],
+        ['dateValidTo', true]
+    ];
 
     render() {
         const { intl, fetchingContributionPlans, fetchedContributionPlans, errorContributionPlans,

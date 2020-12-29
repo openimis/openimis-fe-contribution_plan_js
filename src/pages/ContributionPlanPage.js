@@ -25,7 +25,7 @@ class ContributionPlanPage extends Component {
                     this.props.intl,
                     "contributionPlan",
                     "UpdateContributionPlan.mutationLabel",
-                    { label: this.titleParams(contributionPlan).label }
+                    this.titleParams(contributionPlan)
                 )
             );
         } else {
@@ -35,7 +35,7 @@ class ContributionPlanPage extends Component {
                     this.props.intl,
                     "contributionPlan",
                     "CreateContributionPlan.mutationLabel",
-                    { label: this.titleParams(contributionPlan).label }
+                    this.titleParams(contributionPlan)
                 )
             );
         }

@@ -99,3 +99,17 @@ export function deleteContributionPlan(contributionPlan, clientMutationLabel, cl
         }
     );
 }
+
+export function createContributionPlanBundle(contributionPlanBundle, clientMutationLabel) {
+    let mutation = formatMutation("createContributionPlanBundle", formatContributionPlanGQL(contributionPlanBundle), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLANBUNDLE_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}

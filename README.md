@@ -24,9 +24,10 @@ None
 * `CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLAN_RESP`, receiving a result of create Contribution Plan mutation
 * `CONTRIBUTIONPLAN_UPDATE_CONTRIBUTIONPLAN_RESP`, receiving a result of update Contribution Plan mutation
 * `CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLAN_RESP`, receiving a result of delete Contribution Plan mutation
+* `CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLANBUNDLE_RESP`, receiving a result of create Contribution Plan Bundle mutation
 
 ## Other Modules Listened Redux Actions
-* `PRODUCT_PRODUCT_PICKER_RESP`, fetching products
+None
 
 ## Other Modules Redux State Bindings
 * `state.core.user`, to access user info (rights,...)

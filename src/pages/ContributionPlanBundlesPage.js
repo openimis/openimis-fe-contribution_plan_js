@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { withModulesManager, formatMessage } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, withTooltip, historyPush } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH } from "../constants"
+import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH, RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE } from "../constants"
 import ContributionPlanBundleSearcher from "../components/ContributionPlanBundleSearcher";
+import { Fab } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 
 const styles = theme => ({
     page: theme.page,
@@ -16,12 +18,22 @@ class ContributionPlanBundlesPage extends Component {
         document.title = formatMessage(this.props.intl, "contributionPlan", "contributionPlanBundles.page.title");
     }
 
+    onAdd = () => historyPush(this.props.modulesManager, this.props.history, "contributionPlan.route.contributionPlanBundle");
+
     render() {
-        const { classes, rights } = this.props;
+        const { intl, classes, rights } = this.props;
         return (
             rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) &&
                 <div className={classes.page}>
                     <ContributionPlanBundleSearcher />
+                    {rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE) && withTooltip(
+                        <div className={classes.fab} >
+                            <Fab color="primary" onClick={this.onAdd}>
+                                <AddIcon />
+                            </Fab>
+                        </div>,
+                        formatMessage(intl, "contributionPlan", "contributionPlanBundle.createButton.tooltip")
+                    )}
                 </div>
         )
     }
