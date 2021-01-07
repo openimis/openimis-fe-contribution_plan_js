@@ -23,7 +23,7 @@ const DEFAULT_CONFIG = {
         { path: ROUTE_CONTRIBUTION_PLANS, component: ContributionPlansPage },
         { path: ROUTE_CONTRIBUTION_PLAN  + "/:contributionplan_id?", component: ContributionPlanPage },
         { path: ROUTE_CONTRIBUTION_PLAN_BUNDLES, component: ContributionPlanBundlesPage },
-        { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE, component: ContributionPlanBundlePage }
+        { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE  + "/:contributionplanbundle_id?", component: ContributionPlanBundlePage }
     ]
 }
 

@@ -9,7 +9,8 @@ import ContributionPlanFilter from "./ContributionPlanFilter"
 import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { RIGHT_CONTRIBUTION_PLAN_UPDATE, RIGHT_CONTRIBUTION_PLAN_DELETE, DATE_TO_DATETIME_SUFFIX } from "../constants"
+import { RIGHT_CONTRIBUTION_PLAN_UPDATE, RIGHT_CONTRIBUTION_PLAN_DELETE, DATE_TO_DATETIME_SUFFIX,
+    ROWS_PER_PAGE_OPTIONS, DEFAULT_PAGE_SIZE } from "../constants"
 
 class ContributionPlanSearcher extends Component {
     constructor(props) {
@@ -194,8 +195,8 @@ class ContributionPlanSearcher extends Component {
                     itemFormatters={this.itemFormatters}
                     filtersToQueryParams={this.filtersToQueryParams}
                     sorts={this.sorts}
-                    rowsPerPageOptions={[10, 20, 50, 100]}
-                    defaultPageSize={10}
+                    rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+                    defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
                     onDoubleClick={contributionPlan => !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}
                     rowDisabled={this.rowDeleted}

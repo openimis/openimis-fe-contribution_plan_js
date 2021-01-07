@@ -21,6 +21,16 @@ function reducer(
         contributionPlanBundles: [],
         contributionPlanBundlesPageInfo: {},
         contributionPlanBundlesTotalCount: 0,
+        fetchingContributionPlanBundle: false,
+        fetchedContributionPlanBundle: false,
+        contributionPlanBundle: {},
+        errorContributionPlanBundle: null,
+        fetchingContributionPlanBundleContributionPlans: false,
+        fetchedContributionPlanBundleContributionPlans: false,
+        contributionPlanBundleContributionPlans: [],
+        contributionPlanBundleContributionPlansPageInfo: {},
+        contributionPlanBundleContributionPlansTotalCount: 0,
+        errorContributionPlanBundleContributionPlans: null
     },
     action
 ) {
@@ -99,6 +109,54 @@ function reducer(
                 fetchingContributionPlanBundles: false,
                 errorContributionPlanBundles: formatServerError(action.payload)
             };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLE_REQ":
+            return {
+                ...state,
+                fetchingContributionPlanBundle: true,
+                fetchedContributionPlanBundle: false,
+                contributionPlanBundle: [],
+                errorContributionPlanBundle: null
+            };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLE_RESP":
+            return {
+                ...state,
+                fetchingContributionPlanBundle: false,
+                fetchedContributionPlanBundle: true,
+                contributionPlanBundle: parseData(action.payload.data.contributionPlanBundle).find(contributionPlanBundle => !!contributionPlanBundle),
+                errorContributionPlanBundle: formatGraphQLError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLE_ERR":
+            return {
+                ...state,
+                fetchingContributionPlanBundle: false,
+                errorContributionPlanBundle: formatServerError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS_REQ":
+            return {
+                ...state,
+                fetchingContributionPlanBundleContributionPlans: true,
+                fetchedContributionPlanBundleContributionPlans: false,
+                contributionPlanBundleContributionPlans: [],
+                contributionPlanBundleContributionPlansPageInfo: {},
+                contributionPlanBundleContributionPlansTotalCount: 0,
+                errorContributionPlanBundleContributionPlans: null
+            };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS_RESP":
+            return {
+                ...state,
+                fetchingContributionPlanBundleContributionPlans: false,
+                fetchedContributionPlanBundleContributionPlans: true,
+                contributionPlanBundleContributionPlans: parseData(action.payload.data.contributionPlanBundleDetails),
+                contributionPlanBundleContributionPlansPageInfo: pageInfo(action.payload.data.contributionPlanBundleDetails),
+                contributionPlanBundleContributionPlansTotalCount: !!action.payload.data.contributionPlanBundleDetails ? action.payload.data.contributionPlanBundleDetails.totalCount : null,
+                errorContributionPlanBundleContributionPlans: formatGraphQLError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS_ERR":
+            return {
+                ...state,
+                fetchingContributionPlanBundleContributionPlans: false,
+                errorContributionPlanBundleContributionPlans: formatServerError(action.payload)
+            };
         case "CONTRIBUTIONPLAN_MUTATION_REQ":
             return dispatchMutationReq(state, action);
         case "CONTRIBUTIONPLAN_MUTATION_ERR":
@@ -111,6 +169,14 @@ function reducer(
             return dispatchMutationResp(state, "deleteContributionPlan", action);
         case "CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLANBUNDLE_RESP":
             return dispatchMutationResp(state, "createContributionPlanBundle", action);
+        case "CONTRIBUTIONPLAN_UPDATE_CONTRIBUTIONPLANBUNDLE_RESP":
+            return dispatchMutationResp(state, "updateContributionPlanBundle", action);
+        case "CONTRIBUTIONPLAN_CREATE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP":
+            return dispatchMutationResp(state, "createContributionPlanBundleDetails", action);
+        case "CONTRIBUTIONPLAN_UPDATE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP":
+            return dispatchMutationResp(state, "updateContributionPlanBundleDetails", action);
+        case "CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP":
+            return dispatchMutationResp(state, "deleteContributionPlanBundleDetails", action);
         default:
             return state;
     }

@@ -5,6 +5,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanBundleHeadPanel from "./ContributionPlanBundleHeadPanel"
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
+import { fetchContributionPlanBundle } from "../actions";
+import ContributionPlanBundleContributionPlans from "./ContributionPlanBundleContributionPlans";
 
 class ContributionPlanBundleForm extends Component {
     constructor(props) {
@@ -16,9 +18,18 @@ class ContributionPlanBundleForm extends Component {
 
     componentDidMount() {
         document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlanBundle.page.title", this.titleParams());
+        if (!!this.props.contributionPlanBundleId) {
+            this.props.fetchContributionPlanBundle(this.props.contributionPlanBundleId)
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.fetchedContributionPlanBundle !== this.props.fetchedContributionPlanBundle && !!this.props.fetchedContributionPlanBundle) {
+            this.setState(
+                (state, props) => ({ contributionPlanBundle: props.contributionPlanBundle }),
+                () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlanBundle.page.title", this.titleParams())
+            );
+        }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
         }
@@ -49,7 +60,7 @@ class ContributionPlanBundleForm extends Component {
     titleParams = () => this.props.titleParams(this.state.contributionPlanBundle);
 
     render() {
-        const { intl, back } = this.props;
+        const { intl, back, contributionPlanBundleId } = this.props;
         return (
             <Fragment>
                 <Form
@@ -64,6 +75,8 @@ class ContributionPlanBundleForm extends Component {
                     HeadPanel={ContributionPlanBundleHeadPanel}
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
                     saveTooltip={formatMessage(intl, "contributionPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
+                    Panels={[ContributionPlanBundleContributionPlans]}
+                    contributionPlanBundleId={contributionPlanBundleId}
                 />
             </Fragment>
         )
@@ -71,12 +84,16 @@ class ContributionPlanBundleForm extends Component {
 }
 
 const mapStateToProps = state => ({
+    fetchingContributionPlanBundle: state.contributionPlan.fetchingContributionPlanBundle,
+    fetchedContributionPlanBundle: state.contributionPlan.fetchedContributionPlanBundle,
+    contributionPlanBundle: state.contributionPlan.contributionPlanBundle,
+    errorContributionPlanBundle: state.contributionPlan.errorContributionPlanBundle,
     submittingMutation: state.contributionPlan.submittingMutation,
     mutation: state.contributionPlan.mutation
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ journalize }, dispatch);
+    return bindActionCreators({ fetchContributionPlanBundle, journalize }, dispatch);
 };
 
 export default withHistory(withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundleForm))));

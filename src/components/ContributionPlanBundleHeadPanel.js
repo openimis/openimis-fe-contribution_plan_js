@@ -70,6 +70,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
                             max={MAX_PERIODICITY_VALUE}
                             value={!!edited && !!edited.periodicity ? edited.periodicity : null}
                             onChange={v => this.updateAttribute('periodicity', v)}
+                            readOnly={!!edited && !!edited.id ? true : false}
                         />
                     </Grid>
                     <Grid item xs={2} className={classes.item}>

@@ -27,5 +27,17 @@
     "contributionPlan.deleteContributionPlan.confirm.message": "Are you sure you want to delete {label}?",
     "contributionPlan.contributionPlanBundle.createButton.tooltip": "Create new Contribution Plan Bundle",
     "contributionPlan.contributionPlanBundle.page.title": "Contribution Plan Bundle {label}",
-    "contributionPlan.CreateContributionPlanBundle.mutationLabel": "Create Contribution Plan Bundle - {label}"
+    "contributionPlan.CreateContributionPlanBundle.mutationLabel": "Create Contribution Plan Bundle - {label}",
+    "contributionPlan.UpdateContributionPlanBundle.mutationLabel": "Update Contribution Plan Bundle - {label}",
+    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.title": "{contributionPlanBundleContributionPlansTotalCount} Contribution Plans Attached",
+    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.createContributionPlan": "Create New Contribution Plan",
+    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.editContributionPlan": "Edit Contribution Plan",
+    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.error": "To start creating new Contribution Plan, you need to fill in General Information fields and click Save.",
+    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.dialog.cancel": "Cancel",
+    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.dialog.create": "Create",
+    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.dialog.update": "Save",
+    "contributionPlan.contributionPlan.label": "Contribution Plan",
+    "contributionPlan.CreateContributionPlanBundleDetails.mutationLabel": "Attach new Contribution Plan to {contributionPlanBundle}",
+    "contributionPlan.UpdateContributionPlanBundleDetails.mutationLabel": "Update {contributionPlan} of {contributionPlanBundle}",
+    "contributionPlan.DeleteContributionPlanBundleDetails.mutationLabel": "Delete {contributionPlan} from {contributionPlanBundle}"
 }
