@@ -126,4 +126,4 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ createContributionPlanBundleContributionPlan }, dispatch);
 };
 
-export default injectIntl(withTheme(withStyles(styles)(connect(_, mapDispatchToProps)(CreateContributionPlanBundleDetailsDialog))));
+export default injectIntl(withTheme(withStyles(styles)(connect(null, mapDispatchToProps)(CreateContributionPlanBundleDetailsDialog))));

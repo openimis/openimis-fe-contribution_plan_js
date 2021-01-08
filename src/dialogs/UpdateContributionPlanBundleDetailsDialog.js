@@ -5,11 +5,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import {FormattedMessage, formatMessage, formatMessageWithValues, PublishedComponent, decodeId } from "@openimis/fe-core";
 import { Tooltip, Grid, IconButton } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import ContributionPlanPicker from '../pickers/ContributionPlanPicker';
-import { updateContributionPlanBundleContributionPlan } from "../actions";
+import { updateContributionPlanBundleContributionPlan, replaceContributionPlanBundleContributionPlan } from "../actions";
 import { injectIntl } from 'react-intl';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -28,7 +29,13 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
     }
 
     handleOpen = () => {
-        this.setState({ open: true, contributionPlanAttached: this.props.contributionPlanBundleContributionPlan });
+        this.setState({
+            open: true,
+            contributionPlanAttached: {
+                ...this.props.contributionPlanBundleContributionPlan,
+                contributionPlanId: decodeId(this.props.contributionPlanBundleContributionPlan.contributionPlan.id)
+            }
+        });
     };
 
     handleClose = () => {
@@ -36,18 +43,35 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
     };
 
     handleSave = () => {
-        this.props.updateContributionPlanBundleContributionPlan(
-            this.state.contributionPlanAttached,
-            formatMessageWithValues(
-                this.props.intl,
-                "contributionPlan",
-                "UpdateContributionPlanBundleDetails.mutationLabel",
-                {
-                    contributionPlan: this.props.contributionPlanBundleContributionPlan.contributionPlan.name,
-                    contributionPlanBundle: this.props.contributionPlanBundleContributionPlan.contributionPlanBundle.name
-                }
-            )
-        );
+        const { intl, replaceContributionPlanBundleContributionPlan, updateContributionPlanBundleContributionPlan,
+            contributionPlanBundleContributionPlan, isReplacing = false } = this.props;
+        if (isReplacing) {
+            replaceContributionPlanBundleContributionPlan(
+                this.state.contributionPlanAttached,
+                formatMessageWithValues(
+                    intl,
+                    "contributionPlan",
+                    "ReplaceContributionPlanBundleDetails.mutationLabel",
+                    {
+                        contributionPlan: contributionPlanBundleContributionPlan.contributionPlan.name,
+                        contributionPlanBundle: contributionPlanBundleContributionPlan.contributionPlanBundle.name
+                    }
+                )
+            );
+        } else {
+            updateContributionPlanBundleContributionPlan(
+                this.state.contributionPlanAttached,
+                formatMessageWithValues(
+                    intl,
+                    "contributionPlan",
+                    "UpdateContributionPlanBundleDetails.mutationLabel",
+                    {
+                        contributionPlan: contributionPlanBundleContributionPlan.contributionPlan.name,
+                        contributionPlanBundle: contributionPlanBundleContributionPlan.contributionPlanBundle.name
+                    }
+                )
+            );
+        }
         this.handleClose();
     };
 
@@ -61,27 +85,41 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
     }
 
     render() {
-        const { intl, classes, contributionPlanBundle } = this.props;
+        const { intl, classes, contributionPlanBundle, isReplacing = false } = this.props;
         const { open, contributionPlanAttached } = this.state;
         return (
             <Fragment>
-                <Tooltip title={formatMessage(intl, "contributionPlan", "editButton.tooltip")}>
-                    <IconButton
-                        onClick={this.handleOpen}>
-                        <EditIcon />
-                    </IconButton>
-                </Tooltip>
+                {isReplacing ? (
+                    <Tooltip title={formatMessage(intl, "contributionPlan", "replaceButton.tooltip")}>
+                        <IconButton
+                            onClick={this.handleOpen}>
+                            <NoteAddIcon />
+                        </IconButton>
+                    </Tooltip>
+                ) : (
+                    <Tooltip title={formatMessage(intl, "contributionPlan", "editButton.tooltip")}>
+                        <IconButton
+                            onClick={this.handleOpen}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                )}
                 <Dialog open={open} onClose={this.handleClose}>
                     <DialogTitle>
-                        <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.editContributionPlan" />
+                        {isReplacing ? (
+                            <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.replaceContributionPlan" />
+                        ) : (
+                            <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.editContributionPlan" />
+                        )}
                     </DialogTitle>
                     <DialogContent>
                         <Grid container direction="column" className={classes.item}>
                             <Grid item xs={12} className={classes.item}>
                                 <ContributionPlanPicker
                                     periodicity={!!contributionPlanBundle ? contributionPlanBundle.periodicity : null}
-                                    value={!!contributionPlanAttached.contributionPlan && decodeId(contributionPlanAttached.contributionPlan.id)}
-                                    readOnly
+                                    value={contributionPlanAttached.contributionPlanId}
+                                    onChange={v => this.updateAttribute('contributionPlanId', v)}
+                                    readOnly={!isReplacing}
                                 />
                             </Grid>
                             <Grid item xs={12} className={classes.item}>
@@ -90,7 +128,8 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
                                     module="contributionPlan"
                                     label="dateValidFrom"
                                     value={contributionPlanAttached.dateValidFrom}
-                                    readOnly
+                                    onChange={v => this.updateAttribute('dateValidFrom', v)}
+                                    readOnly={!isReplacing}
                                 />
                             </Grid>
                             <Grid item xs={12} className={classes.item}>
@@ -109,7 +148,11 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
                             <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.dialog.cancel" />
                         </Button>
                         <Button onClick={this.handleSave} variant="contained" color="primary" autoFocus>
-                            <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.dialog.update" />
+                            {isReplacing ? (
+                                <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.dialog.replace" />
+                            ) : (
+                                <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.dialog.update" />
+                            )}
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -119,7 +162,7 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ updateContributionPlanBundleContributionPlan }, dispatch);
+    return bindActionCreators({ updateContributionPlanBundleContributionPlan, replaceContributionPlanBundleContributionPlan }, dispatch);
 };
 
-export default injectIntl(withTheme(withStyles(styles)(connect(_, mapDispatchToProps)(UpdateContributionPlanBundleDetailsDialog))));
+export default injectIntl(withTheme(withStyles(styles)(connect(null, mapDispatchToProps)(UpdateContributionPlanBundleDetailsDialog))));

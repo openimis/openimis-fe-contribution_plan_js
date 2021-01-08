@@ -95,6 +95,11 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         contributionPlanBundleContributionPlan => 
             <UpdateContributionPlanBundleDetailsDialog
                 contributionPlanBundleContributionPlan={contributionPlanBundleContributionPlan}
+                isReplacing={true}
+            />,
+        contributionPlanBundleContributionPlan => 
+            <UpdateContributionPlanBundleDetailsDialog
+                contributionPlanBundleContributionPlan={contributionPlanBundleContributionPlan}
             />,
         contributionPlanBundleContributionPlan => withTooltip(
             <IconButton
