@@ -174,6 +174,21 @@ export function updateContributionPlanBundle(contributionPlanBundle, clientMutat
     );
 }
 
+export function deleteContributionPlanBundle(contributionPlanBundle, clientMutationLabel, clientMutationDetails = null) {
+    let contributionPlanBundleUuids = `uuids: ["${decodeId(contributionPlanBundle.id)}"]`;
+    let mutation = formatMutation("deleteContributionPlanBundle", contributionPlanBundleUuids, clientMutationLabel, clientMutationDetails);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLANBUNDLE_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
 export function createContributionPlanBundleContributionPlan(contributionPlanBundleContributionPlan, clientMutationLabel) {
     let mutation = formatMutation("createContributionPlanBundleDetails", formatContributionPlanBundleDetailsGQL(contributionPlanBundleContributionPlan), clientMutationLabel);
     var requestedDateTime = new Date();

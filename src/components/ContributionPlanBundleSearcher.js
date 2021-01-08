@@ -1,15 +1,35 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher, withTooltip } from "@openimis/fe-core";
-import { fetchContributionPlanBundles } from "../actions"
+import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher, withTooltip,
+    coreConfirm, journalize } from "@openimis/fe-core";
+import { fetchContributionPlanBundles, deleteContributionPlanBundle } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanBundleFilter from "./ContributionPlanBundleFilter"
-import { DATE_TO_DATETIME_SUFFIX, RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
+import { DATE_TO_DATETIME_SUFFIX, RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE, 
+    DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
 import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class ContributionPlanBundleSearcher extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            toDelete: null,
+            deleted: []
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.submittingMutation && !this.props.submittingMutation) {
+            this.props.journalize(this.props.mutation);
+            this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
+        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
+            this.state.confirmedAction();
+        }
+    }
+
     fetch = (params) => this.props.fetchContributionPlanBundles(params);
 
     filtersToQueryParams = state => {
@@ -59,6 +79,9 @@ class ContributionPlanBundleSearcher extends Component {
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE)) {
             result.push("contributionPlan.emptyLabel");
         }
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE)) {
+            result.push("contributionPlan.emptyLabel");
+        }
         return result;
     }
 
@@ -80,15 +103,54 @@ class ContributionPlanBundleSearcher extends Component {
                 contributionPlanBundle => withTooltip(
                     <IconButton
                         href={contributionPlanBundlePageLink(contributionPlanBundle)}
-                        onClick={e => e.stopPropagation() && !contributionPlanBundle.clientMutationId && onDoubleClick(contributionPlanBundle)}>
+                        onClick={e => e.stopPropagation() && onDoubleClick(contributionPlanBundle)}
+                        disabled={this.state.deleted.includes(contributionPlanBundle.id)}>
                         <EditIcon />
                     </IconButton>,
                     formatMessage(intl, "contributionPlan", "editButton.tooltip")
                 )
             );
         }
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE)) {
+            result.push(
+                contributionPlanBundle => withTooltip(
+                    <IconButton
+                        onClick={() => this.onDelete(contributionPlanBundle)}
+                        disabled={this.state.deleted.includes(contributionPlanBundle.id)}>
+                        <DeleteIcon />
+                    </IconButton>,
+                    formatMessage(this.props.intl, "contributionPlan", "deleteButton.tooltip")
+                )
+            );
+        }
         return result;
     }
+
+    onDelete = contributionPlanBundle => {
+        const { intl, coreConfirm, deleteContributionPlanBundle } = this.props;
+        let confirm = () => coreConfirm(
+            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlanBundle.confirm.title", { label: contributionPlanBundle.name }),
+            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.message", { label: contributionPlanBundle.name })
+        );
+        let confirmedAction = () => {
+            deleteContributionPlanBundle(
+                contributionPlanBundle,
+                formatMessageWithValues(
+                    intl,
+                    "contributionPlan",
+                    "DeleteContributionPlanBundle.mutationLabel",
+                    { label: contributionPlanBundle.name }
+                )
+            );
+            this.setState({ toDelete: contributionPlanBundle.id });
+        }
+        this.setState(
+            { confirmedAction },
+            confirm
+        )
+    }
+
+    rowDeleted = (_, contributionPlanBundle) => this.state.deleted.includes(contributionPlanBundle.id);
 
     sorts = () => [
         ['code', true],
@@ -120,7 +182,9 @@ class ContributionPlanBundleSearcher extends Component {
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
-                    onDoubleClick={contributionPlanBundle => !contributionPlanBundle.clientMutationId && onDoubleClick(contributionPlanBundle)}
+                    onDoubleClick={contributionPlanBundle => !this.rowDeleted(_, contributionPlanBundle) && onDoubleClick(contributionPlanBundle)}
+                    rowDisabled={this.rowDeleted}
+                    rowLocked={this.rowDeleted}
                 />
             </Fragment>
         )
@@ -133,11 +197,14 @@ const mapStateToProps = state => ({
     errorContributionPlanBundles: state.contributionPlan.errorContributionPlanBundles,
     contributionPlanBundles: state.contributionPlan.contributionPlanBundles,
     contributionPlanBundlesPageInfo: state.contributionPlan.contributionPlanBundlesPageInfo,
-    contributionPlanBundlesTotalCount: state.contributionPlan.contributionPlanBundlesTotalCount
+    contributionPlanBundlesTotalCount: state.contributionPlan.contributionPlanBundlesTotalCount,
+    confirmed: state.core.confirmed,
+    submittingMutation: state.contributionPlan.submittingMutation,
+    mutation: state.contributionPlan.mutation
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchContributionPlanBundles }, dispatch);
+    return bindActionCreators({ fetchContributionPlanBundles, deleteContributionPlanBundle, coreConfirm, journalize }, dispatch);
 };
 
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundleSearcher)));
