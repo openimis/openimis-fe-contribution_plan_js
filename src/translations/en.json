@@ -22,6 +22,7 @@
     "contributionPlan.UpdateContributionPlan.mutationLabel": "Update Contribution Plan - {label}",
     "contributionPlan.DeleteContributionPlan.mutationLabel": "Delete Contribution Plan - {label}",
     "contributionPlan.editButton.tooltip": "Edit",
+    "contributionPlan.replaceButton.tooltip": "Add New Version",
     "contributionPlan.deleteButton.tooltip": "Delete",
     "contributionPlan.deleteContributionPlan.confirm.title": "Delete Contribution Plan {label}",
     "contributionPlan.deleteContributionPlan.confirm.message": "Are you sure you want to delete {label}?",
@@ -29,6 +30,7 @@
     "contributionPlan.contributionPlanBundle.page.title": "Contribution Plan Bundle {label}",
     "contributionPlan.CreateContributionPlanBundle.mutationLabel": "Create Contribution Plan Bundle - {label}",
     "contributionPlan.UpdateContributionPlanBundle.mutationLabel": "Update Contribution Plan Bundle - {label}",
+    "contributionPlan.ReplaceContributionPlanBundle.mutationLabel": "Replace Contribution Plan Bundle - {label}",
     "contributionPlan.DeleteContributionPlanBundle.mutationLabel": "Delete Contribution Plan Bundle - {label}",
     "contributionPlan.deleteContributionPlanBundle.confirm.title": "Delete Contribution Plan Bundle {label}?",
     "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.title": "{contributionPlanBundleContributionPlansTotalCount} Contribution Plans Attached",
@@ -41,5 +43,6 @@
     "contributionPlan.contributionPlan.label": "Contribution Plan",
     "contributionPlan.CreateContributionPlanBundleDetails.mutationLabel": "Attach new Contribution Plan to {contributionPlanBundle}",
     "contributionPlan.UpdateContributionPlanBundleDetails.mutationLabel": "Update {contributionPlan} of {contributionPlanBundle}",
-    "contributionPlan.DeleteContributionPlanBundleDetails.mutationLabel": "Delete {contributionPlan} from {contributionPlanBundle}"
+    "contributionPlan.DeleteContributionPlanBundleDetails.mutationLabel": "Delete {contributionPlan} from {contributionPlanBundle}",
+    "contributionPlan.contributionPlanBundle.replacePage.title": "Add New Version of Contribution Plan Bundle {label}"
 }

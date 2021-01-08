@@ -82,10 +82,10 @@ function formatContributionPlanGQL(contributionPlan) {
     `;
 }
 
-function formatContributionPlanBundleGQL(contributionPlanBundle, omitImmutableFields = false) {
+function formatContributionPlanBundleGQL(contributionPlanBundle, omitImmutableFields = false, isReplaceMutation = false) {
     return `
-        ${!!contributionPlanBundle.id ? `id: "${decodeId(contributionPlanBundle.id)}"` : ''}
-        ${!omitImmutableFields && !!contributionPlanBundle.code ? `code: "${formatGQLString(contributionPlanBundle.code)}"` : ""}
+        ${!!contributionPlanBundle.id ? `${isReplaceMutation ? 'uuid' : 'id'}: "${decodeId(contributionPlanBundle.id)}"` : ''}
+        ${!!contributionPlanBundle.code && !omitImmutableFields ? `code: "${formatGQLString(contributionPlanBundle.code)}"` : ""}
         ${!!contributionPlanBundle.name ? `name: "${formatGQLString(contributionPlanBundle.name)}"` : ""}
         ${!!contributionPlanBundle.periodicity ? `periodicity: ${contributionPlanBundle.periodicity}` : ""}
         ${!!contributionPlanBundle.dateValidFrom ? `dateValidFrom: "${dateTimeToDate(contributionPlanBundle.dateValidFrom)}"` : ""}
@@ -181,6 +181,20 @@ export function deleteContributionPlanBundle(contributionPlanBundle, clientMutat
     return graphql(
         mutation.payload,
         ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLANBUNDLE_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function replaceContributionPlanBundle(contributionPlanBundle, clientMutationLabel) {
+    let mutation = formatMutation("replaceContributionPlanBundle", formatContributionPlanBundleGQL(contributionPlanBundle, true, true), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_REPLACE_CONTRIBUTIONPLANBUNDLE_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
         {
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,

@@ -15,7 +15,7 @@ const styles = theme => ({
 
 class ContributionPlanBundleHeadPanel extends FormPanel {
     render() {
-        const { classes, edited, mandatoryFieldsEmpty } = this.props;
+        const { classes, edited, mandatoryFieldsEmpty, isReplacing } = this.props;
         return (
             <Fragment>
                 <Grid container className={classes.tableTitle}>
@@ -70,7 +70,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
                             max={MAX_PERIODICITY_VALUE}
                             value={!!edited && !!edited.periodicity ? edited.periodicity : null}
                             onChange={v => this.updateAttribute('periodicity', v)}
-                            readOnly={!!edited && !!edited.id ? true : false}
+                            readOnly={!isReplacing && !!edited && !!edited.id ? true : false}
                         />
                     </Grid>
                     <Grid item xs={2} className={classes.item}>
