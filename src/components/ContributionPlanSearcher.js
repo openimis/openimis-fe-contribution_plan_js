@@ -117,7 +117,7 @@ class ContributionPlanSearcher extends Component {
                 contributionPlan => withTooltip(
                     <IconButton
                         href={contributionPlanPageLink(contributionPlan)}
-                        onClick={e => e.stopPropagation() && !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}
+                        onClick={e => e.stopPropagation() && onDoubleClick(contributionPlan)}
                         disabled={this.state.deleted.includes(contributionPlan.id)}>
                         <EditIcon />
                     </IconButton>,
@@ -198,7 +198,7 @@ class ContributionPlanSearcher extends Component {
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
-                    onDoubleClick={contributionPlan => !contributionPlan.clientMutationId && onDoubleClick(contributionPlan)}
+                    onDoubleClick={contributionPlan => !this.rowDeleted(_, contributionPlan) && onDoubleClick(contributionPlan)}
                     rowDisabled={this.rowDeleted}
                     rowLocked={this.rowDeleted}
                 />
