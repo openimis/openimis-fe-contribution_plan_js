@@ -181,6 +181,8 @@ function reducer(
             return dispatchMutationResp(state, "updateContributionPlanBundleDetails", action);
         case "CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP":
             return dispatchMutationResp(state, "deleteContributionPlanBundleDetails", action);
+        case "CONTRIBUTIONPLAN_REPLACE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP":
+                return dispatchMutationResp(state, "replaceContributionPlanBundleDetails", action);
         default:
             return state;
     }

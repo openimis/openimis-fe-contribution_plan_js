@@ -93,9 +93,9 @@ function formatContributionPlanBundleGQL(contributionPlanBundle, omitImmutableFi
     `;
 }
 
-function formatContributionPlanBundleDetailsGQL(contributionPlanBundleDetails) {
+function formatContributionPlanBundleDetailsGQL(contributionPlanBundleDetails, isReplaceMutation = false) {
     return `
-        ${!!contributionPlanBundleDetails.id ? `id: "${decodeId(contributionPlanBundleDetails.id)}"` : ''}
+        ${!!contributionPlanBundleDetails.id ? `${isReplaceMutation ? 'uuid' : 'id'}: "${decodeId(contributionPlanBundleDetails.id)}"` : ''}
         ${!!contributionPlanBundleDetails.contributionPlanId ? `contributionPlanId: "${contributionPlanBundleDetails.contributionPlanId}"` : ''}
         ${!!contributionPlanBundleDetails.contributionPlanBundleId ? `contributionPlanBundleId: "${contributionPlanBundleDetails.contributionPlanBundleId}"` : ''}
         ${!!contributionPlanBundleDetails.dateValidFrom ? `dateValidFrom: "${dateTimeToDate(contributionPlanBundleDetails.dateValidFrom)}"` : ""}
@@ -238,6 +238,20 @@ export function deleteContributionPlanBundleContributionPlan(contributionPlanBun
     return graphql(
         mutation.payload,
         ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_DELETE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function replaceContributionPlanBundleContributionPlan(contributionPlanBundleContributionPlan, clientMutationLabel) {
+    let mutation = formatMutation("replaceContributionPlanBundleDetails", formatContributionPlanBundleDetailsGQL(contributionPlanBundleContributionPlan, true), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_REPLACE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
         {
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,
