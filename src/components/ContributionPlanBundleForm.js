@@ -60,12 +60,12 @@ class ContributionPlanBundleForm extends Component {
     titleParams = () => this.props.titleParams(this.state.contributionPlanBundle);
 
     render() {
-        const { intl, back, contributionPlanBundleId } = this.props;
+        const { intl, back, contributionPlanBundleId, title, isReplacing = false } = this.props;
         return (
             <Fragment>
                 <Form
                     module="contributionPlan"
-                    title="contributionPlanBundle.page.title"
+                    title={title}
                     titleParams={this.titleParams()}
                     edited={this.state.contributionPlanBundle}
                     back={back}
@@ -75,8 +75,9 @@ class ContributionPlanBundleForm extends Component {
                     HeadPanel={ContributionPlanBundleHeadPanel}
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
                     saveTooltip={formatMessage(intl, "contributionPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
-                    Panels={[ContributionPlanBundleContributionPlans]}
+                    Panels={isReplacing ? [] : [ContributionPlanBundleContributionPlans]}
                     contributionPlanBundleId={contributionPlanBundleId}
+                    isReplacing={isReplacing}
                 />
             </Fragment>
         )

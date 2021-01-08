@@ -3,7 +3,8 @@ import { withModulesManager, formatMessage, withTooltip, historyPush, decodeId }
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH, RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE } from "../constants"
+import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH, RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE,
+    RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE } from "../constants"
 import ContributionPlanBundleSearcher from "../components/ContributionPlanBundleSearcher";
 import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -29,6 +30,13 @@ class ContributionPlanBundlesPage extends Component {
         }
     }
 
+    onReplace = contributionPlanBundle => {
+        const { rights, modulesManager, history } = this.props;
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE)) {
+            historyPush(modulesManager, history, "contributionPlan.route.replaceContributionPlanBundle", [decodeId(contributionPlanBundle.id)]);
+        }
+    }
+
     render() {
         const { intl, classes, rights } = this.props;
         return (
@@ -36,6 +44,7 @@ class ContributionPlanBundlesPage extends Component {
                 <div className={classes.page}>
                     <ContributionPlanBundleSearcher
                         onDoubleClick={this.onDoubleClick}
+                        onReplace={this.onReplace}
                         contributionPlanBundlePageLink={this.contributionPlanBundlePageLink}
                         rights={rights}
                     />

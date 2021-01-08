@@ -6,9 +6,10 @@ import { fetchContributionPlanBundles, deleteContributionPlanBundle } from "../a
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanBundleFilter from "./ContributionPlanBundleFilter"
-import { DATE_TO_DATETIME_SUFFIX, RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE, 
-    DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
+import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE, 
+    DATE_TO_DATETIME_SUFFIX, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
 import { IconButton } from "@material-ui/core";
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -76,6 +77,9 @@ class ContributionPlanBundleSearcher extends Component {
             "contributionPlan.dateValidFrom",
             "contributionPlan.dateValidTo"
         ];
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE)) {
+            result.push("contributionPlan.emptyLabel");
+        }
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE)) {
             result.push("contributionPlan.emptyLabel");
         }
@@ -86,7 +90,7 @@ class ContributionPlanBundleSearcher extends Component {
     }
 
     itemFormatters = () => {
-        const { intl, modulesManager, rights, contributionPlanBundlePageLink } = this.props;
+        const { intl, modulesManager, rights, contributionPlanBundlePageLink, onReplace } = this.props;
         let result = [
             contributionPlanBundle => !!contributionPlanBundle.code ? contributionPlanBundle.code : "",
             contributionPlanBundle => !!contributionPlanBundle.name ? contributionPlanBundle.name : "",
@@ -98,6 +102,17 @@ class ContributionPlanBundleSearcher extends Component {
                 ? formatDateFromISO(modulesManager, intl, contributionPlanBundle.dateValidTo)
                 : ""
         ];
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE)) {
+            result.push(
+                contributionPlanBundle => withTooltip(
+                    <IconButton
+                        onClick={() => onReplace(contributionPlanBundle)}>
+                        <NoteAddIcon />
+                    </IconButton>,
+                    formatMessage(intl, "contributionPlan", "replaceButton.tooltip")
+                )
+            );
+        }
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE)) {
             result.push(
                 contributionPlanBundle => withTooltip(
