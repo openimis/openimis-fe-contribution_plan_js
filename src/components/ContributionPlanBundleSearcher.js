@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from "react"
 import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessageWithValues, formatDateFromISO, Searcher } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher, withTooltip } from "@openimis/fe-core";
 import { fetchContributionPlanBundles } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanBundleFilter from "./ContributionPlanBundleFilter"
-import { DATE_TO_DATETIME_SUFFIX } from "../constants"
+import { DATE_TO_DATETIME_SUFFIX, RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
+import { IconButton } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
 
 class ContributionPlanBundleSearcher extends Component {
     fetch = (params) => this.props.fetchContributionPlanBundles(params);
@@ -45,17 +47,24 @@ class ContributionPlanBundleSearcher extends Component {
         return params;
     }
 
-    headers = () => [
-        "contributionPlan.code",
-        "contributionPlan.name",
-        "contributionPlan.periodicity",
-        "contributionPlan.dateValidFrom",
-        "contributionPlan.dateValidTo"
-    ];
+    headers = () => {
+        const { rights } = this.props;
+        let result = [
+            "contributionPlan.code",
+            "contributionPlan.name",
+            "contributionPlan.periodicity",
+            "contributionPlan.dateValidFrom",
+            "contributionPlan.dateValidTo"
+        ];
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE)) {
+            result.push("contributionPlan.emptyLabel");
+        }
+        return result;
+    }
 
     itemFormatters = () => {
-        const { intl, modulesManager } = this.props;
-        return [
+        const { intl, modulesManager, rights, contributionPlanBundlePageLink } = this.props;
+        let result = [
             contributionPlanBundle => !!contributionPlanBundle.code ? contributionPlanBundle.code : "",
             contributionPlanBundle => !!contributionPlanBundle.name ? contributionPlanBundle.name : "",
             contributionPlanBundle => !!contributionPlanBundle.periodicity ? contributionPlanBundle.periodicity : "",
@@ -66,6 +75,19 @@ class ContributionPlanBundleSearcher extends Component {
                 ? formatDateFromISO(modulesManager, intl, contributionPlanBundle.dateValidTo)
                 : ""
         ];
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE)) {
+            result.push(
+                contributionPlanBundle => withTooltip(
+                    <IconButton
+                        href={contributionPlanBundlePageLink(contributionPlanBundle)}
+                        onClick={e => e.stopPropagation() && !contributionPlanBundle.clientMutationId && onDoubleClick(contributionPlanBundle)}>
+                        <EditIcon />
+                    </IconButton>,
+                    formatMessage(intl, "contributionPlan", "editButton.tooltip")
+                )
+            );
+        }
+        return result;
     }
 
     sorts = () => [
@@ -78,7 +100,7 @@ class ContributionPlanBundleSearcher extends Component {
 
     render() {
         const { intl, fetchingContributionPlanBundles, fetchedContributionPlanBundles, errorContributionPlanBundles,
-            contributionPlanBundles, contributionPlanBundlesPageInfo, contributionPlanBundlesTotalCount } = this.props;
+            contributionPlanBundles, contributionPlanBundlesPageInfo, contributionPlanBundlesTotalCount, onDoubleClick } = this.props;
         return (
             <Fragment>
                 <Searcher
@@ -95,9 +117,10 @@ class ContributionPlanBundleSearcher extends Component {
                     itemFormatters={this.itemFormatters}
                     filtersToQueryParams={this.filtersToQueryParams}
                     sorts={this.sorts}
-                    rowsPerPageOptions={[10, 20, 50, 100]}
-                    defaultPageSize={10}
+                    rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+                    defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
+                    onDoubleClick={contributionPlanBundle => !contributionPlanBundle.clientMutationId && onDoubleClick(contributionPlanBundle)}
                 />
             </Fragment>
         )

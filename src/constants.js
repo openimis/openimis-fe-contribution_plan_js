@@ -15,3 +15,5 @@ export const CONTAINS_LOOKUP = "Icontains"
 export const EMPTY_PERIODICITY_VALUE = 0
 export const MIN_PERIODICITY_VALUE = 1
 export const MAX_PERIODICITY_VALUE = 12
+export const DEFAULT_PAGE_SIZE = 10
+export const ROWS_PER_PAGE_OPTIONS = [10, 20, 50, 100]

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { withModulesManager, formatMessage, withTooltip, historyPush } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, withTooltip, historyPush, decodeId } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH, RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE } from "../constants"
+import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH, RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE } from "../constants"
 import ContributionPlanBundleSearcher from "../components/ContributionPlanBundleSearcher";
 import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -20,12 +20,25 @@ class ContributionPlanBundlesPage extends Component {
 
     onAdd = () => historyPush(this.props.modulesManager, this.props.history, "contributionPlan.route.contributionPlanBundle");
 
+    contributionPlanBundlePageLink = contributionPlanBundle => `${this.props.modulesManager.getRef("contributionPlan.route.contributionPlanBundle")}${"/" + decodeId(contributionPlanBundle.id)}`;
+
+    onDoubleClick = (contributionPlanBundle, newTab = false) => {
+        const { rights, modulesManager, history } = this.props;
+        if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE)) {
+            historyPush(modulesManager, history, "contributionPlan.route.contributionPlanBundle", [decodeId(contributionPlanBundle.id)], newTab);
+        }
+    }
+
     render() {
         const { intl, classes, rights } = this.props;
         return (
             rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) &&
                 <div className={classes.page}>
-                    <ContributionPlanBundleSearcher />
+                    <ContributionPlanBundleSearcher
+                        onDoubleClick={this.onDoubleClick}
+                        contributionPlanBundlePageLink={this.contributionPlanBundlePageLink}
+                        rights={rights}
+                    />
                     {rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE) && withTooltip(
                         <div className={classes.fab} >
                             <Fab color="primary" onClick={this.onAdd}>

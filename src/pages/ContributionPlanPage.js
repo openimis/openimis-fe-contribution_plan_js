@@ -62,7 +62,7 @@ class ContributionPlanPage extends Component {
 
 const mapStateToProps = (state, props) => ({
     rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
-    contributionPlanId: props.match.params.contributionplan_id,
+    contributionPlanId: props.match.params.contributionplan_id
 });
 
 const mapDispatchToProps = dispatch => {
