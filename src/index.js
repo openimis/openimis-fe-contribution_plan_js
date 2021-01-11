@@ -5,6 +5,7 @@ import ContributionPlanPage from "./pages/ContributionPlanPage";
 import ContributionPlanBundlesPage from "./pages/ContributionPlanBundlesPage";
 import ContributionPlanBundlePage from "./pages/ContributionPlanBundlePage";
 import ContributionPlanBundleReplacePage from "./pages/ContributionPlanBundleReplacePage";
+import ContributionPlanBundlePicker from "./pickers/ContributionPlanBundlePicker";
 
 const ROUTE_CONTRIBUTION_PLANS = "contributionPlans";
 const ROUTE_CONTRIBUTION_PLAN = "contributionPlans/contributionPlan";
@@ -20,7 +21,9 @@ const DEFAULT_CONFIG = {
         { key: "contributionPlan.route.contributionPlan", ref: ROUTE_CONTRIBUTION_PLAN },
         { key: "contributionPlan.route.contributionPlanBundles", ref: ROUTE_CONTRIBUTION_PLAN_BUNDLES },
         { key: "contributionPlan.route.contributionPlanBundle", ref: ROUTE_CONTRIBUTION_PLAN_BUNDLE },
-        { key: "contributionPlan.route.replaceContributionPlanBundle", ref: ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE }
+        { key: "contributionPlan.route.replaceContributionPlanBundle", ref: ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE },
+        { key: "contributionPlan.ContributionPlanBundlePicker", ref: ContributionPlanBundlePicker },
+        { key: "contributionPlan.ContributionPlanBundlePicker.projection", ref: ["id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo"] }
     ],
     "core.Router": [
         { path: ROUTE_CONTRIBUTION_PLANS, component: ContributionPlansPage },
