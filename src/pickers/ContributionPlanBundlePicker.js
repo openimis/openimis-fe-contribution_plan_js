@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormattedMessage, SelectInput, decodeId } from "@openimis/fe-core";
+import { FormattedMessage, SelectInput } from "@openimis/fe-core";
 import { fetchContributionPlanBundles } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -20,7 +20,7 @@ class ContributionPlanBundlePicker extends Component {
         const { contributionPlanBundles, value, onChange, required = false, withNull = false, nullLabel = null, withLabel = true, readOnly = false } = this.props;
         let options = [
             ...contributionPlanBundles.map(v => ({
-                value: decodeId(v.id),
+                value: v,
                 label: `${v.code} - ${v.name}`
             }))
         ];

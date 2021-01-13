@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add';
-import {FormattedMessage, formatMessageWithValues, PublishedComponent } from "@openimis/fe-core";
+import { FormattedMessage, formatMessageWithValues, PublishedComponent } from "@openimis/fe-core";
 import { Fab, Grid } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import ContributionPlanPicker from '../pickers/ContributionPlanPicker';
@@ -80,7 +80,7 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
                     </DialogTitle>
                     <DialogContent>
                         <Grid container direction="column" className={classes.item}>
-                            <Grid item xs={12} className={classes.item}>
+                            <Grid item className={classes.item}>
                                 <ContributionPlanPicker
                                     periodicity={!!contributionPlanBundle ? contributionPlanBundle.periodicity : null}
                                     withNull={true}
@@ -89,7 +89,7 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
                                     onChange={v => this.updateAttribute('contributionPlanId', v)}
                                 />
                             </Grid>
-                            <Grid item xs={12} className={classes.item}>
+                            <Grid item className={classes.item}>
                                 <PublishedComponent
                                     pubRef="core.DatePicker"
                                     module="contributionPlan"
@@ -98,7 +98,7 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
                                     onChange={v => this.updateAttribute('dateValidFrom', v)}
                                 />
                             </Grid>
-                            <Grid item xs={12} className={classes.item}>
+                            <Grid item className={classes.item}>
                                 <PublishedComponent
                                     pubRef="core.DatePicker"
                                     module="contributionPlan"
