@@ -5,11 +5,11 @@ import {
 const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
     "id", "code", "name", "calculation{id}",
     "benefitPlan" + modulesManager.getProjection("product.ProductPicker.projection"),
-    "periodicity", "dateValidFrom", "dateValidTo"
+    "periodicity", "dateValidFrom", "dateValidTo", "isDeleted"
 ];
 
 const CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION = () => [
-    "id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo"
+    "id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo", "isDeleted", "replacementUuid"
 ];
 
 const CONTRIBUTIONPLANBUNDLEDETAILS_FULL_PROJECTION = (modulesManager) => [
