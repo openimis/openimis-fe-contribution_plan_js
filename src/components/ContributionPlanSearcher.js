@@ -30,7 +30,7 @@ class ContributionPlanSearcher extends Component {
         }
     }
 
-    fetch = (params) => this.props.fetchContributionPlans(this.props.modulesManager, params);
+    fetch = params => this.props.fetchContributionPlans(this.props.modulesManager, params);
 
     filtersToQueryParams = state => {
         const { intl, modulesManager } = this.props;
@@ -114,25 +114,29 @@ class ContributionPlanSearcher extends Component {
         ];
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_UPDATE)) {
             result.push(
-                contributionPlan => withTooltip(
-                    <IconButton
-                        href={contributionPlanPageLink(contributionPlan)}
-                        onClick={e => e.stopPropagation() && onDoubleClick(contributionPlan)}
-                        disabled={this.state.deleted.includes(contributionPlan.id)}>
-                        <EditIcon />
-                    </IconButton>,
+                contributionPlan => !this.isDeletedFilterEnabled(contributionPlan) && withTooltip(
+                    <div>
+                        <IconButton
+                            href={contributionPlanPageLink(contributionPlan)}
+                            onClick={e => e.stopPropagation() && onDoubleClick(contributionPlan)}
+                            disabled={this.state.deleted.includes(contributionPlan.id)}>
+                            <EditIcon />
+                        </IconButton>
+                    </div>,
                     formatMessage(intl, "contributionPlan", "editButton.tooltip")
                 )
             );
         }
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_DELETE)) {
             result.push(
-                contributionPlan => withTooltip(
-                    <IconButton
-                        onClick={() => this.onDelete(contributionPlan)}
-                        disabled={this.state.deleted.includes(contributionPlan.id)}>
-                        <DeleteIcon />
-                    </IconButton>,
+                contributionPlan => !this.isDeletedFilterEnabled(contributionPlan) && withTooltip(
+                    <div>
+                        <IconButton
+                            onClick={() => this.onDelete(contributionPlan)}
+                            disabled={this.state.deleted.includes(contributionPlan.id)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </div>,
                     formatMessage(this.props.intl, "contributionPlan", "deleteButton.tooltip")
                 )
             );
@@ -164,7 +168,9 @@ class ContributionPlanSearcher extends Component {
         )
     }
 
-    rowDeleted = (_, contributionPlan) => this.state.deleted.includes(contributionPlan.id);
+    isDeletedFilterEnabled = contributionPlan => contributionPlan.isDeleted;
+
+    rowDisabled = (_, contributionPlan) => this.state.deleted.includes(contributionPlan.id) && !this.isDeletedFilterEnabled(contributionPlan);
 
     sorts = () => [
         ['code', true],
@@ -198,9 +204,9 @@ class ContributionPlanSearcher extends Component {
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
-                    onDoubleClick={contributionPlan => !this.rowDeleted(_, contributionPlan) && onDoubleClick(contributionPlan)}
-                    rowDisabled={this.rowDeleted}
-                    rowLocked={this.rowDeleted}
+                    onDoubleClick={contributionPlan => !this.rowDisabled(_, contributionPlan) && onDoubleClick(contributionPlan)}
+                    rowDisabled={this.rowDisabled}
+                    rowLocked={this.rowDisabled}
                 />
             </Fragment>
         )

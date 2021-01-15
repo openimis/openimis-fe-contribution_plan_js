@@ -104,36 +104,43 @@ class ContributionPlanBundleSearcher extends Component {
         ];
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE)) {
             result.push(
-                contributionPlanBundle => withTooltip(
-                    <IconButton
-                        onClick={() => onReplace(contributionPlanBundle)}>
-                        <NoteAddIcon />
-                    </IconButton>,
+                contributionPlanBundle => !this.isDeletedFilterEnabled(contributionPlanBundle) && withTooltip(
+                    <div>
+                        <IconButton
+                            onClick={() => onReplace(contributionPlanBundle)}
+                            disabled={this.state.deleted.includes(contributionPlanBundle.id) || this.isReplaced(contributionPlanBundle)}>
+                            <NoteAddIcon />
+                        </IconButton>
+                    </div>,
                     formatMessage(intl, "contributionPlan", "replaceButton.tooltip")
                 )
             );
         }
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE)) {
             result.push(
-                contributionPlanBundle => withTooltip(
-                    <IconButton
-                        href={contributionPlanBundlePageLink(contributionPlanBundle)}
-                        onClick={e => e.stopPropagation() && onDoubleClick(contributionPlanBundle)}
-                        disabled={this.state.deleted.includes(contributionPlanBundle.id)}>
-                        <EditIcon />
-                    </IconButton>,
+                contributionPlanBundle => !this.isDeletedFilterEnabled(contributionPlanBundle) && withTooltip(
+                    <div>
+                        <IconButton
+                            href={contributionPlanBundlePageLink(contributionPlanBundle)}
+                            onClick={e => e.stopPropagation() && onDoubleClick(contributionPlanBundle)}
+                            disabled={this.state.deleted.includes(contributionPlanBundle.id) || this.isReplaced(contributionPlanBundle)}>
+                            <EditIcon />
+                        </IconButton>
+                    </div>,
                     formatMessage(intl, "contributionPlan", "editButton.tooltip")
                 )
             );
         }
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE)) {
             result.push(
-                contributionPlanBundle => withTooltip(
-                    <IconButton
-                        onClick={() => this.onDelete(contributionPlanBundle)}
-                        disabled={this.state.deleted.includes(contributionPlanBundle.id)}>
-                        <DeleteIcon />
-                    </IconButton>,
+                contributionPlanBundle => !this.isDeletedFilterEnabled(contributionPlanBundle) && withTooltip(
+                    <div>
+                        <IconButton
+                            onClick={() => this.onDelete(contributionPlanBundle)}
+                            disabled={this.state.deleted.includes(contributionPlanBundle.id)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </div>,
                     formatMessage(this.props.intl, "contributionPlan", "deleteButton.tooltip")
                 )
             );
@@ -165,7 +172,11 @@ class ContributionPlanBundleSearcher extends Component {
         )
     }
 
-    rowDeleted = (_, contributionPlanBundle) => this.state.deleted.includes(contributionPlanBundle.id);
+    isReplaced = contributionPlanBundle => !!contributionPlanBundle.replacementUuid;
+
+    isDeletedFilterEnabled = contributionPlanBundle => contributionPlanBundle.isDeleted;
+
+    rowDisabled = (_, contributionPlanBundle) => this.state.deleted.includes(contributionPlanBundle.id) && !this.isDeletedFilterEnabled(contributionPlanBundle);
 
     sorts = () => [
         ['code', true],
@@ -197,9 +208,9 @@ class ContributionPlanBundleSearcher extends Component {
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
-                    onDoubleClick={contributionPlanBundle => !this.rowDeleted(_, contributionPlanBundle) && onDoubleClick(contributionPlanBundle)}
-                    rowDisabled={this.rowDeleted}
-                    rowLocked={this.rowDeleted}
+                    onDoubleClick={contributionPlanBundle => !this.rowDisabled(_, contributionPlanBundle) && onDoubleClick(contributionPlanBundle)}
+                    rowDisabled={this.rowDisabled}
+                    rowLocked={this.rowDisabled}
                 />
             </Fragment>
         )
