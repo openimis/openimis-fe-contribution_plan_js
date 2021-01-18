@@ -176,7 +176,12 @@ class ContributionPlanBundleSearcher extends Component {
 
     isDeletedFilterEnabled = contributionPlanBundle => contributionPlanBundle.isDeleted;
 
-    rowDisabled = (_, contributionPlanBundle) => this.state.deleted.includes(contributionPlanBundle.id) && !this.isDeletedFilterEnabled(contributionPlanBundle);
+    isRowDisabled = (_, contributionPlanBundle) => this.state.deleted.includes(contributionPlanBundle.id)
+        && !this.isDeletedFilterEnabled(contributionPlanBundle);
+
+    isOnDoubleClickEnabled = contributionPlanBundle => !this.state.deleted.includes(contributionPlanBundle.id)
+        && !this.isDeletedFilterEnabled(contributionPlanBundle)
+        && !this.isReplaced(contributionPlanBundle);
 
     sorts = () => [
         ['code', true],
@@ -208,9 +213,9 @@ class ContributionPlanBundleSearcher extends Component {
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
-                    onDoubleClick={contributionPlanBundle => !this.rowDisabled(_, contributionPlanBundle) && onDoubleClick(contributionPlanBundle)}
-                    rowDisabled={this.rowDisabled}
-                    rowLocked={this.rowDisabled}
+                    onDoubleClick={contributionPlanBundle => this.isOnDoubleClickEnabled(contributionPlanBundle) && onDoubleClick(contributionPlanBundle)}
+                    rowDisabled={this.isRowDisabled}
+                    rowLocked={this.isRowDisabled}
                 />
             </Fragment>
         )

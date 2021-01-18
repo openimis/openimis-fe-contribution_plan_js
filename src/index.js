@@ -23,7 +23,7 @@ const DEFAULT_CONFIG = {
         { key: "contributionPlan.route.contributionPlanBundle", ref: ROUTE_CONTRIBUTION_PLAN_BUNDLE },
         { key: "contributionPlan.route.replaceContributionPlanBundle", ref: ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE },
         { key: "contributionPlan.ContributionPlanBundlePicker", ref: ContributionPlanBundlePicker },
-        { key: "contributionPlan.ContributionPlanBundlePicker.projection", ref: ["id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo"] }
+        { key: "contributionPlan.ContributionPlanBundlePicker.projection", ref: ["id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo", "isDeleted", "replacementUuid"] }
     ],
     "core.Router": [
         { path: ROUTE_CONTRIBUTION_PLANS, component: ContributionPlansPage },

@@ -170,8 +170,10 @@ class ContributionPlanSearcher extends Component {
 
     isDeletedFilterEnabled = contributionPlan => contributionPlan.isDeleted;
 
-    rowDisabled = (_, contributionPlan) => this.state.deleted.includes(contributionPlan.id) && !this.isDeletedFilterEnabled(contributionPlan);
+    isRowDisabled = (_, contributionPlan) => this.state.deleted.includes(contributionPlan.id) && !this.isDeletedFilterEnabled(contributionPlan);
 
+    isOnDoubleClickEnabled = contributionPlan => !this.state.deleted.includes(contributionPlan.id) && !this.isDeletedFilterEnabled(contributionPlan);
+    
     sorts = () => [
         ['code', true],
         ['name', true],
@@ -204,9 +206,9 @@ class ContributionPlanSearcher extends Component {
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
-                    onDoubleClick={contributionPlan => !this.rowDisabled(_, contributionPlan) && onDoubleClick(contributionPlan)}
-                    rowDisabled={this.rowDisabled}
-                    rowLocked={this.rowDisabled}
+                    onDoubleClick={contributionPlan => this.isOnDoubleClickEnabled(contributionPlan) && onDoubleClick(contributionPlan)}
+                    rowDisabled={this.isRowDisabled}
+                    rowLocked={this.isRowDisabled}
                 />
             </Fragment>
         )
