@@ -96,10 +96,12 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
             <UpdateContributionPlanBundleDetailsDialog
                 contributionPlanBundleContributionPlan={contributionPlanBundleContributionPlan}
                 isReplacing={true}
+                disabled={this.isReplaced(contributionPlanBundleContributionPlan)}
             />,
         contributionPlanBundleContributionPlan => 
             <UpdateContributionPlanBundleDetailsDialog
                 contributionPlanBundleContributionPlan={contributionPlanBundleContributionPlan}
+                disabled={this.isReplaced(contributionPlanBundleContributionPlan)}
             />,
         contributionPlanBundleContributionPlan => withTooltip(
             <IconButton
@@ -138,7 +140,9 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         )
     }
 
-    rowDeleted = contributionPlanBundleContributionPlan => this.state.deleted.includes(contributionPlanBundleContributionPlan.id);
+    isReplaced = contributionPlanBundleContributionPlan => !!contributionPlanBundleContributionPlan.replacementUuid;
+
+    isRowDeleted = contributionPlanBundleContributionPlan => this.state.deleted.includes(contributionPlanBundleContributionPlan.id);
 
     renderActions = isNew => {
         const { classes, edited, contributionPlanBundleId } = this.props;
@@ -182,7 +186,7 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
                 <Grid container alignItems="center" direction="row" className={classes.paperHeader}>
                     <Grid item xs={12}>
                         <Typography className={classes.tableTitle}>
-                            <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.title" values={{ contributionPlanBundleContributionPlansTotalCount }} />
+                            <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.title" values={{ count: isNew ? 0 : contributionPlanBundleContributionPlansTotalCount }} />
                         </Typography>
                     </Grid>
                     {this.renderActions(isNew)}
@@ -194,20 +198,20 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
                     module="contributionPlan"
                     headers={this.headers}
                     itemFormatters={this.itemFormatters}
-                    items={contributionPlanBundleContributionPlans}
-                    fetching={fetchingContributionPlanBundleContributionPlans}
-                    error={errorContributionPlanBundleContributionPlans}
+                    items={isNew ? [] : contributionPlanBundleContributionPlans}
+                    fetching={isNew ? false : fetchingContributionPlanBundleContributionPlans}
+                    error={isNew ? null : errorContributionPlanBundleContributionPlans}
                     withPagination={true}
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     page={this.currentPage()}
                     pageSize={this.currentPageSize()}
-                    pageInfo={contributionPlanBundleContributionPlansPageInfo}
-                    count={contributionPlanBundleContributionPlansTotalCount}
+                    pageInfo={isNew ? {} : contributionPlanBundleContributionPlansPageInfo}
+                    count={isNew ? 0 : contributionPlanBundleContributionPlansTotalCount}
                     onChangePage={this.onChangePage}
                     onChangeRowsPerPage={this.onChangeRowsPerPage}
-                    rowLocked={this.rowDeleted}
-                    rowDisabled={this.rowDeleted}
+                    rowLocked={this.isRowDeleted}
+                    rowDisabled={this.isRowDeleted}
                 />
             </Paper>
         )

@@ -85,23 +85,29 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
     }
 
     render() {
-        const { intl, classes, contributionPlanBundle, isReplacing = false } = this.props;
+        const { intl, classes, contributionPlanBundle, isReplacing = false, disabled = false } = this.props;
         const { open, contributionPlanAttached } = this.state;
         return (
             <Fragment>
                 {isReplacing ? (
                     <Tooltip title={formatMessage(intl, "contributionPlan", "replaceButton.tooltip")}>
-                        <IconButton
-                            onClick={this.handleOpen}>
-                            <NoteAddIcon />
-                        </IconButton>
+                        <div>
+                            <IconButton
+                                onClick={this.handleOpen}
+                                disabled={disabled}>
+                                <NoteAddIcon />
+                            </IconButton>
+                        </div>
                     </Tooltip>
                 ) : (
                     <Tooltip title={formatMessage(intl, "contributionPlan", "editButton.tooltip")}>
-                        <IconButton
-                            onClick={this.handleOpen}>
-                            <EditIcon />
-                        </IconButton>
+                        <div>
+                            <IconButton
+                                onClick={this.handleOpen}
+                                disabled={disabled}>
+                                <EditIcon />
+                            </IconButton>
+                        </div>
                     </Tooltip>
                 )}
                 <Dialog open={open} onClose={this.handleClose}>

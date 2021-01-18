@@ -15,7 +15,7 @@ const CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION = () => [
 const CONTRIBUTIONPLANBUNDLEDETAILS_FULL_PROJECTION = (modulesManager) => [
     "id", "contributionPlan" + `{${CONTRIBUTIONPLAN_FULL_PROJECTION(modulesManager)}}`,
     "contributionPlanBundle" + `{${CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION()}}`,
-    "dateValidFrom", "dateValidTo"
+    "dateValidFrom", "dateValidTo", "replacementUuid"
 ]
 
 function dateTimeToDate(date) {
