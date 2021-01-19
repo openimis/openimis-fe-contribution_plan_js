@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanBundleFilter from "./ContributionPlanBundleFilter"
 import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE, 
-    DATE_TO_DATETIME_SUFFIX, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
+    DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
 import { IconButton } from "@material-ui/core";
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import EditIcon from '@material-ui/icons/Edit';
@@ -34,27 +34,12 @@ class ContributionPlanBundleSearcher extends Component {
     fetch = (params) => this.props.fetchContributionPlanBundles(params);
 
     filtersToQueryParams = state => {
-        const { intl, modulesManager } = this.props;
         let params = Object.keys(state.filters)
             .filter(f => !!state.filters[f]['filter'])
             .map(f => state.filters[f]['filter']);
         params.push(`first: ${state.pageSize}`);
         if (!state.filters.hasOwnProperty('isDeleted')) {
             params.push("isDeleted: false");
-        }
-        if (!state.filters.hasOwnProperty('dateValidTo')) {
-            let dateValidAt = formatDateFromISO(modulesManager, intl, new Date());
-            if (state.filters.hasOwnProperty('dateValidFrom')) {
-                /**
-                 * If @see dateValidTo is not set but @see dateValidFrom is set,
-                 * then all @see ContributionPlan valid at @see dateValidFrom are shown.
-                 * Default filter on @see dateValidFrom has to be removed from query params. 
-                 */
-                dateValidAt = state.filters['dateValidFrom']['value'];
-                params = params.filter(f => !f.startsWith('dateValidFrom'));
-            }
-            params.push(`dateValidFrom_Lte: "${dateValidAt}${DATE_TO_DATETIME_SUFFIX}"`);
-            params.push(`dateValidTo_Gte: "${dateValidAt}${DATE_TO_DATETIME_SUFFIX}"`);
         }
         if (!!state.afterCursor) {
             params.push(`after: "${state.afterCursor}"`);

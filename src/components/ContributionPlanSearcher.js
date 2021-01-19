@@ -9,8 +9,8 @@ import ContributionPlanFilter from "./ContributionPlanFilter"
 import { IconButton } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { RIGHT_CONTRIBUTION_PLAN_UPDATE, RIGHT_CONTRIBUTION_PLAN_DELETE, DATE_TO_DATETIME_SUFFIX,
-    ROWS_PER_PAGE_OPTIONS, DEFAULT_PAGE_SIZE } from "../constants"
+import { RIGHT_CONTRIBUTION_PLAN_UPDATE, RIGHT_CONTRIBUTION_PLAN_DELETE, ROWS_PER_PAGE_OPTIONS,
+    DEFAULT_PAGE_SIZE } from "../constants"
 
 class ContributionPlanSearcher extends Component {
     constructor(props) {
@@ -33,27 +33,12 @@ class ContributionPlanSearcher extends Component {
     fetch = params => this.props.fetchContributionPlans(this.props.modulesManager, params);
 
     filtersToQueryParams = state => {
-        const { intl, modulesManager } = this.props;
         let params = Object.keys(state.filters)
             .filter(f => !!state.filters[f]['filter'])
             .map(f => state.filters[f]['filter']);
         params.push(`first: ${state.pageSize}`);
         if (!state.filters.hasOwnProperty('isDeleted')) {
             params.push("isDeleted: false");
-        }
-        if (!state.filters.hasOwnProperty('dateValidTo')) {
-            let dateValidAt = formatDateFromISO(modulesManager, intl, new Date());
-            if (state.filters.hasOwnProperty('dateValidFrom')) {
-                /**
-                 * If @see dateValidTo is not set but @see dateValidFrom is set,
-                 * then all @see ContributionPlan valid at @see dateValidFrom are shown.
-                 * Default filter on @see dateValidFrom has to be removed from query params. 
-                 */
-                dateValidAt = state.filters['dateValidFrom']['value'];
-                params = params.filter(f => !f.startsWith('dateValidFrom'));
-            }
-            params.push(`dateValidFrom_Lte: "${dateValidAt}${DATE_TO_DATETIME_SUFFIX}"`);
-            params.push(`dateValidTo_Gte: "${dateValidAt}${DATE_TO_DATETIME_SUFFIX}"`);
         }
         if (!!state.afterCursor) {
             params.push(`after: "${state.afterCursor}"`);
