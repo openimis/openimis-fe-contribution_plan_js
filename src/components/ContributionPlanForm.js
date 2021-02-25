@@ -26,23 +26,21 @@ class ContributionPlanForm extends Component {
     componentDidMount() {
         document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams());
         if (!!this.props.contributionPlanId) {
-            this.props.fetchContributionPlan(this.props.modulesManager, this.props.contributionPlanId)
+            this.props.fetchContributionPlan(this.props.modulesManager, this.props.contributionPlanId);
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.fetchedContributionPlan !== this.props.fetchedContributionPlan && !!this.props.fetchedContributionPlan) {
-            this.setState(
-                (state, props) => ({ 
-                    contributionPlan: { 
-                        ...props.contributionPlan,
-                        /**
-                         * Display calculation's ID until @see Calculation module provides a picker
-                         */
-                        calculation: decodeId(props.contributionPlan.calculation.id) 
-                    }
-                }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())
-            );
+            this.setState((_, props) => ({
+                contributionPlan: {
+                    ...props.contributionPlan,
+                    /**
+                     * Display calculation's ID until @see Calculation module provides a picker
+                     */
+                    calculation: decodeId(props.contributionPlan.calculation.id)
+                }
+            }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams()));
         }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);

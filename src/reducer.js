@@ -11,6 +11,10 @@ function reducer(
         contributionPlans: [],
         contributionPlansPageInfo: {},
         contributionPlansTotalCount: 0,
+        fetchingPickerContributionPlans: false,
+        errorPickerContributionPlans: null,
+        fetchedPickerContributionPlans: false,
+        pickerContributionPlans: [],
         fetchingContributionPlan: false,
         fetchedContributionPlan: false,
         contributionPlan: {},
@@ -60,6 +64,28 @@ function reducer(
                 ...state,
                 fetchingContributionPlans: false,
                 errorContributionPlans: formatServerError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_PICKERCONTRIBUTIONPLANS_REQ":
+            return {
+                ...state,
+                fetchingPickerContributionPlans: true,
+                fetchedPickerContributionPlans: false,
+                pickerContributionPlans: [],
+                errorPickerContributionPlans: null
+            };
+        case "CONTRIBUTIONPLAN_PICKERCONTRIBUTIONPLANS_RESP":
+            return {
+                ...state,
+                fetchingPickerContributionPlans: false,
+                fetchedPickerContributionPlans: true,
+                pickerContributionPlans: parseData(action.payload.data.contributionPlan),
+                errorPickerContributionPlans: formatGraphQLError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_PICKERCONTRIBUTIONPLANS_ERR":
+            return {
+                ...state,
+                fetchingPickerContributionPlans: false,
+                errorPickerContributionPlans: formatServerError(action.payload)
             };
         case "CONTRIBUTIONPLAN_CONTRIBUTIONPLAN_REQ":
             return {

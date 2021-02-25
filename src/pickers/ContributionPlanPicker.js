@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { FormattedMessage, withModulesManager, SelectInput, decodeId } from "@openimis/fe-core";
-import { fetchContributionPlans } from "../actions"
+import { FormattedMessage, withModulesManager, SelectInput } from "@openimis/fe-core";
+import { fetchPickerContributionPlans } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 class ContributionPlanPicker extends Component {
     componentDidMount() {
-        this.props.fetchContributionPlans(this.props.modulesManager, this.queryParams());
+        this.props.fetchPickerContributionPlans(this.props.modulesManager, this.queryParams());
     }
 
     queryParams = () => {
@@ -20,18 +20,27 @@ class ContributionPlanPicker extends Component {
     }
 
     render() {
-        const { contributionPlans, value, onChange, required = false, withNull = false, nullLabel = null, withLabel = true, readOnly = false } = this.props;
+        const { modulesManager, pickerContributionPlans, value, onChange, required = false,
+            withNull = false, nullLabel = null, withLabel = true, readOnly = false } = this.props;
         let options = [
-            ...contributionPlans.map(v => ({
-                value: decodeId(v.id),
-                label: v.name
+            ...pickerContributionPlans.map(v => ({
+                value: v,
+                label: `${v.code} - ${v.name}`
             }))
         ];
         if (withNull) {
             options.unshift({
                 value: null,
-                label: nullLabel || <FormattedMessage module="contributionPlan" id="contributionPlan.emptyLabel" />
+                label: nullLabel || <FormattedMessage module="contributionPlan" id="emptyLabel" />
             })
+        }
+        let contributionPlanPickerValue = null;
+        const contributionPlanPickerProjection = modulesManager.getRef("contributionPlan.ContributionPlanPicker.projection");
+        if (!!value && !!contributionPlanPickerProjection) {
+            contributionPlanPickerValue = {};
+            contributionPlanPickerProjection.forEach(key => {
+                contributionPlanPickerValue[key] = value[key]
+            });
         }
         return (
             <SelectInput
@@ -39,7 +48,7 @@ class ContributionPlanPicker extends Component {
                 label={withLabel ? "contributionPlan.label" : null}
                 required={required}
                 options={options}
-                value={!!value ? value : null}
+                value={contributionPlanPickerValue}
                 onChange={onChange}
                 readOnly={readOnly}
             />
@@ -48,11 +57,11 @@ class ContributionPlanPicker extends Component {
 }
 
 const mapStateToProps = state => ({
-    contributionPlans: state.contributionPlan.contributionPlans
+    pickerContributionPlans: state.contributionPlan.pickerContributionPlans
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchContributionPlans }, dispatch);
+    return bindActionCreators({ fetchPickerContributionPlans }, dispatch);
 };
 
 export default withModulesManager(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanPicker));
