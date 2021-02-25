@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import { FormattedMessage, formatMessage, formatMessageWithValues, PublishedComponent, decodeId } from "@openimis/fe-core";
+import { FormattedMessage, formatMessage, formatMessageWithValues, PublishedComponent } from "@openimis/fe-core";
 import { Tooltip, Grid, IconButton } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import ContributionPlanPicker from '../pickers/ContributionPlanPicker';
@@ -33,7 +33,7 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
             open: true,
             contributionPlanAttached: {
                 ...this.props.contributionPlanBundleContributionPlan,
-                contributionPlanId: decodeId(this.props.contributionPlanBundleContributionPlan.contributionPlan.id)
+                contributionPlan: this.props.contributionPlanBundleContributionPlan.contributionPlan
             }
         });
     };
@@ -123,8 +123,8 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
                             <Grid item xs={12} className={classes.item}>
                                 <ContributionPlanPicker
                                     periodicity={!!contributionPlanBundle ? contributionPlanBundle.periodicity : null}
-                                    value={contributionPlanAttached.contributionPlanId}
-                                    onChange={v => this.updateAttribute('contributionPlanId', v)}
+                                    value={contributionPlanAttached.contributionPlan}
+                                    onChange={v => this.updateAttribute('contributionPlan', v)}
                                     readOnly={!isReplacing}
                                 />
                             </Grid>

@@ -59,7 +59,7 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
 
     canSave = () => {
         const { contributionPlanAttached } = this.state;
-        return !!contributionPlanAttached.contributionPlanId && !!contributionPlanAttached.dateValidFrom;
+        return !!contributionPlanAttached.contributionPlan && !!contributionPlanAttached.dateValidFrom;
     }
 
     render() {
@@ -85,8 +85,8 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
                                     periodicity={!!contributionPlanBundle ? contributionPlanBundle.periodicity : null}
                                     withNull={true}
                                     required
-                                    value={!!contributionPlanAttached.contributionPlanId && contributionPlanAttached.contributionPlanId}
-                                    onChange={v => this.updateAttribute('contributionPlanId', v)}
+                                    value={!!contributionPlanAttached.contributionPlan && contributionPlanAttached.contributionPlan}
+                                    onChange={v => this.updateAttribute('contributionPlan', v)}
                                 />
                             </Grid>
                             <Grid item className={classes.item}>
