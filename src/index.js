@@ -1,5 +1,7 @@
+import React from "react";
 import messages_en from "./translations/en.json";
 import reducer from "./reducer";
+import { LocalOffer, Folder } from "@material-ui/icons";
 import ContributionPlansPage from "./pages/ContributionPlansPage";
 import ContributionPlanPage from "./pages/ContributionPlanPage";
 import ContributionPlanBundlesPage from "./pages/ContributionPlanBundlesPage";
@@ -7,6 +9,11 @@ import ContributionPlanBundlePage from "./pages/ContributionPlanBundlePage";
 import ContributionPlanBundleReplacePage from "./pages/ContributionPlanBundleReplacePage";
 import ContributionPlanBundlePicker from "./pickers/ContributionPlanBundlePicker";
 import ContributionPlanPicker from "./pickers/ContributionPlanPicker";
+import {
+    RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH,
+    RIGHT_CONTRIBUTION_PLAN_SEARCH
+} from "./constants";
+import { FormattedMessage } from "@openimis/fe-core";
 
 const ROUTE_CONTRIBUTION_PLANS = "contributionPlans";
 const ROUTE_CONTRIBUTION_PLAN = "contributionPlans/contributionPlan";
@@ -34,6 +41,21 @@ const DEFAULT_CONFIG = {
         { path: ROUTE_CONTRIBUTION_PLAN_BUNDLES, component: ContributionPlanBundlesPage },
         { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE  + "/:contributionplanbundle_id?", component: ContributionPlanBundlePage },
         { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE  + "/:contributionplanbundle_id", component: ContributionPlanBundleReplacePage }
+    ],
+    "admin.MainMenu": [
+        {
+            text: <FormattedMessage module="contributionPlan" id="contributionPlan.label" />,
+            icon: <LocalOffer />,
+            route: "/contributionPlans",
+            filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_SEARCH) 
+        },
+        {
+            text: <FormattedMessage module="contributionPlan" id="contributionPlanBundle.label" />,
+            icon: <Folder />,
+            route: "/contributionPlanBundles",
+            withDivider: true,
+            filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) 
+        },
     ]
 }
 
