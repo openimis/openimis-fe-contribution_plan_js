@@ -80,7 +80,7 @@ class ContributionPlanSearcher extends Component {
             /**
              * Display calculation's ID until @see Calculation module provides a picker
              */
-            contributionPlan => !!contributionPlan.calculation ? decodeId(contributionPlan.calculation.id) : "",
+            contributionPlan => !!contributionPlan.calculation ? contributionPlan.calculation : "",
             contributionPlan => 
                 <PublishedComponent
                     pubRef="product.ProductPicker"
