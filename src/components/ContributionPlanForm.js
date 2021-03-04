@@ -38,7 +38,7 @@ class ContributionPlanForm extends Component {
                     /**
                      * Display calculation's ID until @see Calculation module provides a picker
                      */
-                    calculation: decodeId(props.contributionPlan.calculation.id)
+                    calculation: props.contributionPlan.calculation
                 }
             }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams()));
         }
