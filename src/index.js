@@ -46,13 +46,13 @@ const DEFAULT_CONFIG = {
         {
             text: <FormattedMessage module="contributionPlan" id="contributionPlan.label" />,
             icon: <LocalOffer />,
-            route: "/contributionPlans",
+            route: "/" + ROUTE_CONTRIBUTION_PLANS,
             filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_SEARCH) 
         },
         {
             text: <FormattedMessage module="contributionPlan" id="contributionPlanBundle.label" />,
             icon: <Folder />,
-            route: "/contributionPlanBundles",
+            route: "/" + ROUTE_CONTRIBUTION_PLAN_BUNDLES,
             withDivider: true,
             filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) 
         },
