@@ -9,6 +9,11 @@ None
 
 ## Other Contributions
 * `core.Router`: registering `contributionPlans`, `contributionPlans/contributionPlan`, `contributionPlanBundles`, `contributionPlanBundles/contributionPlanBundle` routes in openIMIS client-side router
+* `admin.MainMenu`:
+
+   **Contribution Plan** (`contributionPlan.contributionPlan.label` translation key), pointing to `/contributionPlans`
+   
+   **Contribution Plan Bundle** (`contributionPlan.contributionPlanBundle.label` translation key), pointing to `/contributionPlanBundles`
 
 ## Available Contribution Points
 None
