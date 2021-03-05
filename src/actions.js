@@ -3,7 +3,7 @@ import {
 } from "@openimis/fe-core";
 
 const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
-    "id", "code", "name", "calculation{id}",
+    "id", "code", "name", "calculation",
     "benefitPlan" + modulesManager.getProjection("product.ProductPicker.projection"),
     "periodicity", "dateValidFrom", "dateValidTo", "isDeleted"
 ];
@@ -87,7 +87,7 @@ function formatContributionPlanGQL(contributionPlan) {
         ${!!contributionPlan.id ? `id: "${decodeId(contributionPlan.id)}"` : ''}
         ${!!contributionPlan.code ? `code: "${formatGQLString(contributionPlan.code)}"` : ""}
         ${!!contributionPlan.name ? `name: "${formatGQLString(contributionPlan.name)}"` : ""}
-        ${!!contributionPlan.calculation ? `calculationId: "${contributionPlan.calculation}"` : ""} 
+        ${!!contributionPlan.calculation ? `calculation: "${contributionPlan.calculation}"` : ""} 
         ${!!contributionPlan.benefitPlan ? `benefitPlanId: ${decodeId(contributionPlan.benefitPlan.id)}` : ""}
         ${!!contributionPlan.periodicity ? `periodicity: ${contributionPlan.periodicity}` : ""}
         ${!!contributionPlan.dateValidFrom ? `dateValidFrom: "${dateTimeToDate(contributionPlan.dateValidFrom)}"` : ""}

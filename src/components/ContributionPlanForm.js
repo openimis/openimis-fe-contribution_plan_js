@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Form, withModulesManager, withHistory, formatMessage, formatMessageWithValues, journalize, decodeId } from "@openimis/fe-core";
+import { Form, withModulesManager, withHistory, formatMessage, formatMessageWithValues, journalize } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
@@ -38,7 +38,7 @@ class ContributionPlanForm extends Component {
                     /**
                      * Display calculation's ID until @see Calculation module provides a picker
                      */
-                    calculation: decodeId(props.contributionPlan.calculation.id)
+                    calculation: props.contributionPlan.calculation
                 }
             }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams()));
         }
