@@ -16,10 +16,11 @@ None
    **Contribution Plan Bundle** (`contributionPlan.contributionPlanBundle.label` translation key), pointing to `/contributionPlanBundles`
 
 ## Available Contribution Points
-None
+* `contributionPlan.ContributionPlan.calculation` placeholder for `Calculation` module contributions
 
 ## Published Components
-None
+* `contributionPlan.ContributionPlanBundlePicker` picker for Contribution Plan Bundle
+* `contributionPlan.ContributionPlanPicker` picker for Contribution Plan
 
 ## Dispatched Redux Actions
 * `CONTRIBUTIONPLAN_CONTRIBUTIONPLANS_{REQ|RESP|ERR}`, fetching Contribution Plans (as triggered by the searcher)
