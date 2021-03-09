@@ -1,16 +1,29 @@
-import React, { Component, Fragment } from "react"
-import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher,
-    PublishedComponent, withTooltip, coreConfirm, journalize } from "@openimis/fe-core";
-import { fetchContributionPlans, deleteContributionPlan } from "../actions"
+import React, { Component, Fragment } from "react";
+import { injectIntl } from "react-intl";
+import {
+    withModulesManager,
+    formatMessage,
+    formatMessageWithValues,
+    formatDateFromISO,
+    Searcher,
+    PublishedComponent,
+    withTooltip,
+    coreConfirm,
+    journalize
+} from "@openimis/fe-core";
+import { fetchContributionPlans, deleteContributionPlan } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import ContributionPlanFilter from "./ContributionPlanFilter"
+import ContributionPlanFilter from "./ContributionPlanFilter";
 import { IconButton } from "@material-ui/core";
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { RIGHT_CONTRIBUTION_PLAN_UPDATE, RIGHT_CONTRIBUTION_PLAN_DELETE, ROWS_PER_PAGE_OPTIONS,
-    DEFAULT_PAGE_SIZE } from "../constants"
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {
+    RIGHT_CONTRIBUTION_PLAN_UPDATE,
+    RIGHT_CONTRIBUTION_PLAN_DELETE,
+    ROWS_PER_PAGE_OPTIONS,
+    DEFAULT_PAGE_SIZE
+} from "../constants";
 
 class ContributionPlanSearcher extends Component {
     constructor(props) {

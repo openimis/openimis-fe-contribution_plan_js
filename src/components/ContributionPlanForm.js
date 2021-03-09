@@ -1,11 +1,18 @@
 import React, { Component, Fragment } from "react";
-import { Form, withModulesManager, withHistory, formatMessage, formatMessageWithValues, journalize } from "@openimis/fe-core";
+import {
+    Form,
+    withModulesManager,
+    withHistory,
+    formatMessage,
+    formatMessageWithValues,
+    journalize
+} from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import ContributionPlanHeadPanel from "./ContributionPlanHeadPanel"
-import { fetchContributionPlan } from "../actions"
+import ContributionPlanHeadPanel from "./ContributionPlanHeadPanel";
+import { fetchContributionPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
 const styles = theme => ({
@@ -32,15 +39,10 @@ class ContributionPlanForm extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.fetchedContributionPlan !== this.props.fetchedContributionPlan && !!this.props.fetchedContributionPlan) {
-            this.setState((_, props) => ({
-                contributionPlan: {
-                    ...props.contributionPlan,
-                    /**
-                     * Display calculation's ID until @see Calculation module provides a picker
-                     */
-                    calculation: props.contributionPlan.calculation
-                }
-            }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams()));
+            this.setState(
+                (_, props) => ({ contributionPlan: props.contributionPlan }),
+                () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())
+            );
         }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
