@@ -9,7 +9,8 @@ import {
     PublishedComponent,
     withTooltip,
     coreConfirm,
-    journalize
+    journalize,
+    Contributions
 } from "@openimis/fe-core";
 import { fetchContributionPlans, deleteContributionPlan } from "../actions";
 import { bindActionCreators } from "redux";
@@ -22,7 +23,8 @@ import {
     RIGHT_CONTRIBUTION_PLAN_UPDATE,
     RIGHT_CONTRIBUTION_PLAN_DELETE,
     ROWS_PER_PAGE_OPTIONS,
-    DEFAULT_PAGE_SIZE
+    DEFAULT_PAGE_SIZE,
+    CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
 } from "../constants";
 
 class ContributionPlanSearcher extends Component {
@@ -90,18 +92,20 @@ class ContributionPlanSearcher extends Component {
         let result = [
             contributionPlan => !!contributionPlan.code ? contributionPlan.code : "",
             contributionPlan => !!contributionPlan.name ? contributionPlan.name : "",
-            /**
-             * Display calculation's ID until @see Calculation module provides a picker
-             */
-            contributionPlan => !!contributionPlan.calculation ? contributionPlan.calculation : "",
-            contributionPlan => 
-                <PublishedComponent
+            contributionPlan => !!contributionPlan.calculation 
+                ? <Contributions
+                    contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
+                    value={contributionPlan.calculation}
+                    readOnly
+                /> : "",
+            contributionPlan => !!contributionPlan.benefitPlan
+                ? <PublishedComponent
                     pubRef="product.ProductPicker"
                     withNull={true}
                     withLabel={false}
                     value={contributionPlan.benefitPlan}
                     readOnly
-                />,
+                /> : "",
             contributionPlan => !!contributionPlan.periodicity ? contributionPlan.periodicity : "",
             contributionPlan => !!contributionPlan.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, contributionPlan.dateValidFrom)

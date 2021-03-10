@@ -18,6 +18,7 @@ export const MAX_PERIODICITY_VALUE = 12
 export const DEFAULT_PAGE_SIZE = 10
 export const ROWS_PER_PAGE_OPTIONS = [10, 20, 50, 100]
 export const CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY = "contributionPlan.ContributionPlan.calculation"
+export const CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY = "contributionPlan.ContributionPlan.calculationRule"
 export const CONTRIBUTIONPLAN_CLASSNAME = "ContributionPlan"
 export const RIGHT_CALCULATION_WRITE = "write"
 export const RIGHT_CALCULATION_UPDATE = "update"

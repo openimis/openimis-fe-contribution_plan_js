@@ -16,7 +16,8 @@ None
    **Contribution Plan Bundle** (`contributionPlan.contributionPlanBundle.label` translation key), pointing to `/contributionPlanBundles`
 
 ## Available Contribution Points
-* `contributionPlan.ContributionPlan.calculation` placeholder for `Calculation` module contributions
+* `contributionPlan.ContributionPlan.calculation` placeholder for `Calculation` module contribution - calculation parameters input
+* `contributionPlan.ContributionPlan.calculationRule` placeholder for `Calculation` module contribution - calculation rule picker
 
 ## Published Components
 * `contributionPlan.ContributionPlanBundlePicker` picker for Contribution Plan Bundle
