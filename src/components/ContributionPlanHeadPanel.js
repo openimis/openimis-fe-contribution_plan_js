@@ -17,6 +17,7 @@ import {
     MIN_PERIODICITY_VALUE,
     MAX_PERIODICITY_VALUE,
     CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY,
+    CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY,
     CONTRIBUTIONPLAN_CLASSNAME,
     RIGHT_CALCULATION_WRITE,
     RIGHT_CALCULATION_UPDATE
@@ -43,7 +44,7 @@ class ContributionPlanHeadPanel extends FormPanel {
          * so that its @see id property can be used to fetch calculation parameters
          */
         const { benefitPlan: product, calculation: calculationId, ...others } = this.props.edited;
-        const calculation = { id: calculationId };
+        const calculation = !!calculationId ? { id: calculationId } : null;
         const contributionPlan = { product, calculation, ...others };
         return (
             <Fragment>
@@ -79,9 +80,9 @@ class ContributionPlanHeadPanel extends FormPanel {
                             module="contributionPlan"
                             label="code"
                             required
-                            value={!!contributionPlan && !!contributionPlan.code ? contributionPlan.code : ""}
+                            value={!!contributionPlan.code ? contributionPlan.code : ""}
                             onChange={(v) => this.updateAttribute("code", v)}
-                            readOnly={!!contributionPlan && !!contributionPlan.id}
+                            readOnly={!!contributionPlan.id}
                         />
                     </Grid>
                     <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
@@ -89,26 +90,17 @@ class ContributionPlanHeadPanel extends FormPanel {
                             module="contributionPlan"
                             label="name"
                             required
-                            value={!!contributionPlan && !!contributionPlan.name ? contributionPlan.name : ""}
+                            value={!!contributionPlan.name ? contributionPlan.name : ""}
                             onChange={(v) => this.updateAttribute("name", v)}
                         />
                     </Grid>
                     <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
-                        <TextInput
-                            /**
-                             * a @see TextInput until @see Calculation module provides a picker
-                             */
-                            module="contributionPlan"
-                            label="calculation"
+                        <Contributions
+                            contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
+                            label={formatMessage(intl, "contributionPlan", "calculation")}
+                            value={!!calculationId ? calculationId : null}
+                            onChange={this.updateAttribute}
                             required
-                            value={
-                                !!contributionPlan &&
-                                !!contributionPlan.calculation &&
-                                !!contributionPlan.calculation.id
-                                    ? contributionPlan.calculation.id
-                                    : ""
-                            }
-                            onChange={(v) => this.updateAttribute("calculation", v)}
                         />
                     </Grid>
                     <Contributions
@@ -116,12 +108,8 @@ class ContributionPlanHeadPanel extends FormPanel {
                         intl={intl}
                         className={CONTRIBUTIONPLAN_CLASSNAME}
                         entity={contributionPlan}
-                        requiredRights={[
-                            !!contributionPlan && !!contributionPlan.id
-                                ? RIGHT_CALCULATION_UPDATE
-                                : RIGHT_CALCULATION_WRITE,
-                        ]}
-                        value={!!contributionPlan && !!contributionPlan.jsonExt ? contributionPlan.jsonExt : null}
+                        requiredRights={[!!contributionPlan.id ? RIGHT_CALCULATION_UPDATE : RIGHT_CALCULATION_WRITE]}
+                        value={!!contributionPlan.jsonExt ? contributionPlan.jsonExt : null}
                         onChange={this.updateAttribute}
                         gridItemStyle={classes.item}
                         gridItemSize={GRID_ITEM_SIZE}
@@ -132,7 +120,7 @@ class ContributionPlanHeadPanel extends FormPanel {
                             withNull={true}
                             label={formatMessage(intl, "contributionPlan", "benefitPlan")}
                             required
-                            value={!!contributionPlan && !!contributionPlan.product ? contributionPlan.product : null}
+                            value={!!contributionPlan.product ? contributionPlan.product : null}
                             onChange={(v) => this.updateAttribute("benefitPlan", v)}
                         />
                     </Grid>
@@ -144,17 +132,9 @@ class ContributionPlanHeadPanel extends FormPanel {
                             /**
                              * @see min set to @see EMPTY_PERIODICITY_FILTER when filter unset to avoid @see NumberInput error message
                              */
-                            min={
-                                !!contributionPlan && !!contributionPlan.periodicity
-                                    ? MIN_PERIODICITY_VALUE
-                                    : EMPTY_PERIODICITY_VALUE
-                            }
+                            min={!!contributionPlan.periodicity ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
                             max={MAX_PERIODICITY_VALUE}
-                            value={
-                                !!contributionPlan && !!contributionPlan.periodicity
-                                    ? contributionPlan.periodicity
-                                    : null
-                            }
+                            value={!!contributionPlan.periodicity ? contributionPlan.periodicity : null}
                             onChange={(v) => this.updateAttribute("periodicity", v)}
                         />
                     </Grid>
@@ -164,11 +144,7 @@ class ContributionPlanHeadPanel extends FormPanel {
                             module="contributionPlan"
                             label="dateValidFrom"
                             required
-                            value={
-                                !!contributionPlan && !!contributionPlan.dateValidFrom
-                                    ? contributionPlan.dateValidFrom
-                                    : null
-                            }
+                            value={!!contributionPlan.dateValidFrom ? contributionPlan.dateValidFrom : null}
                             onChange={(v) => this.updateAttribute("dateValidFrom", v)}
                         />
                     </Grid>
@@ -177,11 +153,7 @@ class ContributionPlanHeadPanel extends FormPanel {
                             pubRef="core.DatePicker"
                             module="contributionPlan"
                             label="dateValidTo"
-                            value={
-                                !!contributionPlan && !!contributionPlan.dateValidTo
-                                    ? contributionPlan.dateValidTo
-                                    : null
-                            }
+                            value={!!contributionPlan.dateValidTo ? contributionPlan.dateValidTo : null}
                             onChange={(v) => this.updateAttribute("dateValidTo", v)}
                         />
                     </Grid>
