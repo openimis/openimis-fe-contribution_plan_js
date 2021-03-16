@@ -44,16 +44,15 @@ const DEFAULT_CONFIG = {
     ],
     "admin.MainMenu": [
         {
-            text: <FormattedMessage module="contributionPlan" id="contributionPlan.label" />,
+            text: <FormattedMessage module="contributionPlan" id="contributionPlans.page.title" />,
             icon: <LocalOffer />,
             route: "/" + ROUTE_CONTRIBUTION_PLANS,
             filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_SEARCH) 
         },
         {
-            text: <FormattedMessage module="contributionPlan" id="contributionPlanBundle.label" />,
+            text: <FormattedMessage module="contributionPlan" id="contributionPlanBundles.page.title" />,
             icon: <Folder />,
             route: "/" + ROUTE_CONTRIBUTION_PLAN_BUNDLES,
-            withDivider: true,
             filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) 
         },
     ]
