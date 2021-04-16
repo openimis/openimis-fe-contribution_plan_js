@@ -26,7 +26,8 @@ class ContributionPlanForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            contributionPlan: {}
+            contributionPlan: {},
+            jsonExtValid: true
         };
     }
 
@@ -51,12 +52,14 @@ class ContributionPlanForm extends Component {
 
     isMandatoryFieldsEmpty = () => {
         const { contributionPlan } = this.state;
-        if (!!contributionPlan.code
-            && !!contributionPlan.name
-            && !!contributionPlan.calculation
-            && !!contributionPlan.benefitPlan
-            && !!contributionPlan.periodicity
-            && !!contributionPlan.dateValidFrom) {
+        if (
+            !!contributionPlan.code &&
+            !!contributionPlan.name &&
+            !!contributionPlan.calculation &&
+            !!contributionPlan.benefitPlan &&
+            !!contributionPlan.periodicity &&
+            !!contributionPlan.dateValidFrom
+        ) {
             return false;
         }
         return true;
@@ -67,13 +70,15 @@ class ContributionPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
-    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid();
+    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid() && !!this.state.jsonExtValid;
 
     save = contributionPlan => this.props.save(contributionPlan);
 
     onEditedChanged = contributionPlan => this.setState({ contributionPlan })
 
     titleParams = () => this.props.titleParams(this.state.contributionPlan);
+
+    setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
     render() {
         const { intl, back } = this.props;
@@ -91,6 +96,7 @@ class ContributionPlanForm extends Component {
                     HeadPanel={ContributionPlanHeadPanel}
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
                     saveTooltip={formatMessage(intl, "contributionPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
+                    setJsonExtValid={this.setJsonExtValid}
                 />
             </Fragment>
         )
