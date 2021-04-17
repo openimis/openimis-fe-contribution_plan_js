@@ -35,7 +35,7 @@ const GRID_ITEM_SIZE = 3;
 
 class ContributionPlanHeadPanel extends FormPanel {
     render() {
-        const { intl, classes, mandatoryFieldsEmpty } = this.props;
+        const { intl, classes, mandatoryFieldsEmpty, setJsonExtValid } = this.props;
         /**
          * Mapping @see benefitPlan property into @see product property is required
          * because property names of @see ContributionPlan object on frontend
@@ -113,6 +113,7 @@ class ContributionPlanHeadPanel extends FormPanel {
                         onChange={this.updateAttribute}
                         gridItemStyle={classes.item}
                         gridItemSize={GRID_ITEM_SIZE}
+                        setJsonExtValid={setJsonExtValid}
                     />
                     <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                         <PublishedComponent
