@@ -1,34 +1,3 @@
-
-Skip to content
-Pull requests
-Issues
-Marketplace
-Explore
-@delcroip
-openimis /
-openimis-fe-admin_js
-
-4
-0
-
-    0
-
-Code
-Issues
-Pull requests
-Actions
-Wiki
-Security
-Insights
-
-    Settings
-
-openimis-fe-admin_js/.github/workflows/npmpublish.yml
-Xavier Gillmann tech upgrade & git workflow
-Latest commit e36e6f7 on May 20, 2020
-History
-0 contributors
-50 lines (45 sloc) 1.28 KB
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
 
@@ -79,18 +48,3 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    © 2021 GitHub, Inc.
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-
