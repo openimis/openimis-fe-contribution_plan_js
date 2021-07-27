@@ -33,26 +33,6 @@ class ContributionPlanBundleSearcher extends Component {
 
     fetch = (params) => this.props.fetchContributionPlanBundles(params);
 
-    filtersToQueryParams = state => {
-        let params = Object.keys(state.filters)
-            .filter(f => !!state.filters[f]['filter'])
-            .map(f => state.filters[f]['filter']);
-        params.push(`first: ${state.pageSize}`);
-        if (!state.filters.hasOwnProperty('isDeleted')) {
-            params.push("isDeleted: false");
-        }
-        if (!!state.afterCursor) {
-            params.push(`after: "${state.afterCursor}"`);
-        }
-        if (!!state.beforeCursor) {
-            params.push(`before: "${state.beforeCursor}"`);
-        }
-        if (!!state.orderBy) {
-            params.push(`orderBy: ["${state.orderBy}"]`);
-        }
-        return params;
-    }
-
     headers = () => {
         const { rights } = this.props;
         let result = [
@@ -176,6 +156,19 @@ class ContributionPlanBundleSearcher extends Component {
         ['dateValidTo', true]
     ];
 
+    defaultFilters = () => {
+        return {
+            isDeleted: {
+                value: false,
+                filter: "isDeleted: false"
+            },
+            applyDefaultValidityFilter: {
+                value: true,
+                filter: "applyDefaultValidityFilter: true"
+            }
+        };
+    }
+
     render() {
         const { intl, fetchingContributionPlanBundles, fetchedContributionPlanBundles, errorContributionPlanBundles,
             contributionPlanBundles, contributionPlanBundlesPageInfo, contributionPlanBundlesTotalCount, onDoubleClick } = this.props;
@@ -193,7 +186,6 @@ class ContributionPlanBundleSearcher extends Component {
                     tableTitle={formatMessageWithValues(intl, "contributionPlan", "contributionPlanBundles.searcher.results.title", { contributionPlanBundlesTotalCount })}
                     headers={this.headers}
                     itemFormatters={this.itemFormatters}
-                    filtersToQueryParams={this.filtersToQueryParams}
                     sorts={this.sorts}
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
@@ -201,6 +193,7 @@ class ContributionPlanBundleSearcher extends Component {
                     onDoubleClick={contributionPlanBundle => this.isOnDoubleClickEnabled(contributionPlanBundle) && onDoubleClick(contributionPlanBundle)}
                     rowDisabled={this.isRowDisabled}
                     rowLocked={this.isRowDisabled}
+                    defaultFilters={this.defaultFilters()}
                 />
             </Fragment>
         )

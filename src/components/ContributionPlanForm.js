@@ -1,11 +1,18 @@
 import React, { Component, Fragment } from "react";
-import { Form, withModulesManager, withHistory, formatMessage, formatMessageWithValues, journalize, decodeId } from "@openimis/fe-core";
+import {
+    Form,
+    withModulesManager,
+    withHistory,
+    formatMessage,
+    formatMessageWithValues,
+    journalize
+} from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import ContributionPlanHeadPanel from "./ContributionPlanHeadPanel"
-import { fetchContributionPlan } from "../actions"
+import ContributionPlanHeadPanel from "./ContributionPlanHeadPanel";
+import { fetchContributionPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
 const styles = theme => ({
@@ -19,29 +26,23 @@ class ContributionPlanForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            contributionPlan: {}
+            contributionPlan: {},
+            jsonExtValid: true
         };
     }
 
     componentDidMount() {
         document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams());
         if (!!this.props.contributionPlanId) {
-            this.props.fetchContributionPlan(this.props.modulesManager, this.props.contributionPlanId)
+            this.props.fetchContributionPlan(this.props.modulesManager, this.props.contributionPlanId);
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.fetchedContributionPlan !== this.props.fetchedContributionPlan && !!this.props.fetchedContributionPlan) {
             this.setState(
-                (state, props) => ({ 
-                    contributionPlan: { 
-                        ...props.contributionPlan,
-                        /**
-                         * Display calculation's ID until @see Calculation module provides a picker
-                         */
-                        calculation: decodeId(props.contributionPlan.calculation.id) 
-                    }
-                }), () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())
+                (_, props) => ({ contributionPlan: props.contributionPlan }),
+                () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())
             );
         }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
@@ -51,12 +52,14 @@ class ContributionPlanForm extends Component {
 
     isMandatoryFieldsEmpty = () => {
         const { contributionPlan } = this.state;
-        if (!!contributionPlan.code
-            && !!contributionPlan.name
-            && !!contributionPlan.calculation
-            && !!contributionPlan.benefitPlan
-            && !!contributionPlan.periodicity
-            && !!contributionPlan.dateValidFrom) {
+        if (
+            !!contributionPlan.code &&
+            !!contributionPlan.name &&
+            !!contributionPlan.calculation &&
+            !!contributionPlan.benefitPlan &&
+            !!contributionPlan.periodicity &&
+            !!contributionPlan.dateValidFrom
+        ) {
             return false;
         }
         return true;
@@ -67,13 +70,15 @@ class ContributionPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
-    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid();
+    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid() && !!this.state.jsonExtValid;
 
     save = contributionPlan => this.props.save(contributionPlan);
 
     onEditedChanged = contributionPlan => this.setState({ contributionPlan })
 
     titleParams = () => this.props.titleParams(this.state.contributionPlan);
+
+    setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
     render() {
         const { intl, back } = this.props;
@@ -91,6 +96,7 @@ class ContributionPlanForm extends Component {
                     HeadPanel={ContributionPlanHeadPanel}
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
                     saveTooltip={formatMessage(intl, "contributionPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
+                    setJsonExtValid={this.setJsonExtValid}
                 />
             </Fragment>
         )

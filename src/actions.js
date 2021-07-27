@@ -3,9 +3,13 @@ import {
 } from "@openimis/fe-core";
 
 const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
-    "id", "code", "name", "calculation{id}",
+    "id", "code", "name", "calculation", "jsonExt",
     "benefitPlan" + modulesManager.getProjection("product.ProductPicker.projection"),
     "periodicity", "dateValidFrom", "dateValidTo", "isDeleted"
+];
+
+const CONTRIBUTIONPLAN_PICKER_PROJECTION = () => [
+    "id", "code", "name"
 ];
 
 const CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION = () => [
@@ -29,6 +33,15 @@ export function fetchContributionPlans(modulesManager, params) {
         CONTRIBUTIONPLAN_FULL_PROJECTION(modulesManager)
     );
     return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANS");
+}
+
+export function fetchPickerContributionPlans(params) {
+    const payload = formatPageQuery(
+        "contributionPlan",
+        params,
+        CONTRIBUTIONPLAN_PICKER_PROJECTION()
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_PICKERCONTRIBUTIONPLANS");
 }
 
 export function fetchContributionPlan(modulesManager, contributionPlanId) {
@@ -74,7 +87,8 @@ function formatContributionPlanGQL(contributionPlan) {
         ${!!contributionPlan.id ? `id: "${decodeId(contributionPlan.id)}"` : ''}
         ${!!contributionPlan.code ? `code: "${formatGQLString(contributionPlan.code)}"` : ""}
         ${!!contributionPlan.name ? `name: "${formatGQLString(contributionPlan.name)}"` : ""}
-        ${!!contributionPlan.calculation ? `calculationId: "${contributionPlan.calculation}"` : ""} 
+        ${!!contributionPlan.calculation ? `calculation: "${contributionPlan.calculation}"` : ""}
+        ${!!contributionPlan.jsonExt ? `jsonExt: ${JSON.stringify(contributionPlan.jsonExt)}` : ''}
         ${!!contributionPlan.benefitPlan ? `benefitPlanId: ${decodeId(contributionPlan.benefitPlan.id)}` : ""}
         ${!!contributionPlan.periodicity ? `periodicity: ${contributionPlan.periodicity}` : ""}
         ${!!contributionPlan.dateValidFrom ? `dateValidFrom: "${dateTimeToDate(contributionPlan.dateValidFrom)}"` : ""}
@@ -96,7 +110,7 @@ function formatContributionPlanBundleGQL(contributionPlanBundle, omitImmutableFi
 function formatContributionPlanBundleDetailsGQL(contributionPlanBundleDetails, isReplaceMutation = false) {
     return `
         ${!!contributionPlanBundleDetails.id ? `${isReplaceMutation ? 'uuid' : 'id'}: "${decodeId(contributionPlanBundleDetails.id)}"` : ''}
-        ${!!contributionPlanBundleDetails.contributionPlanId ? `contributionPlanId: "${contributionPlanBundleDetails.contributionPlanId}"` : ''}
+        ${!!contributionPlanBundleDetails.contributionPlan ? `contributionPlanId: "${decodeId(contributionPlanBundleDetails.contributionPlan.id)}"` : ''}
         ${!!contributionPlanBundleDetails.contributionPlanBundleId ? `contributionPlanBundleId: "${contributionPlanBundleDetails.contributionPlanBundleId}"` : ''}
         ${!!contributionPlanBundleDetails.dateValidFrom ? `dateValidFrom: "${dateTimeToDate(contributionPlanBundleDetails.dateValidFrom)}"` : ""}
         ${!!contributionPlanBundleDetails.dateValidTo ? `dateValidTo: "${dateTimeToDate(contributionPlanBundleDetails.dateValidTo)}"` : ""}

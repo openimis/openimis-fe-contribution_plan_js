@@ -1,10 +1,26 @@
 import React, { Component } from "react"
-import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, TextInput, NumberInput, PublishedComponent, decodeId } from "@openimis/fe-core";
+import { injectIntl } from "react-intl";
+import {
+    withModulesManager,
+    formatMessage,
+    TextInput,
+    NumberInput,
+    PublishedComponent,
+    decodeId,
+    Contributions
+} from "@openimis/fe-core";
 import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
-import { EMPTY_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE, MAX_PERIODICITY_VALUE, DATE_TO_DATETIME_SUFFIX,
-    CONTAINS_LOOKUP, GREATER_OR_EQUAL_LOOKUP, LESS_OR_EQUAL_LOOKUP } from "../constants"
+import {
+    EMPTY_PERIODICITY_VALUE,
+    MIN_PERIODICITY_VALUE,
+    MAX_PERIODICITY_VALUE,
+    DATE_TO_DATETIME_SUFFIX,
+    CONTAINS_LOOKUP,
+    GREATER_OR_EQUAL_LOOKUP,
+    LESS_OR_EQUAL_LOOKUP,
+    CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
+} from "../constants";
 
 const styles = theme => ({
     form: {
@@ -31,12 +47,14 @@ class ContributionPlanBundleFilter extends Component {
         ])
     }
 
-    _onChangeStringFilter = (k, v, lookup) => {
+    _onChangeStringFilter = (k, v, lookup = null) => {
         this.props.onChangeFilters([
             {
                 id: k,
                 value: v,
-                filter: `${k}_${lookup}: "${v}"`
+                filter: !!lookup
+                    ? `${k}_${lookup}: "${v}"`
+                    : `${k}: "${v}"`
             }
         ])
     }
@@ -72,15 +90,13 @@ class ContributionPlanBundleFilter extends Component {
                     />
                 </Grid>
                 <Grid item xs={3} className={classes.item}>
-                    <TextInput
-                        module="contributionPlan"
-                        label="calculation"
+                    <Contributions
+                        contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
+                        label={formatMessage(intl, "contributionPlan", "calculation")}
                         value={this._filterValue('calculation')}
-                        onChange={v => this._onChangeFilter('calculation', v)}
-                        /**
-                         * Read-only until @see Calculation module provides a picker
-                         */
-                        readOnly
+                        onChange={this._onChangeStringFilter}
+                        withNull
+                        nullLabel={formatMessage(intl, "contributionPlan", "any")}
                     />
                 </Grid>
                 <Grid item xs={3} className={classes.item}>

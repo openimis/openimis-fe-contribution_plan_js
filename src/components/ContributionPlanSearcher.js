@@ -1,16 +1,31 @@
-import React, { Component, Fragment } from "react"
-import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher,
-    PublishedComponent, decodeId, withTooltip, coreConfirm, journalize } from "@openimis/fe-core";
-import { fetchContributionPlans, deleteContributionPlan } from "../actions"
+import React, { Component, Fragment } from "react";
+import { injectIntl } from "react-intl";
+import {
+    withModulesManager,
+    formatMessage,
+    formatMessageWithValues,
+    formatDateFromISO,
+    Searcher,
+    PublishedComponent,
+    withTooltip,
+    coreConfirm,
+    journalize,
+    Contributions
+} from "@openimis/fe-core";
+import { fetchContributionPlans, deleteContributionPlan } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import ContributionPlanFilter from "./ContributionPlanFilter"
+import ContributionPlanFilter from "./ContributionPlanFilter";
 import { IconButton } from "@material-ui/core";
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { RIGHT_CONTRIBUTION_PLAN_UPDATE, RIGHT_CONTRIBUTION_PLAN_DELETE, ROWS_PER_PAGE_OPTIONS,
-    DEFAULT_PAGE_SIZE } from "../constants"
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {
+    RIGHT_CONTRIBUTION_PLAN_UPDATE,
+    RIGHT_CONTRIBUTION_PLAN_DELETE,
+    ROWS_PER_PAGE_OPTIONS,
+    DEFAULT_PAGE_SIZE,
+    CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
+} from "../constants";
 
 class ContributionPlanSearcher extends Component {
     constructor(props) {
@@ -31,26 +46,6 @@ class ContributionPlanSearcher extends Component {
     }
 
     fetch = params => this.props.fetchContributionPlans(this.props.modulesManager, params);
-
-    filtersToQueryParams = state => {
-        let params = Object.keys(state.filters)
-            .filter(f => !!state.filters[f]['filter'])
-            .map(f => state.filters[f]['filter']);
-        params.push(`first: ${state.pageSize}`);
-        if (!state.filters.hasOwnProperty('isDeleted')) {
-            params.push("isDeleted: false");
-        }
-        if (!!state.afterCursor) {
-            params.push(`after: "${state.afterCursor}"`);
-        }
-        if (!!state.beforeCursor) {
-            params.push(`before: "${state.beforeCursor}"`);
-        }
-        if (!!state.orderBy) {
-            params.push(`orderBy: ["${state.orderBy}"]`);
-        }
-        return params;
-    }
 
     headers = () => {
         const { rights } = this.props;
@@ -77,18 +72,20 @@ class ContributionPlanSearcher extends Component {
         let result = [
             contributionPlan => !!contributionPlan.code ? contributionPlan.code : "",
             contributionPlan => !!contributionPlan.name ? contributionPlan.name : "",
-            /**
-             * Display calculation's ID until @see Calculation module provides a picker
-             */
-            contributionPlan => !!contributionPlan.calculation ? decodeId(contributionPlan.calculation.id) : "",
-            contributionPlan => 
-                <PublishedComponent
+            contributionPlan => !!contributionPlan.calculation 
+                ? <Contributions
+                    contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
+                    value={contributionPlan.calculation}
+                    readOnly
+                /> : "",
+            contributionPlan => !!contributionPlan.benefitPlan
+                ? <PublishedComponent
                     pubRef="product.ProductPicker"
                     withNull={true}
                     withLabel={false}
                     value={contributionPlan.benefitPlan}
                     readOnly
-                />,
+                /> : "",
             contributionPlan => !!contributionPlan.periodicity ? contributionPlan.periodicity : "",
             contributionPlan => !!contributionPlan.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, contributionPlan.dateValidFrom)
@@ -169,6 +166,19 @@ class ContributionPlanSearcher extends Component {
         ['dateValidTo', true]
     ];
 
+    defaultFilters = () => {
+        return {
+            isDeleted: {
+                value: false,
+                filter: "isDeleted: false"
+            },
+            applyDefaultValidityFilter: {
+                value: true,
+                filter: "applyDefaultValidityFilter: true"
+            }
+        };
+    }
+
     render() {
         const { intl, fetchingContributionPlans, fetchedContributionPlans, errorContributionPlans,
             contributionPlans, contributionPlansPageInfo, contributionPlansTotalCount, onDoubleClick } = this.props;
@@ -186,7 +196,6 @@ class ContributionPlanSearcher extends Component {
                     tableTitle={formatMessageWithValues(intl, "contributionPlan", "contributionPlans.searcher.results.title", { contributionPlansTotalCount })}
                     headers={this.headers}
                     itemFormatters={this.itemFormatters}
-                    filtersToQueryParams={this.filtersToQueryParams}
                     sorts={this.sorts}
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
@@ -194,6 +203,7 @@ class ContributionPlanSearcher extends Component {
                     onDoubleClick={contributionPlan => this.isOnDoubleClickEnabled(contributionPlan) && onDoubleClick(contributionPlan)}
                     rowDisabled={this.isRowDisabled}
                     rowLocked={this.isRowDisabled}
+                    defaultFilters={this.defaultFilters()}
                 />
             </Fragment>
         )

@@ -9,12 +9,19 @@ None
 
 ## Other Contributions
 * `core.Router`: registering `contributionPlans`, `contributionPlans/contributionPlan`, `contributionPlanBundles`, `contributionPlanBundles/contributionPlanBundle` routes in openIMIS client-side router
+* `admin.MainMenu`:
+
+   **Contribution Plan** (`contributionPlan.contributionPlan.label` translation key), pointing to `/contributionPlans`
+   
+   **Contribution Plan Bundle** (`contributionPlan.contributionPlanBundle.label` translation key), pointing to `/contributionPlanBundles`
 
 ## Available Contribution Points
-None
+* `contributionPlan.ContributionPlan.calculation` placeholder for `Calculation` module contribution - calculation parameters input
+* `contributionPlan.ContributionPlan.calculationRule` placeholder for `Calculation` module contribution - calculation rule picker
 
 ## Published Components
-None
+* `contributionPlan.ContributionPlanBundlePicker` picker for Contribution Plan Bundle
+* `contributionPlan.ContributionPlanPicker` picker for Contribution Plan
 
 ## Dispatched Redux Actions
 * `CONTRIBUTIONPLAN_CONTRIBUTIONPLANS_{REQ|RESP|ERR}`, fetching Contribution Plans (as triggered by the searcher)
