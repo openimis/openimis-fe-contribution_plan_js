@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withModulesManager, formatMessage, withTooltip, historyPush, decodeId } from "@openimis/fe-core";
+import { withModulesManager, formatMessage, withTooltip, historyPush, decodeId, Helmet } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -15,10 +15,6 @@ const styles = theme => ({
 })
 
 class ContributionPlanBundlesPage extends Component {
-    componentDidMount() {
-        document.title = formatMessage(this.props.intl, "contributionPlan", "contributionPlanBundles.page.title");
-    }
-
     onAdd = () => historyPush(this.props.modulesManager, this.props.history, "contributionPlan.route.contributionPlanBundle");
 
     contributionPlanBundlePageLink = contributionPlanBundle => `${this.props.modulesManager.getRef("contributionPlan.route.contributionPlanBundle")}${"/" + decodeId(contributionPlanBundle.id)}`;
@@ -42,6 +38,7 @@ class ContributionPlanBundlesPage extends Component {
         return (
             rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) &&
                 <div className={classes.page}>
+                    <Helmet title={formatMessage(this.props.intl, "contributionPlan", "contributionPlanBundles.page.title")} />
                     <ContributionPlanBundleSearcher
                         onDoubleClick={this.onDoubleClick}
                         onReplace={this.onReplace}
