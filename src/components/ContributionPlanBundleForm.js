@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Form, withModulesManager, withHistory, formatMessage, formatMessageWithValues, journalize } from "@openimis/fe-core";
+import { Form, withModulesManager, withHistory, formatMessage, formatMessageWithValues, Helmet, journalize } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -17,7 +17,6 @@ class ContributionPlanBundleForm extends Component {
     }
 
     componentDidMount() {
-        document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlanBundle.page.title", this.titleParams());
         if (!!this.props.contributionPlanBundleId) {
             this.props.fetchContributionPlanBundle(this.props.contributionPlanBundleId)
         }
@@ -26,8 +25,7 @@ class ContributionPlanBundleForm extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.fetchedContributionPlanBundle !== this.props.fetchedContributionPlanBundle && !!this.props.fetchedContributionPlanBundle) {
             this.setState(
-                (state, props) => ({ contributionPlanBundle: props.contributionPlanBundle }),
-                () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlanBundle.page.title", this.titleParams())
+                (state, props) => ({ contributionPlanBundle: props.contributionPlanBundle })
             );
         }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
@@ -63,6 +61,7 @@ class ContributionPlanBundleForm extends Component {
         const { intl, back, contributionPlanBundleId, title, isReplacing = false } = this.props;
         return (
             <Fragment>
+                <Helmet title={formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlanBundle.page.title", this.titleParams())} />
                 <Form
                     module="contributionPlan"
                     title={title}

@@ -5,6 +5,7 @@ import {
     withHistory,
     formatMessage,
     formatMessageWithValues,
+    Helmet,
     journalize
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
@@ -32,7 +33,6 @@ class ContributionPlanForm extends Component {
     }
 
     componentDidMount() {
-        document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams());
         if (!!this.props.contributionPlanId) {
             this.props.fetchContributionPlan(this.props.modulesManager, this.props.contributionPlanId);
         }
@@ -41,8 +41,7 @@ class ContributionPlanForm extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.fetchedContributionPlan !== this.props.fetchedContributionPlan && !!this.props.fetchedContributionPlan) {
             this.setState(
-                (_, props) => ({ contributionPlan: props.contributionPlan }),
-                () => document.title = formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())
+                (_, props) => ({ contributionPlan: props.contributionPlan })
             );
         }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
@@ -84,6 +83,7 @@ class ContributionPlanForm extends Component {
         const { intl, back } = this.props;
         return (
             <Fragment>
+                <Helmet title={formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())} />
                 <Form
                     module="contributionPlan"
                     title="contributionPlan.page.title"
