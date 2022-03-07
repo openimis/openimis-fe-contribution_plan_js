@@ -22,6 +22,16 @@ const CONTRIBUTIONPLANBUNDLEDETAILS_FULL_PROJECTION = (modulesManager) => [
     "dateValidFrom", "dateValidTo", "replacementUuid"
 ]
 
+const PAYMENTPLAN_FULL_PROJECTION = (modulesManager) => [
+    "id", "code", "name", "calculation", "jsonExt",
+    "benefitPlan" + modulesManager.getProjection("product.ProductPicker.projection"),
+    "periodicity", "dateValidFrom", "dateValidTo", "isDeleted"
+];
+
+const PAYMENTPLAN_PICKER_PROJECTION = () => [
+    "id", "code", "name"
+];
+
 function dateTimeToDate(date) {
     return date.split('T')[0];
 }
@@ -80,6 +90,24 @@ export function fetchContributionPlanBundleContributionPlans(modulesManager, par
         CONTRIBUTIONPLANBUNDLEDETAILS_FULL_PROJECTION(modulesManager)
     );
     return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS");
+}
+
+export function fetchPaymentPlans(modulesManager, params) {
+    const payload = formatPageQueryWithCount(
+        "paymentPlan",
+        params,
+        PAYMENTPLAN_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_PAYMENTPLANS");
+}
+
+export function fetchPickerPaymentPlans(params) {
+    const payload = formatPageQuery(
+        "paymentPlan",
+        params,
+        PAYMENTPLAN_PICKER_PROJECTION()
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS");
 }
 
 function formatContributionPlanGQL(contributionPlan) {

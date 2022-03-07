@@ -34,7 +34,21 @@ function reducer(
         contributionPlanBundleContributionPlans: [],
         contributionPlanBundleContributionPlansPageInfo: {},
         contributionPlanBundleContributionPlansTotalCount: 0,
-        errorContributionPlanBundleContributionPlans: null
+        errorContributionPlanBundleContributionPlans: null,
+
+        fetchingPaymentPlans: false,
+        errorPaymentPlans: null,
+        fetchedPaymentPlans: false,
+        paymentPlans: [],
+        paymentPlansPageInfo: {},
+        paymentPlansTotalCount: 0,
+
+        fetchingPickerPaymentPlans: false,
+        errorPickerPaymentPlans: null,
+        fetchedPickerPaymentPlans: false,
+        pickerPaymentPlans: [],
+        fetchingPaymentPlan: false,
+        fetchedPaymentPlan: false,
     },
     action
 ) {
@@ -182,6 +196,54 @@ function reducer(
                 ...state,
                 fetchingContributionPlanBundleContributionPlans: false,
                 errorContributionPlanBundleContributionPlans: formatServerError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_PAYMENTPLANS_REQ":
+            return {
+                ...state,
+                fetchingPaymentPlans: true,
+                fetchedPaymentPlans: false,
+                paymentPlans: [],
+                paymentPlansPageInfo: {},
+                paymentPlansTotalCount: 0,
+                errorPaymentPlans: null
+            };
+        case "CONTRIBUTIONPLAN_PAYMENTPLANS_RESP":
+            return {
+                ...state,
+                fetchingPaymentPlans: false,
+                fetchedPaymentPlans: true,
+                paymentPlans: parseData(action.payload.data.paymentPlan),
+                paymentPlansPageInfo: pageInfo(action.payload.data.paymentPlan),
+                paymentPlansTotalCount: !!action.payload.data.paymentPlan ? action.payload.data.paymentPlan.totalCount : null,
+                errorPaymentPlans: formatGraphQLError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_PAYMENTPLANS_ERR":
+            return {
+                ...state,
+                fetchingPaymentPlans: false,
+                errorPaymentPlans: formatServerError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS_REQ":
+            return {
+                ...state,
+                fetchingPickerPaymentPlans: true,
+                fetchedPickerPaymentPlans: false,
+                pickerPaymentPlans: [],
+                errorPickerPaymentPlans: null
+            };
+        case "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS_RESP":
+            return {
+                ...state,
+                fetchingPickerPaymentPlans: false,
+                fetchedPickerPaymentPlans: true,
+                pickerPaymentPlans: parseData(action.payload.data.paymentPlan),
+                errorPickerPaymentPlans: formatGraphQLError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS_ERR":
+            return {
+                ...state,
+                fetchingPickerPaymentPlans: false,
+                errorPickerPaymentPlans: formatServerError(action.payload)
             };
         case "CONTRIBUTIONPLAN_MUTATION_REQ":
             return dispatchMutationReq(state, action);

@@ -49,5 +49,18 @@
     "contributionPlan.UpdateContributionPlanBundleDetails.mutationLabel": "Update {contributionPlan} of {contributionPlanBundle}",
     "contributionPlan.DeleteContributionPlanBundleDetails.mutationLabel": "Delete {contributionPlan} from {contributionPlanBundle}",
     "contributionPlan.ReplaceContributionPlanBundleDetails.mutationLabel": "Replace {contributionPlan} of {contributionPlanBundle}",
-    "contributionPlan.contributionPlanBundle.replacePage.title": "Add New Version of Contribution Plan Bundle {label}"
+    "contributionPlan.contributionPlanBundle.replacePage.title": "Add New Version of Contribution Plan Bundle {label}",
+    "contributionPlan.paymentPlans.page.title": "Payment Plans",
+    "contributionPlan.paymentPlans.searcher.results.title": "{paymentPlansTotalCount} Payment Plans Found",
+    "contributionPlan.paymentPlan.createButton.tooltip": "Create new Payment Plan",
+    "paymentPlan.code": "Code",
+    "paymentPlan.name": "Name",
+    "paymentPlan.calculation": "Calculation Rule",
+    "paymentPlan.benefitPlan": "Benefit Product",
+    "paymentPlan.periodicity": "Periodicity",
+    "paymentPlan.dateValidFrom": "Valid from",
+    "paymentPlan.dateValidTo": "Valid to",
+    "paymentPlan.isDeleted": "Show Deleted",
+    "paymentPlan.emptyLabel": " ",
+    "paymentPlan.any": "Any"
 }
