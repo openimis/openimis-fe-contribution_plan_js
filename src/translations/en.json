@@ -62,5 +62,10 @@
     "paymentPlan.dateValidTo": "Valid to",
     "paymentPlan.isDeleted": "Show Deleted",
     "paymentPlan.emptyLabel": " ",
-    "paymentPlan.any": "Any"
+    "paymentPlan.any": "Any",
+    "paymentPlan.paymentPlan.createButton.tooltip": "Create new Payment Plan",
+    "paymentPlan.deleteButton.tooltip": "Delete",
+    "paymentPlan.deletePaymentPlan.confirm.title": "Delete Payment Plan {label}",
+    "paymentPlan.deletePaymentPlan.confirm.message": "Are you sure you want to delete {label}?",
+    "paymentPlan.deletePaymentPlan.mutationLabel": "Delete Payment Plan - {label}"
 }

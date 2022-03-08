@@ -23,6 +23,7 @@ const ROUTE_CONTRIBUTION_PLAN_BUNDLES = "contributionPlanBundles";
 const ROUTE_CONTRIBUTION_PLAN_BUNDLE = "contributionPlanBundles/contributionPlanBundle";
 const ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE = "contributionPlanBundles/replaceContributionPlanBundle";
 const ROUTE_PAYMENT_PLANS = "paymentPlans";
+const ROUTE_PAYMENT_PLAN = "paymentPlans/paymentPlan";
 
 const DEFAULT_CONFIG = {
     "translations": [{ key: "en", messages: messages_en }],
@@ -38,6 +39,7 @@ const DEFAULT_CONFIG = {
         { key: "contributionPlan.ContributionPlanPicker", ref: ContributionPlanPicker },
         { key: "contributionPlan.ContributionPlanPicker.projection", ref: ["id", "code", "name"] },
         { key: "contributionPlan.route.paymentPlans", ref: ROUTE_PAYMENT_PLANS },
+        { key: "contributionPlan.route.paymentPlan", ref: ROUTE_PAYMENT_PLAN },
     ],
     "core.Router": [
         { path: ROUTE_CONTRIBUTION_PLANS, component: ContributionPlansPage },
