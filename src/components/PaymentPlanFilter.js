@@ -33,6 +33,16 @@ class PaymentPlanFilter extends Component {
         ])
     }
 
+    _onChangeStringFilterWithoutLookup = (k, v) => {
+        this.props.onChangeFilters([
+            {
+                id: k,
+                value: v,
+                filter: `${k}: "${v}"`
+            }
+        ])
+    }
+
     _onChangeStringFilter = (k, v, lookup) => {
         this.props.onChangeFilters([
             {
@@ -78,7 +88,7 @@ class PaymentPlanFilter extends Component {
                         contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
                         label={formatMessage(intl, "contributionPlan", "calculation")}
                         value={this._filterValue('calculation')}
-                        onChange={v => this._onChangeStringFilter('calculation', v)}
+                        onChange={this._onChangeStringFilterWithoutLookup}
                         withNull
                         nullLabel={formatMessage(intl, "contributionPlan", "any")}
                     />

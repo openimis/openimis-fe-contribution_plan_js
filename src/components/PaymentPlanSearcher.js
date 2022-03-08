@@ -17,7 +17,7 @@ import PaymentPlanFilter from "./PaymentPlanFilter";
 import {
     ROWS_PER_PAGE_OPTIONS,
     DEFAULT_PAGE_SIZE,
-    PAYMENTPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
+    CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
 } from "../constants";
 
 class PaymentPlanSearcher extends Component {
@@ -48,7 +48,7 @@ class PaymentPlanSearcher extends Component {
             paymentPlan => !!paymentPlan.name ? paymentPlan.name : "",
             paymentPlan => !!paymentPlan.calculation 
                 ? <Contributions
-                    contributionKey={PAYMENTPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
+                    contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
                     value={paymentPlan.calculation}
                     readOnly
                 /> : "",
