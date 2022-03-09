@@ -22,6 +22,16 @@ const CONTRIBUTIONPLANBUNDLEDETAILS_FULL_PROJECTION = (modulesManager) => [
     "dateValidFrom", "dateValidTo", "replacementUuid"
 ]
 
+const PAYMENTPLAN_FULL_PROJECTION = (modulesManager) => [
+    "id", "code", "name", "calculation", "jsonExt",
+    "benefitPlan" + modulesManager.getProjection("product.ProductPicker.projection"),
+    "periodicity", "dateValidFrom", "dateValidTo", "isDeleted"
+];
+
+const PAYMENTPLAN_PICKER_PROJECTION = () => [
+    "id", "code", "name"
+];
+
 function dateTimeToDate(date) {
     return date.split('T')[0];
 }
@@ -80,6 +90,24 @@ export function fetchContributionPlanBundleContributionPlans(modulesManager, par
         CONTRIBUTIONPLANBUNDLEDETAILS_FULL_PROJECTION(modulesManager)
     );
     return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS");
+}
+
+export function fetchPaymentPlans(modulesManager, params) {
+    const payload = formatPageQueryWithCount(
+        "paymentPlan",
+        params,
+        PAYMENTPLAN_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_PAYMENTPLANS");
+}
+
+export function fetchPickerPaymentPlans(params) {
+    const payload = formatPageQuery(
+        "paymentPlan",
+        params,
+        PAYMENTPLAN_PICKER_PROJECTION()
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS");
 }
 
 function formatContributionPlanGQL(contributionPlan) {
@@ -266,6 +294,21 @@ export function replaceContributionPlanBundleContributionPlan(contributionPlanBu
     return graphql(
         mutation.payload,
         ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_REPLACE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function deletePaymentPlan(paymentPlan, clientMutationLabel, clientMutationDetails = null) {
+    let paymentPlanUuids = `uuids: ["${decodeId(paymentPlan.id)}"]`;
+    let mutation = formatMutation("deletePaymentPlan", paymentPlanUuids, clientMutationLabel, clientMutationDetails);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_DELETE_PAYMENTPLAN_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
         {
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,
