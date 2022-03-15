@@ -35,20 +35,22 @@ function reducer(
         contributionPlanBundleContributionPlansPageInfo: {},
         contributionPlanBundleContributionPlansTotalCount: 0,
         errorContributionPlanBundleContributionPlans: null,
-
         fetchingPaymentPlans: false,
         errorPaymentPlans: null,
         fetchedPaymentPlans: false,
         paymentPlans: [],
         paymentPlansPageInfo: {},
         paymentPlansTotalCount: 0,
-
         fetchingPickerPaymentPlans: false,
         errorPickerPaymentPlans: null,
         fetchedPickerPaymentPlans: false,
         pickerPaymentPlans: [],
         fetchingPaymentPlan: false,
         fetchedPaymentPlan: false,
+        fetchingPaymentPlan: false,
+        fetchedPaymentPlan: false,
+        paymentPlan: {},
+        errorPaymentPlan: null,
     },
     action
 ) {
@@ -223,6 +225,28 @@ function reducer(
                 fetchingPaymentPlans: false,
                 errorPaymentPlans: formatServerError(action.payload)
             };
+        case "CONTRIBUTIONPLAN_PAYMENTPLAN_REQ":
+            return {
+                ...state,
+                fetchingPaymentPlan: true,
+                fetchedPaymentPlan: false,
+                paymentPlan: [],
+                errorPaymentPlan: null
+            };
+        case "CONTRIBUTIONPLAN_PAYMENTPLAN_RESP":
+            return {
+                ...state,
+                fetchingPaymentPlan: false,
+                fetchedPaymentPlan: true,
+                paymentPlan: parseData(action.payload.data.paymentPlan).find(paymentPlan => !!paymentPlan),
+                errorPaymentPlan: formatGraphQLError(action.payload)
+            };
+        case "CONTRIBUTIONPLAN_PAYMENTPLAN_ERR":
+            return {
+                ...state,
+                fetchingPaymentPlan: false,
+                errorPaymentPlan: formatServerError(action.payload)
+            };
         case "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS_REQ":
             return {
                 ...state,
@@ -271,6 +295,12 @@ function reducer(
             return dispatchMutationResp(state, "deleteContributionPlanBundleDetails", action);
         case "CONTRIBUTIONPLAN_REPLACE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP":
             return dispatchMutationResp(state, "replaceContributionPlanBundleDetails", action);
+        case "CONTRIBUTIONPLAN_CREATE_PAYMENTPLAN_RESP":
+            return dispatchMutationResp(state, "createPaymentPlan", action);
+        case "CONTRIBUTIONPLAN_UPDATE_PAYMENTPLAN_RESP":
+            return dispatchMutationResp(state, "updatePaymentPlan", action);
+        case "CONTRIBUTIONPLAN_REPLACE_PAYMENTPLAN_RESP":
+            return dispatchMutationResp(state, "replacePaymentPlan", action);
         case "CONTRIBUTIONPLAN_DELETE_PAYMENTPLAN_RESP":
             return dispatchMutationResp(state, "deletePaymentPlan", action);
         default:

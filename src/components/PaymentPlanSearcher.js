@@ -17,11 +17,15 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanFilter from "./PaymentPlanFilter";
 import { IconButton } from "@material-ui/core";
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from "@material-ui/icons/Delete";
 import {
     ROWS_PER_PAGE_OPTIONS,
     DEFAULT_PAGE_SIZE,
     RIGHT_PAYMENT_PLAN_DELETE,
+    RIGHT_PAYMENT_PLAN_UPDATE,
+    RIGHT_PAYMENT_PLAN_REPLACE,
     CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
 } from "../constants";
 
@@ -56,6 +60,12 @@ class PaymentPlanSearcher extends Component {
             "paymentPlan.dateValidFrom",
             "paymentPlan.dateValidTo"
         ];
+        if (rights.includes(RIGHT_PAYMENT_PLAN_REPLACE)) {
+            result.push("paymentPlan.emptyLabel");
+        }
+        if (rights.includes(RIGHT_PAYMENT_PLAN_UPDATE)) {
+            result.push("paymentPlan.emptyLabel");
+        }
         if (rights.includes(RIGHT_PAYMENT_PLAN_DELETE)) {
             result.push("paymentPlan.emptyLabel");
         }
@@ -63,7 +73,7 @@ class PaymentPlanSearcher extends Component {
     }
 
     itemFormatters = () => {
-        const { intl, rights, modulesManager } = this.props;
+        const { intl, rights, modulesManager, paymentPlanPageLink, onReplace } = this.props;
         let result = [
             paymentPlan => !!paymentPlan.code ? paymentPlan.code : "",
             paymentPlan => !!paymentPlan.name ? paymentPlan.name : "",
@@ -89,6 +99,35 @@ class PaymentPlanSearcher extends Component {
                 ? formatDateFromISO(modulesManager, intl, paymentPlan.dateValidTo)
                 : ""
         ];
+        if (rights.includes(RIGHT_PAYMENT_PLAN_REPLACE)) {
+            result.push(
+                paymentPlan => !this.isDeletedFilterEnabled(paymentPlan) && withTooltip(
+                    <div>
+                        <IconButton
+                            onClick={() => onReplace(paymentPlan)}
+                            disabled={this.state.deleted.includes(paymentPlan.id) || this.isReplaced(paymentPlan)}>
+                            <NoteAddIcon />
+                        </IconButton>
+                    </div>,
+                    formatMessage(intl, "paymentPlan", "replaceButton.tooltip")
+                )
+            );
+        }
+        if (rights.includes(RIGHT_PAYMENT_PLAN_UPDATE)) {
+            result.push(
+                paymentPlan => !this.isDeletedFilterEnabled(paymentPlan) && withTooltip(
+                    <div>
+                        <IconButton
+                            href={paymentPlanPageLink(paymentPlan)}
+                            onClick={e => e.stopPropagation() && onDoubleClick(paymentPlan)}
+                            disabled={this.state.deleted.includes(paymentPlan.id) || this.isReplaced(paymentPlan)}>
+                            <EditIcon />
+                        </IconButton>
+                    </div>,
+                    formatMessage(intl, "paymentPlan", "editButton.tooltip")
+                )
+            );
+        }
         if (rights.includes(RIGHT_PAYMENT_PLAN_DELETE)) {
             result.push(
                 paymentPlan => !this.isDeletedFilterEnabled(paymentPlan) && withTooltip(
@@ -130,11 +169,15 @@ class PaymentPlanSearcher extends Component {
         )
     }
 
+    isReplaced = paymentPlan => !!paymentPlan.replacementUuid;
+
     isDeletedFilterEnabled = paymentPlan => paymentPlan.isDeleted;
 
     isRowDisabled = (_, paymentPlan) => this.state.deleted.includes(paymentPlan.id) && !this.isDeletedFilterEnabled(paymentPlan);
 
-    isOnDoubleClickEnabled = paymentPlan => !this.state.deleted.includes(paymentPlan.id) && !this.isDeletedFilterEnabled(paymentPlan);
+    isOnDoubleClickEnabled = paymentPlan => !this.state.deleted.includes(paymentPlan.id) 
+        && !this.isDeletedFilterEnabled(paymentPlan)
+        && !this.isReplaced(paymentPlan);
     
     sorts = () => [
         ['code', true],
@@ -161,7 +204,7 @@ class PaymentPlanSearcher extends Component {
 
     render() {
         const { intl, fetchingPaymentPlans, fetchedPaymentPlans, errorPaymentPlans,
-            paymentPlans, paymentPlansPageInfo, paymentPlansTotalCount } = this.props;
+            paymentPlans, paymentPlansPageInfo, paymentPlansTotalCount, onDoubleClick } = this.props;
         return (
             <Fragment>
                 <Searcher
@@ -180,6 +223,9 @@ class PaymentPlanSearcher extends Component {
                     rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                     defaultPageSize={DEFAULT_PAGE_SIZE}
                     defaultOrderBy="code"
+                    onDoubleClick={paymentPlan => this.isOnDoubleClickEnabled(paymentPlan) && onDoubleClick(paymentPlan)}
+                    rowDisabled={this.isRowDisabled}
+                    rowLocked={this.isRowDisabled}
                     defaultFilters={this.defaultFilters()}
                 />
             </Fragment>
