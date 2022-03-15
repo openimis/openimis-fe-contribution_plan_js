@@ -10,6 +10,8 @@ import ContributionPlanBundleReplacePage from "./pages/ContributionPlanBundleRep
 import ContributionPlanBundlePicker from "./pickers/ContributionPlanBundlePicker";
 import ContributionPlanPicker from "./pickers/ContributionPlanPicker";
 import PaymentPlansPage from "./pages/PaymentPlansPage";
+import PaymentPlanPage from "./pages/PaymentPlanPage";
+import PaymentPlanReplacePage from "./pages/PaymentPlanReplacePage";
 import {
     RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH,
     RIGHT_CONTRIBUTION_PLAN_SEARCH, 
@@ -24,6 +26,7 @@ const ROUTE_CONTRIBUTION_PLAN_BUNDLE = "contributionPlanBundles/contributionPlan
 const ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE = "contributionPlanBundles/replaceContributionPlanBundle";
 const ROUTE_PAYMENT_PLANS = "paymentPlans";
 const ROUTE_PAYMENT_PLAN = "paymentPlans/paymentPlan";
+const ROUTE_PAYMENT_PLAN_REPLACE = "paymentPlans/replacePaymentPlan";
 
 const DEFAULT_CONFIG = {
     "translations": [{ key: "en", messages: messages_en }],
@@ -40,6 +43,7 @@ const DEFAULT_CONFIG = {
         { key: "contributionPlan.ContributionPlanPicker.projection", ref: ["id", "code", "name"] },
         { key: "contributionPlan.route.paymentPlans", ref: ROUTE_PAYMENT_PLANS },
         { key: "contributionPlan.route.paymentPlan", ref: ROUTE_PAYMENT_PLAN },
+        { key: "contributionPlan.route.replacePaymentPlan", ref: ROUTE_PAYMENT_PLAN_REPLACE },
     ],
     "core.Router": [
         { path: ROUTE_CONTRIBUTION_PLANS, component: ContributionPlansPage },
@@ -48,6 +52,8 @@ const DEFAULT_CONFIG = {
         { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE  + "/:contributionplanbundle_id?", component: ContributionPlanBundlePage },
         { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE  + "/:contributionplanbundle_id", component: ContributionPlanBundleReplacePage },
         { path: ROUTE_PAYMENT_PLANS, component: PaymentPlansPage },
+        { path: ROUTE_PAYMENT_PLAN  + "/:paymentplan_id?", component: PaymentPlanPage },
+        { path: ROUTE_PAYMENT_PLAN_REPLACE  + "/:paymentplan_id", component: PaymentPlanReplacePage },
     ],
     "admin.MainMenu": [
         {
