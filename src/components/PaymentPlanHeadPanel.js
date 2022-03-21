@@ -18,7 +18,7 @@ import {
     MAX_PERIODICITY_VALUE,
     CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY,
     CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY,
-    CONTRIBUTIONPLAN_CLASSNAME,
+    PAYMENTPLAN_CLASSNAME,
     RIGHT_CALCULATION_WRITE,
     RIGHT_CALCULATION_UPDATE
 } from "../constants";
@@ -99,7 +99,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                     <Contributions
                         contributionKey={CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY}
                         intl={intl}
-                        className={CONTRIBUTIONPLAN_CLASSNAME}
+                        className={PAYMENTPLAN_CLASSNAME}
                         entity={paymentPlan}
                         requiredRights={[!!paymentPlan.id ? RIGHT_CALCULATION_UPDATE : RIGHT_CALCULATION_WRITE]}
                         value={!!paymentPlan.jsonExt ? paymentPlan.jsonExt : null}
