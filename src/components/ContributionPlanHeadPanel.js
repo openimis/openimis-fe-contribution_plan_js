@@ -103,18 +103,6 @@ class ContributionPlanHeadPanel extends FormPanel {
                             required
                         />
                     </Grid>
-                    <Contributions
-                        contributionKey={CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY}
-                        intl={intl}
-                        className={CONTRIBUTIONPLAN_CLASSNAME}
-                        entity={contributionPlan}
-                        requiredRights={[!!contributionPlan.id ? RIGHT_CALCULATION_UPDATE : RIGHT_CALCULATION_WRITE]}
-                        value={!!contributionPlan.jsonExt ? contributionPlan.jsonExt : null}
-                        onChange={this.updateAttribute}
-                        gridItemStyle={classes.item}
-                        gridItemSize={GRID_ITEM_SIZE}
-                        setJsonExtValid={setJsonExtValid}
-                    />
                     <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                         <PublishedComponent
                             pubRef="product.ProductPicker"
@@ -159,6 +147,27 @@ class ContributionPlanHeadPanel extends FormPanel {
                         />
                     </Grid>
                 </Grid>
+                <Divider />
+                <Fragment>
+                    <div className={classes.item}>
+                        <FormattedMessage module="contributionPlan" id="calculationParams" />
+                    </div>
+                    <Divider />
+                    <Grid container className={classes.item}>
+                        <Contributions
+                            contributionKey={CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY}
+                            intl={intl}
+                            className={CONTRIBUTIONPLAN_CLASSNAME}
+                            entity={contributionPlan}
+                            requiredRights={[!!contributionPlan.id ? RIGHT_CALCULATION_UPDATE : RIGHT_CALCULATION_WRITE]}
+                            value={!!contributionPlan.jsonExt ? contributionPlan.jsonExt : null}
+                            onChange={this.updateAttribute}
+                            gridItemStyle={classes.item}
+                            gridItemSize={GRID_ITEM_SIZE}
+                            setJsonExtValid={setJsonExtValid}
+                        />
+                    </Grid>
+                </Fragment>
             </Fragment>
         );
     }
