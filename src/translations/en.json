@@ -5,6 +5,7 @@
     "contributionPlan.contributionPlanBundles.searcher.results.title": "{contributionPlanBundlesTotalCount} Contribution Plan Bundles Found",
     "contributionPlan.code": "Code",
     "contributionPlan.name": "Name",
+    "contributionPlan.calculationParams": "Additional parameters",
     "contributionPlan.calculation": "Calculation Rule",
     "contributionPlan.benefitPlan": "Insurance Product",
     "contributionPlan.periodicity": "Periodicity",
