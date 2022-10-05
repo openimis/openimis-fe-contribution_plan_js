@@ -18,7 +18,7 @@ import {
     MAX_PERIODICITY_VALUE,
     CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY,
     CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY,
-    CONTRIBUTIONPLAN_CLASSNAME,
+    PAYMENTPLAN_CLASSNAME,
     RIGHT_CALCULATION_WRITE,
     RIGHT_CALCULATION_UPDATE
 } from "../constants";
@@ -33,19 +33,12 @@ const styles = theme => ({
 
 const GRID_ITEM_SIZE = 3;
 
-class ContributionPlanHeadPanel extends FormPanel {
+class PaymentPlanHeadPanel extends FormPanel {
     render() {
         const { intl, classes, mandatoryFieldsEmpty, setJsonExtValid } = this.props;
-        /**
-         * Mapping @see benefitPlan property into @see product property is required
-         * because property names of @see ContributionPlan object on frontend
-         * have to match property names of a corresponding object on backend.
-         * Also, @see calculation property, which is a UUID, has to be converted into an object
-         * so that its @see id property can be used to fetch calculation parameters
-         */
         const { benefitPlan: product, calculation: calculationId, ...others } = this.props.edited;
         const calculation = !!calculationId ? { id: calculationId } : null;
-        const contributionPlan = { product, calculation, ...others };
+        const paymentPlan = { product, calculation, ...others };
         return (
             <Fragment>
                 <Grid container className={classes.tableTitle}>
@@ -59,7 +52,7 @@ class ContributionPlanHeadPanel extends FormPanel {
                         >
                             <Grid item>
                                 <Typography>
-                                    <FormattedMessage module="contributionPlan" id="contributionPlan.headPanel.title" />
+                                    <FormattedMessage module="contributionPlan" id="paymentPlan.headPanel.title" />
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -80,9 +73,9 @@ class ContributionPlanHeadPanel extends FormPanel {
                             module="contributionPlan"
                             label="code"
                             required
-                            value={!!contributionPlan.code ? contributionPlan.code : ""}
+                            value={!!paymentPlan.code ? paymentPlan.code : ""}
                             onChange={(v) => this.updateAttribute("code", v)}
-                            readOnly={!!contributionPlan.id}
+                            readOnly={!!paymentPlan.id}
                         />
                     </Grid>
                     <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
@@ -90,14 +83,14 @@ class ContributionPlanHeadPanel extends FormPanel {
                             module="contributionPlan"
                             label="name"
                             required
-                            value={!!contributionPlan.name ? contributionPlan.name : ""}
+                            value={!!paymentPlan.name ? paymentPlan.name : ""}
                             onChange={(v) => this.updateAttribute("name", v)}
                         />
                     </Grid>
                     <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                         <Contributions
                             contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
-                            label={formatMessage(intl, "contributionPlan", "calculation")}
+                            label={formatMessage(intl, "paymentPlan", "calculation")}
                             value={!!calculationId ? calculationId : null}
                             onChange={this.updateAttribute}
                             required
@@ -107,9 +100,9 @@ class ContributionPlanHeadPanel extends FormPanel {
                         <PublishedComponent
                             pubRef="product.ProductPicker"
                             withNull={true}
-                            label={formatMessage(intl, "contributionPlan", "benefitPlan")}
+                            label={formatMessage(intl, "paymentPlan", "benefitPlan")}
                             required
-                            value={!!contributionPlan.product ? contributionPlan.product : null}
+                            value={!!paymentPlan.product ? paymentPlan.product : null}
                             onChange={(v) => this.updateAttribute("benefitPlan", v)}
                         />
                     </Grid>
@@ -121,9 +114,9 @@ class ContributionPlanHeadPanel extends FormPanel {
                             /**
                              * @see min set to @see EMPTY_PERIODICITY_FILTER when filter unset to avoid @see NumberInput error message
                              */
-                            min={!!contributionPlan.periodicity ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
+                            min={!!paymentPlan.periodicity ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
                             max={MAX_PERIODICITY_VALUE}
-                            value={!!contributionPlan.periodicity ? contributionPlan.periodicity : null}
+                            value={!!paymentPlan.periodicity ? paymentPlan.periodicity : null}
                             onChange={(v) => this.updateAttribute("periodicity", v)}
                         />
                     </Grid>
@@ -133,7 +126,7 @@ class ContributionPlanHeadPanel extends FormPanel {
                             module="contributionPlan"
                             label="dateValidFrom"
                             required
-                            value={!!contributionPlan.dateValidFrom ? contributionPlan.dateValidFrom : null}
+                            value={!!paymentPlan.dateValidFrom ? paymentPlan.dateValidFrom : null}
                             onChange={(v) => this.updateAttribute("dateValidFrom", v)}
                         />
                     </Grid>
@@ -142,7 +135,7 @@ class ContributionPlanHeadPanel extends FormPanel {
                             pubRef="core.DatePicker"
                             module="contributionPlan"
                             label="dateValidTo"
-                            value={!!contributionPlan.dateValidTo ? contributionPlan.dateValidTo : null}
+                            value={!!paymentPlan.dateValidTo ? paymentPlan.dateValidTo : null}
                             onChange={(v) => this.updateAttribute("dateValidTo", v)}
                         />
                     </Grid>
@@ -157,10 +150,10 @@ class ContributionPlanHeadPanel extends FormPanel {
                         <Contributions
                             contributionKey={CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY}
                             intl={intl}
-                            className={CONTRIBUTIONPLAN_CLASSNAME}
-                            entity={contributionPlan}
-                            requiredRights={[!!contributionPlan.id ? RIGHT_CALCULATION_UPDATE : RIGHT_CALCULATION_WRITE]}
-                            value={!!contributionPlan.jsonExt ? contributionPlan.jsonExt : null}
+                            className={PAYMENTPLAN_CLASSNAME}
+                            entity={paymentPlan}
+                            requiredRights={[!!paymentPlan.id ? RIGHT_CALCULATION_UPDATE : RIGHT_CALCULATION_WRITE]}
+                            value={!!paymentPlan.jsonExt ? paymentPlan.jsonExt : null}
                             onChange={this.updateAttribute}
                             gridItemStyle={classes.item}
                             gridItemSize={GRID_ITEM_SIZE}
@@ -173,4 +166,4 @@ class ContributionPlanHeadPanel extends FormPanel {
     }
 }
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(ContributionPlanHeadPanel))))
+export default withModulesManager(injectIntl(withTheme(withStyles(styles)(PaymentPlanHeadPanel))))

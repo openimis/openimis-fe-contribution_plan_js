@@ -22,6 +22,16 @@ const CONTRIBUTIONPLANBUNDLEDETAILS_FULL_PROJECTION = (modulesManager) => [
     "dateValidFrom", "dateValidTo", "replacementUuid"
 ]
 
+const PAYMENTPLAN_FULL_PROJECTION = (modulesManager) => [
+    "id", "code", "name", "calculation", "jsonExt",
+    "benefitPlan" + modulesManager.getProjection("product.ProductPicker.projection"),
+    "periodicity", "dateValidFrom", "dateValidTo", "isDeleted"
+];
+
+const PAYMENTPLAN_PICKER_PROJECTION = () => [
+    "id", "code", "name"
+];
+
 function dateTimeToDate(date) {
     return date.split('T')[0];
 }
@@ -82,6 +92,34 @@ export function fetchContributionPlanBundleContributionPlans(modulesManager, par
     return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS");
 }
 
+export function fetchPaymentPlans(modulesManager, params) {
+    const payload = formatPageQueryWithCount(
+        "paymentPlan",
+        params,
+        PAYMENTPLAN_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_PAYMENTPLANS");
+}
+
+export function fetchPaymentPlan(modulesManager, paymentPlanId) {
+    let filter = !!paymentPlanId ? `id: "${paymentPlanId}"` : '';
+    const payload = formatPageQuery(
+        "paymentPlan",
+        [filter],
+        PAYMENTPLAN_FULL_PROJECTION(modulesManager)
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_PAYMENTPLAN");
+}
+
+export function fetchPickerPaymentPlans(params) {
+    const payload = formatPageQuery(
+        "paymentPlan",
+        params,
+        PAYMENTPLAN_PICKER_PROJECTION()
+    );
+    return graphql(payload, "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS");
+}
+
 function formatContributionPlanGQL(contributionPlan) {
     return `
         ${!!contributionPlan.id ? `id: "${decodeId(contributionPlan.id)}"` : ''}
@@ -114,6 +152,20 @@ function formatContributionPlanBundleDetailsGQL(contributionPlanBundleDetails, i
         ${!!contributionPlanBundleDetails.contributionPlanBundleId ? `contributionPlanBundleId: "${contributionPlanBundleDetails.contributionPlanBundleId}"` : ''}
         ${!!contributionPlanBundleDetails.dateValidFrom ? `dateValidFrom: "${dateTimeToDate(contributionPlanBundleDetails.dateValidFrom)}"` : ""}
         ${!!contributionPlanBundleDetails.dateValidTo ? `dateValidTo: "${dateTimeToDate(contributionPlanBundleDetails.dateValidTo)}"` : ""}
+    `;
+}
+
+function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
+    return `
+        ${!!paymentPlan.id ? `${isReplaceMutation ? 'uuid' : 'id'}: "${decodeId(paymentPlan.id)}"` : ''}
+        ${!!paymentPlan.code ? `code: "${formatGQLString(paymentPlan.code)}"` : ""}
+        ${!!paymentPlan.name ? `name: "${formatGQLString(paymentPlan.name)}"` : ""}
+        ${!!paymentPlan.calculation ? `calculation: "${paymentPlan.calculation}"` : ""}
+        ${!!paymentPlan.jsonExt ? `jsonExt: ${JSON.stringify(paymentPlan.jsonExt)}` : ''}
+        ${!!paymentPlan.benefitPlan ? `benefitPlanId: ${decodeId(paymentPlan.benefitPlan.id)}` : ""}
+        ${!!paymentPlan.periodicity ? `periodicity: ${paymentPlan.periodicity}` : ""}
+        ${!!paymentPlan.dateValidFrom ? `dateValidFrom: "${dateTimeToDate(paymentPlan.dateValidFrom)}"` : ""}
+        ${!!paymentPlan.dateValidTo ? `dateValidTo: "${dateTimeToDate(paymentPlan.dateValidTo)}"` : ""}
     `;
 }
 
@@ -266,6 +318,63 @@ export function replaceContributionPlanBundleContributionPlan(contributionPlanBu
     return graphql(
         mutation.payload,
         ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_REPLACE_CONTRIBUTIONPLANBUNDLEDETAILS_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function createPaymentPlan(paymentPlan, clientMutationLabel) {
+    let mutation = formatMutation("createPaymentPlan", formatPaymentPlanGQL(paymentPlan), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_CREATE_PAYMENTPLAN_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function updatePaymentPlan(paymentPlan, clientMutationLabel) {
+    let mutation = formatMutation("updatePaymentPlan", formatPaymentPlanGQL(paymentPlan), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_UPDATE_PAYMENTPLAN_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function replacePaymentPlan(paymentPlan, clientMutationLabel) {
+    let mutation = formatMutation("replacePaymentPlan", formatPaymentPlanGQL(paymentPlan, true), clientMutationLabel);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_REPLACE_PAYMENTPLAN_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
+        {
+            clientMutationId: mutation.clientMutationId,
+            clientMutationLabel,
+            requestedDateTime
+        }
+    );
+}
+
+export function deletePaymentPlan(paymentPlan, clientMutationLabel, clientMutationDetails = null) {
+    let paymentPlanUuids = `uuids: ["${decodeId(paymentPlan.id)}"]`;
+    let mutation = formatMutation("deletePaymentPlan", paymentPlanUuids, clientMutationLabel, clientMutationDetails);
+    var requestedDateTime = new Date();
+    return graphql(
+        mutation.payload,
+        ["CONTRIBUTIONPLAN_MUTATION_REQ", "CONTRIBUTIONPLAN_DELETE_PAYMENTPLAN_RESP", "CONTRIBUTIONPLAN_MUTATION_ERR"],
         {
             clientMutationId: mutation.clientMutationId,
             clientMutationLabel,
