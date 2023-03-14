@@ -36,7 +36,7 @@
     "contributionPlan.DeleteContributionPlanBundle.mutationLabel": "Delete Contribution Plan Bundle - {label}",
     "contributionPlan.deleteContributionPlanBundle.confirm.title": "Delete Contribution Plan Bundle {label}?",
     "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.title": "{count} Contribution Plans Attached",
-    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.createContributionPlan": "Create New Contribution Plan",
+    "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.createContributionPlan": "Attach new contribution plan",
     "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.editContributionPlan": "Edit Contribution Plan",
     "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.replaceContributionPlan": "Add New Version of Contribution Plan",
     "contributionPlan.contributionPlanBundle.contributionPlansAttachedPanel.error": "To start creating new Contribution Plan, you need to fill in General Information fields and click Save.",
