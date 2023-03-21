@@ -45,7 +45,7 @@ export function fetchContributionPlans(modulesManager, params) {
     return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANS");
 }
 
-export function fetchPickerContributionPlans(params) {
+export function fetchPickerContributionPlans(mm, params) {
     const payload = formatPageQuery(
         "contributionPlan",
         params,
