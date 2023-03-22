@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import {
   withModulesManager,
   formatMessage,
@@ -6,6 +7,7 @@ import {
   historyPush,
   decodeId,
   Helmet,
+  clearCurrentPaginationPage,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
@@ -63,6 +65,21 @@ class ContributionPlanBundlesPage extends Component {
     }
   };
 
+  componentDidMount = () => {
+    const moduleName = "contributionPlan";
+    const { module } = this.props;
+    if (module !== moduleName) this.props.clearCurrentPaginationPage();
+  };
+
+  componentWillUnmount = () => {
+    const { location, history } = this.props;
+    const {
+      location: { pathname },
+    } = history;
+    const urlPath = location.pathname;
+    if (!pathname.includes(urlPath)) this.props.clearCurrentPaginationPage();
+  };
+
   render() {
     const { intl, classes, rights } = this.props;
     return (
@@ -105,13 +122,20 @@ const mapStateToProps = (state) => ({
     !!state.core && !!state.core.user && !!state.core.user.i_user
       ? state.core.user.i_user.rights
       : [],
+  module: state.core?.savedPagination?.module,
 });
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ clearCurrentPaginationPage }, dispatch);
 
 export default withModulesManager(
   injectIntl(
     withTheme(
       withStyles(styles)(
-        connect(mapStateToProps, null)(ContributionPlanBundlesPage)
+        connect(
+          mapStateToProps,
+          mapDispatchToProps
+        )(ContributionPlanBundlesPage)
       )
     )
   )
