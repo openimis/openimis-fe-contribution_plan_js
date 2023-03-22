@@ -16,6 +16,7 @@ import {
   RIGHT_CONTRIBUTION_PLAN_SEARCH,
   RIGHT_CONTRIBUTION_PLAN_CREATE,
   RIGHT_CONTRIBUTION_PLAN_UPDATE,
+  MODULE_NAME,
 } from "../constants";
 import ContributionPlanSearcher from "../components/ContributionPlanSearcher";
 import { Fab } from "@material-ui/core";
@@ -53,9 +54,8 @@ class ContributionPlansPage extends Component {
   };
 
   componentDidMount = () => {
-    const moduleName = "contributionPlan";
     const { module } = this.props;
-    if (module !== moduleName) this.props.clearCurrentPaginationPage();
+    if (module !== MODULE_NAME) this.props.clearCurrentPaginationPage();
   };
 
   componentWillUnmount = () => {

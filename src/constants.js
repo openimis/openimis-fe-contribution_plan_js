@@ -28,3 +28,4 @@ export const RIGHT_PAYMENT_PLAN_CREATE = 157102
 export const RIGHT_PAYMENT_PLAN_UPDATE = 157103
 export const RIGHT_PAYMENT_PLAN_DELETE = 157104
 export const RIGHT_PAYMENT_PLAN_REPLACE = 157106
+export const MODULE_NAME = "contributionPlan";

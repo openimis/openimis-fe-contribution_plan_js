@@ -17,6 +17,7 @@ import {
   RIGHT_PAYMENT_PLAN_CREATE,
   RIGHT_PAYMENT_PLAN_UPDATE,
   RIGHT_PAYMENT_PLAN_REPLACE,
+  MODULE_NAME,
 } from "../constants";
 import PaymentPlanSearcher from "../components/PaymentPlanSearcher";
 import { Fab } from "@material-ui/core";
@@ -66,9 +67,8 @@ class PaymentPlansPage extends Component {
   };
 
   componentDidMount = () => {
-    const moduleName = "contributionPlan";
     const { module } = this.props;
-    if (module !== moduleName) this.props.clearCurrentPaginationPage();
+    if (module !== MODULE_NAME) this.props.clearCurrentPaginationPage();
   };
 
   componentWillUnmount = () => {
