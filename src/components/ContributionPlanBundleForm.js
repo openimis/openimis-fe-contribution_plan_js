@@ -58,7 +58,7 @@ class ContributionPlanBundleForm extends Component {
     titleParams = () => this.props.titleParams(this.state.contributionPlanBundle);
 
     render() {
-        const { intl, back, contributionPlanBundleId, title, isReplacing = false } = this.props;
+        const { intl, back, contributionPlanBundleId, title, save, isReplacing = false } = this.props;
         return (
             <Fragment>
                 <Helmet title={formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlanBundle.page.title", this.titleParams())} />
@@ -77,6 +77,7 @@ class ContributionPlanBundleForm extends Component {
                     Panels={isReplacing ? [] : [ContributionPlanBundleContributionPlans]}
                     contributionPlanBundleId={contributionPlanBundleId}
                     isReplacing={isReplacing}
+                    openDirty={save}
                 />
             </Fragment>
         )

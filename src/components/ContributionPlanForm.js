@@ -80,7 +80,7 @@ class ContributionPlanForm extends Component {
     setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
     render() {
-        const { intl, back } = this.props;
+        const { intl, back, save } = this.props;
         return (
             <Fragment>
                 <Helmet title={formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())} />
@@ -97,6 +97,7 @@ class ContributionPlanForm extends Component {
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
                     saveTooltip={formatMessage(intl, "contributionPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
                     setJsonExtValid={this.setJsonExtValid}
+                    openDirty={save}
                 />
             </Fragment>
         )
