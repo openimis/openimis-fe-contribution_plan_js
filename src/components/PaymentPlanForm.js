@@ -80,7 +80,7 @@ class PaymentPlanForm extends Component {
     setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
     render() {
-        const { intl, back, paymentPlanId, title, isReplacing = false } = this.props;
+        const { intl, back, paymentPlanId, title, save, isReplacing = false } = this.props;
         return (
             <Fragment>
                 <Helmet title={formatMessageWithValues(this.props.intl, "paymentPlan", "paymentPlan.page.title", this.titleParams())} />
@@ -99,6 +99,7 @@ class PaymentPlanForm extends Component {
                     setJsonExtValid={this.setJsonExtValid}
                     paymentPlanId={paymentPlanId}
                     isReplacing={isReplacing}
+                    openDirty={save}
                 />
             </Fragment>
         )
