@@ -13,7 +13,7 @@ import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanHeadPanel from "./ContributionPlanHeadPanel";
-import { fetchContributionPlan } from "../actions";
+import { fetchContributionPlan, clearContributionPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
 const styles = (theme) => ({
@@ -56,6 +56,10 @@ class ContributionPlanForm extends Component {
     }
   }
 
+  componentWillUnmount = () => {
+    this.props.clearContributionPlan();
+  };
+
   isMandatoryFieldsEmpty = () => {
     const { contributionPlan } = this.state;
     if (
@@ -82,7 +86,7 @@ class ContributionPlanForm extends Component {
   canSave = () =>
     !this.isMandatoryFieldsEmpty() &&
     this.isPeriodicityValid() &&
-    !!this.state.jsonExtValid;
+    !!this.state.jsonExtValid && !!this.props.isCodeValid
 
   save = (contributionPlan) => this.props.save(contributionPlan);
 
@@ -135,10 +139,15 @@ const mapStateToProps = (state) => ({
   errorContributionPlan: state.contributionPlan.errorContributionPlan,
   submittingMutation: state.contributionPlan.submittingMutation,
   mutation: state.contributionPlan.mutation,
+  isCodeValid:
+    state.contributionPlan?.validationFields?.contributionPlanCode?.isValid,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ fetchContributionPlan, journalize }, dispatch);
+  return bindActionCreators(
+    { fetchContributionPlan, clearContributionPlan, journalize },
+    dispatch
+  );
 };
 
 export default withHistory(

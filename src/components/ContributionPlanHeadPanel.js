@@ -1,5 +1,10 @@
 import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+
 import { Grid, Divider, Typography } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+
 import {
   withModulesManager,
   formatMessage,
@@ -9,9 +14,13 @@ import {
   PublishedComponent,
   NumberInput,
   Contributions,
+  ValidatedTextInput,
 } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import {
+  contributionPlanCodeValidation,
+  contributionPlanCodeClear,
+  contributionPlanCodeSetValid,
+} from "../actions";
 import {
   EMPTY_PERIODICITY_VALUE,
   MIN_PERIODICITY_VALUE,
@@ -34,8 +43,21 @@ const styles = (theme) => ({
 const GRID_ITEM_SIZE = 3;
 
 class ContributionPlanHeadPanel extends FormPanel {
+  shouldValidate = (input) => {
+    const { savedCode } = this.props;
+    return input !== savedCode;
+  };
+
   render() {
-    const { intl, classes, mandatoryFieldsEmpty, setJsonExtValid } = this.props;
+    const {
+      intl,
+      classes,
+      mandatoryFieldsEmpty,
+      setJsonExtValid,
+      isCodeValid,
+      isCodeValidating,
+      validationError,
+    } = this.props;
     /**
      * Mapping @see benefitPlan property into @see product property is required
      * because property names of @see ContributionPlan object on frontend
@@ -86,10 +108,27 @@ class ContributionPlanHeadPanel extends FormPanel {
         )}
         <Grid container className={classes.item}>
           <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
-            <TextInput
+            {/* <TextInput
               module="contributionPlan"
               label="code"
               required
+              value={!!contributionPlan.code ? contributionPlan.code : ""}
+              onChange={(v) => this.updateAttribute("code", v)}
+              readOnly={!!contributionPlan.id}
+            /> */}
+            <ValidatedTextInput
+              itemQueryIdentifier="contributionPlanCode"
+              codeTakenLabel="contributionPlan.codeTaken"
+              shouldValidate={this.shouldValidate}
+              isValid={isCodeValid}
+              isValidating={isCodeValidating}
+              validationError={validationError}
+              action={contributionPlanCodeValidation}
+              clearAction={contributionPlanCodeClear}
+              setValidAction={contributionPlanCodeSetValid}
+              module="contributionPlan"
+              required={true}
+              label="code"
               value={!!contributionPlan.code ? contributionPlan.code : ""}
               onChange={(v) => this.updateAttribute("code", v)}
               readOnly={!!contributionPlan.id}
@@ -212,6 +251,23 @@ class ContributionPlanHeadPanel extends FormPanel {
   }
 }
 
+const mapStateToProps = (store) => ({
+  isCodeValid:
+    store.contributionPlan?.validationFields?.contributionPlanCode?.isValid,
+  isCodeValidating:
+    store.contributionPlan?.validationFields?.contributionPlanCode
+      ?.isValidating,
+  validationError:
+    store.contributionPlan?.validationFields?.contributionPlanCode
+      ?.validationError,
+  savedCode: store.contributionPlan?.contributionPlan?.code,
+});
+
 export default withModulesManager(
-  injectIntl(withTheme(withStyles(styles)(ContributionPlanHeadPanel)))
+  injectIntl(
+    connect(
+      mapStateToProps,
+      null
+    )(withTheme(withStyles(styles)(ContributionPlanHeadPanel)))
+  )
 );

@@ -5,6 +5,7 @@ import {
   formatMutation,
   decodeId,
   formatGQLString,
+  graphqlWithVariables,
 } from "@openimis/fe-core";
 
 const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
@@ -89,6 +90,12 @@ export function fetchContributionPlan(modulesManager, contributionPlanId) {
     CONTRIBUTIONPLAN_FULL_PROJECTION(modulesManager)
   );
   return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLAN");
+}
+
+export function clearContributionPlan() {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_CONTRIBUTIONPLAN_CLEAR" });
+  };
 }
 
 export function fetchContributionPlanBundles(params) {
@@ -720,3 +727,27 @@ export function deletePaymentPlan(
     }
   );
 }
+
+export const contributionPlanCodeValidation = (mm, variables) => {
+  return graphqlWithVariables(
+    `
+    query ($contributionPlanCode: String!) {
+        validateContributionPlanCode(contributionPlanCode: $contributionPlanCode) 
+    }
+    `,
+    variables,
+    "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION"
+  );
+};
+
+export const contributionPlanCodeSetValid = () => {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_SET_VALID" });
+  };
+};
+
+export const contributionPlanCodeClear = () => {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_CLEAR" });
+  };
+};

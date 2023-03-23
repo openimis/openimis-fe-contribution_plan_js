@@ -138,6 +138,14 @@ function reducer(
         fetchingContributionPlan: false,
         errorContributionPlan: formatServerError(action.payload),
       };
+    case "CONTRIBUTIONPLAN_CONTRIBUTIONPLAN_CLEAR":
+      return {
+        ...state,
+        fetchingContributionPlan: true,
+        fetchedContributionPlan: false,
+        contributionPlan: {},
+        errorContributionPlan: null,
+      };
     case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLES_REQ":
       return {
         ...state,
@@ -305,6 +313,66 @@ function reducer(
         ...state,
         fetchingPickerPaymentPlans: false,
         errorPickerPaymentPlans: formatServerError(action.payload),
+      };
+    case "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_REQ":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contributionPlanCode: {
+            isValidating: true,
+            isValid: false,
+            validationError: null,
+          },
+        },
+      };
+    case "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_RESP":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contributionPlanCode: {
+            isValidating: false,
+            isValid: action.payload?.data?.validateContributionPlanCode,
+            validationError: formatGraphQLError(action.payload),
+          },
+        },
+      };
+    case "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_ERR":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contributionPlanCode: {
+            isValidating: false,
+            isValid: false,
+            validationError: formatServerError(action.payload),
+          },
+        },
+      };
+    case "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_CLEAR":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contributionPlanCode: {
+            isValidating: true,
+            isValid: false,
+            validationError: null,
+          },
+        },
+      };
+    case "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_SET_VALID":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          contributionPlanCode: {
+            isValidating: false,
+            isValid: true,
+            validationError: null,
+          },
+        },
       };
     case "CONTRIBUTIONPLAN_MUTATION_REQ":
       return dispatchMutationReq(state, action);

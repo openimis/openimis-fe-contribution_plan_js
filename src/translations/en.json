@@ -4,6 +4,7 @@
     "contributionPlan.contributionPlanBundles.page.title": "Contribution Plan Bundles",
     "contributionPlan.contributionPlanBundles.searcher.results.title": "{contributionPlanBundlesTotalCount} Contribution Plan Bundles Found",
     "contributionPlan.code": "Code",
+    "contributionPlan.codeTaken": "Contribution plan code already exists",
     "contributionPlan.name": "Name",
     "contributionPlan.calculationParams": "Additional parameters",
     "contributionPlan.calculation": "Calculation Rule",
