@@ -108,14 +108,6 @@ class ContributionPlanHeadPanel extends FormPanel {
         )}
         <Grid container className={classes.item}>
           <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
-            {/* <TextInput
-              module="contributionPlan"
-              label="code"
-              required
-              value={!!contributionPlan.code ? contributionPlan.code : ""}
-              onChange={(v) => this.updateAttribute("code", v)}
-              readOnly={!!contributionPlan.id}
-            /> */}
             <ValidatedTextInput
               itemQueryIdentifier="contributionPlanCode"
               codeTakenLabel="contributionPlan.codeTaken"
