@@ -35,7 +35,7 @@ const GRID_ITEM_SIZE = 3;
 
 class PaymentPlanHeadPanel extends FormPanel {
     render() {
-        const { intl, classes, mandatoryFieldsEmpty, setJsonExtValid } = this.props;
+        const { intl, classes, mandatoryFieldsEmpty, setJsonExtValid, setRequiredValid } = this.props;
         const { benefitPlan: product, calculation: calculationId, ...others } = this.props.edited;
         const calculation = !!calculationId ? { id: calculationId } : null;
         const paymentPlan = { product, calculation, ...others };
@@ -157,7 +157,9 @@ class PaymentPlanHeadPanel extends FormPanel {
                             onChange={this.updateAttribute}
                             gridItemStyle={classes.item}
                             gridItemSize={GRID_ITEM_SIZE}
+                            setRequiredValid={setRequiredValid}
                             setJsonExtValid={setJsonExtValid}
+                            periodicity={!!paymentPlan.periodicity ? paymentPlan.periodicity : null}
                         />
                     </Grid>
                 </Fragment>
