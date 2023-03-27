@@ -28,7 +28,8 @@ class PaymentPlanForm extends Component {
         super(props);
         this.state = {
             paymentPlan: {},
-            jsonExtValid: true
+            jsonExtValid: true,
+            requiredValid: false,
         };
     }
 
@@ -69,7 +70,7 @@ class PaymentPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
-    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid() && !!this.state.jsonExtValid;
+    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid() && !!this.state.jsonExtValid && !!this.state.requiredValid;
 
     save = paymentPlan => this.props.save(paymentPlan);
 
@@ -78,6 +79,7 @@ class PaymentPlanForm extends Component {
     titleParams = () => this.props.titleParams(this.state.paymentPlan);
 
     setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
+    setRequiredValid = (valid) => this.setState({ requiredValid: !!valid });
 
     render() {
         const { intl, back, paymentPlanId, title, save, isReplacing = false } = this.props;
@@ -97,6 +99,7 @@ class PaymentPlanForm extends Component {
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
                     saveTooltip={formatMessage(intl, "paymentPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
                     setJsonExtValid={this.setJsonExtValid}
+                    setRequiredValid={this.setRequiredValid}
                     paymentPlanId={paymentPlanId}
                     isReplacing={isReplacing}
                     openDirty={save}
