@@ -1,5 +1,10 @@
 import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+
 import { Grid, Divider, Typography } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+
 import {
   withModulesManager,
   FormPanel,
@@ -7,9 +12,13 @@ import {
   FormattedMessage,
   PublishedComponent,
   NumberInput,
+  ValidatedTextInput,
 } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import {
+  contributionPlanBundleCodeValidation,
+  contributionPlanBundleCodeClear,
+  contributionPlanBundleCodeSetValid,
+} from "../actions";
 import {
   EMPTY_PERIODICITY_VALUE,
   MIN_PERIODICITY_VALUE,
@@ -25,8 +34,21 @@ const styles = (theme) => ({
 });
 
 class ContributionPlanBundleHeadPanel extends FormPanel {
+  shouldValidate = (input) => {
+    const { savedCode } = this.props;
+    return input !== savedCode;
+  };
+
   render() {
-    const { classes, edited, mandatoryFieldsEmpty, isReplacing } = this.props;
+    const {
+      classes,
+      edited,
+      mandatoryFieldsEmpty,
+      isReplacing,
+      isCodeValid,
+      isCodeValidating,
+      validationError,
+    } = this.props;
     return (
       <Fragment>
         <Grid container className={classes.tableTitle}>
@@ -63,10 +85,19 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
         )}
         <Grid container className={classes.item}>
           <Grid item xs={3} className={classes.item}>
-            <TextInput
+            <ValidatedTextInput
+              itemQueryIdentifier="contributionPlanBundleCode"
+              codeTakenLabel="contributionPlan.bundleCodeTaken"
+              shouldValidate={this.shouldValidate}
+              isValid={isCodeValid}
+              isValidating={isCodeValidating}
+              validationError={validationError}
+              action={contributionPlanBundleCodeValidation}
+              clearAction={contributionPlanBundleCodeClear}
+              setValidAction={contributionPlanBundleCodeSetValid}
               module="contributionPlan"
+              required={true}
               label="code"
-              required
               value={!!edited && !!edited.code ? edited.code : ""}
               onChange={(v) => this.updateAttribute("code", v)}
               readOnly={!!edited && !!edited.id ? true : false}
@@ -131,6 +162,24 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
   }
 }
 
+const mapStateToProps = (store) => ({
+  isCodeValid:
+    store.contributionPlan?.validationFields?.contributionPlanBundleCode
+      ?.isValid,
+  isCodeValidating:
+    store.contributionPlan?.validationFields?.contributionPlanBundleCode
+      ?.isValidating,
+  validationError:
+    store.contributionPlan?.validationFields?.contributionPlanBundleCode
+      ?.validationError,
+  savedCode: store.contributionPlan?.contributionPlanBundle?.code,
+});
+
 export default withModulesManager(
-  injectIntl(withTheme(withStyles(styles)(ContributionPlanBundleHeadPanel)))
+  injectIntl(
+    connect(
+      mapStateToProps,
+      null
+    )(withTheme(withStyles(styles)(ContributionPlanBundleHeadPanel)))
+  )
 );

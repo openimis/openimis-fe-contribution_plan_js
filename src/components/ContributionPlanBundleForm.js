@@ -1,4 +1,9 @@
 import React, { Component, Fragment } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
+import _ from "lodash";
+
 import {
   Form,
   withModulesManager,
@@ -8,13 +13,13 @@ import {
   Helmet,
   journalize,
 } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import ContributionPlanBundleHeadPanel from "./ContributionPlanBundleHeadPanel";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
-import { fetchContributionPlanBundle } from "../actions";
+import {
+  fetchContributionPlanBundle,
+  clearContributionPlanBundle,
+} from "../actions";
 import ContributionPlanBundleContributionPlans from "./ContributionPlanBundleContributionPlans";
+import ContributionPlanBundleHeadPanel from "./ContributionPlanBundleHeadPanel";
 
 class ContributionPlanBundleForm extends Component {
   constructor(props) {
@@ -47,6 +52,10 @@ class ContributionPlanBundleForm extends Component {
     }
   }
 
+  componentWillUnmount = () => {
+    this.props.clearContributionPlanBundle();
+  };
+
   isMandatoryFieldsEmpty = () => {
     const { contributionPlanBundle } = this.state;
     if (
@@ -70,7 +79,19 @@ class ContributionPlanBundleForm extends Component {
       : false;
   };
 
-  canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid();
+  doesContributionPlanBundleChange = () => {
+    const { contributionPlanBundle } = this.props;
+    if (_.isEqual(contributionPlanBundle, this.state.contributionPlanBundle)) {
+      return false;
+    }
+    return true;
+  };
+
+  canSave = () =>
+    !this.isMandatoryFieldsEmpty() &&
+    this.doesContributionPlanBundleChange() &&
+    this.isPeriodicityValid() &&
+    this.props.isCodeValid;
 
   save = (contributionPlanBundle) => this.props.save(contributionPlanBundle);
 
@@ -134,11 +155,14 @@ const mapStateToProps = (state) => ({
     state.contributionPlan.errorContributionPlanBundle,
   submittingMutation: state.contributionPlan.submittingMutation,
   mutation: state.contributionPlan.mutation,
+  isCodeValid:
+    state.contributionPlan?.validationFields?.contributionPlanBundleCode
+      ?.isValid,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { fetchContributionPlanBundle, journalize },
+    { fetchContributionPlanBundle, clearContributionPlanBundle, journalize },
     dispatch
   );
 };
