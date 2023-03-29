@@ -129,6 +129,7 @@ class PaymentPlanFilter extends Component {
                         module="contributionPlan"
                         label="dateValidTo"
                         value={this._filterValue('dateValidTo')}
+                        minDate={this.props.filters?.dateValidFrom?.value}
                         onChange={v => this._onChangeDateFilter('dateValidTo', v, LESS_OR_EQUAL_LOOKUP)}
                     />
                 </Grid>
