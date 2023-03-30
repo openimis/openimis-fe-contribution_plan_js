@@ -83,10 +83,20 @@ class ContributionPlanForm extends Component {
       : false;
   };
 
+  doesContributionPlanBundleChange = () => {
+    const { contributionPlan } = this.props;
+    if (_.isEqual(contributionPlan, this.state.contributionPlan)) {
+      return false;
+    }
+    return true;
+  };
+
   canSave = () =>
     !this.isMandatoryFieldsEmpty() &&
+    this.doesContributionPlanBundleChange() &&
     this.isPeriodicityValid() &&
-    !!this.state.jsonExtValid && !!this.props.isCodeValid
+    !!this.state.jsonExtValid &&
+    !!this.props.isCodeValid;
 
   save = (contributionPlan) => this.props.save(contributionPlan);
 
