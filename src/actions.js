@@ -751,3 +751,27 @@ export const contributionPlanCodeClear = () => {
     dispatch({ type: "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_CLEAR" });
   };
 };
+
+export const paymentPlanCodeValidation = (mm, variables) => {
+  return graphqlWithVariables(
+    `
+    query ($paymentPlanCode: String!) {
+        validatePaymentPlanCode(paymentPlanCode: $paymentPlanCode) 
+    }
+    `,
+    variables,
+    "PAYMENTPLAN_CODE_FIELDS_VALIDATION"
+  );
+};
+
+export const paymentPlanCodeSetValid = () => {
+  return (dispatch) => {
+    dispatch({ type: "PAYMENTPLAN_CODE_FIELDS_VALIDATION_SET_VALID" });
+  };
+};
+
+export const paymentPlanCodeClear = () => {
+  return (dispatch) => {
+    dispatch({ type: "PAYMENTPLAN_CODE_FIELDS_VALIDATION_CLEAR" });
+  };
+};

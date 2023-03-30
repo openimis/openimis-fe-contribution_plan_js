@@ -70,7 +70,10 @@ class PaymentPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
-    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid() && !!this.state.jsonExtValid && !!this.state.requiredValid;
+    canSave = () => !this.isMandatoryFieldsEmpty() 
+    && this.isPeriodicityValid() 
+    && !!this.state.jsonExtValid
+    && !!this.props.isCodeValid;
 
     save = paymentPlan => this.props.save(paymentPlan);
 
@@ -82,7 +85,6 @@ class PaymentPlanForm extends Component {
     setRequiredValid = (valid) => this.setState({ requiredValid: !!valid });
 
     render() {
-        console.log("filters:", !!this.state.requiredValid)
         const { intl, back, paymentPlanId, title, save, isReplacing = false } = this.props;
         return (
             <Fragment>
@@ -116,7 +118,8 @@ const mapStateToProps = state => ({
     paymentPlan: state.contributionPlan.paymentPlan,
     errorPaymentPlan: state.contributionPlan.errorPaymentPlan,
     submittingMutation: state.contributionPlan.submittingMutation,
-    mutation: state.contributionPlan.mutation
+    mutation: state.contributionPlan.mutation,
+    isCodeValid: state.contributionPlan?.validationFields?.paymentPlanCode?.isValid,
 });
 
 const mapDispatchToProps = dispatch => {
