@@ -82,6 +82,7 @@ class PaymentPlanForm extends Component {
     setRequiredValid = (valid) => this.setState({ requiredValid: !!valid });
 
     render() {
+        console.log("filters:", !!this.state.requiredValid)
         const { intl, back, paymentPlanId, title, save, isReplacing = false } = this.props;
         return (
             <Fragment>
