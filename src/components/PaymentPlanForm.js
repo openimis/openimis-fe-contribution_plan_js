@@ -13,7 +13,7 @@ import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanHeadPanel from "./PaymentPlanHeadPanel";
-import { fetchPaymentPlan } from "../actions";
+import { fetchPaymentPlan, paymentPlanCodeClear } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
 const styles = theme => ({
@@ -70,6 +70,10 @@ class PaymentPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
+    componentWillUnmount = () => {
+        this.props.paymentPlanCodeClear();
+      };
+
     canSave = () => !this.isMandatoryFieldsEmpty() 
     && this.isPeriodicityValid() 
     && !!this.state.jsonExtValid
@@ -124,7 +128,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchPaymentPlan, journalize }, dispatch);
+    return bindActionCreators({ fetchPaymentPlan, paymentPlanCodeClear, journalize }, dispatch);
 };
 
 export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))))));
