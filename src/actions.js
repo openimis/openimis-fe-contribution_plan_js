@@ -734,6 +734,12 @@ export function deletePaymentPlan(
   );
 }
 
+export function clearPaymentPlan() {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_PAYMENTPLAN_CLEAR" });
+  };
+}
+
 export const contributionPlanCodeValidation = (mm, variables) => {
   return graphqlWithVariables(
     `

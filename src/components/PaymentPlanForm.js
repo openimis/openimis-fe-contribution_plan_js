@@ -13,7 +13,7 @@ import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanHeadPanel from "./PaymentPlanHeadPanel";
-import { fetchPaymentPlan, paymentPlanCodeClear } from "../actions";
+import { fetchPaymentPlan, clearPaymentPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
 const styles = theme => ({
@@ -71,14 +71,14 @@ class PaymentPlanForm extends Component {
     }
 
     componentWillUnmount = () => {
-        this.props.paymentPlanCodeClear();
-      };
+        this.props.clearPaymentPlan();
+    };
 
-    canSave = () => !this.isMandatoryFieldsEmpty() 
-    && this.isPeriodicityValid() 
-    && !!this.state.jsonExtValid
-    && !!this.props.isCodeValid
-    && !!this.state.requiredValid;
+    canSave = () => !this.isMandatoryFieldsEmpty()
+        && this.isPeriodicityValid()
+        && !!this.state.jsonExtValid
+        && !!this.props.isCodeValid
+        && !!this.state.requiredValid;
 
     save = paymentPlan => this.props.save(paymentPlan);
 
@@ -128,7 +128,18 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchPaymentPlan, paymentPlanCodeClear, journalize }, dispatch);
+    return bindActionCreators({
+        fetchPaymentPlan, clearPaymentPlan, journalize
+    },
+        dispatch);
 };
 
-export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))))));
+export default withHistory(
+    withModulesManager(
+        injectIntl(
+            withTheme(withStyles(styles)(
+                connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))
+            )
+        )
+    )
+);
