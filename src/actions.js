@@ -119,6 +119,12 @@ export function fetchContributionPlanBundle(contributionPlanBundleId) {
   return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLE");
 }
 
+export function clearContributionPlanBundle() {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLE_CLEAR" });
+  };
+}
+
 export function fetchContributionPlanBundleContributionPlans(
   modulesManager,
   params
@@ -752,6 +758,7 @@ export const contributionPlanCodeClear = () => {
   };
 };
 
+
 export const paymentPlanCodeValidation = (mm, variables) => {
   return graphqlWithVariables(
     `
@@ -775,3 +782,28 @@ export const paymentPlanCodeClear = () => {
     dispatch({ type: "PAYMENTPLAN_CODE_FIELDS_VALIDATION_CLEAR" });
   };
 };
+
+export const contributionPlanBundleCodeValidation = (mm, variables) => {
+  return graphqlWithVariables(
+    `
+    query ($contributionPlanBundleCode: String!) {
+      validateContributionPlanBundleCode(contributionPlanBundleCode: $contributionPlanBundleCode) 
+  }
+    `,
+    variables,
+    "CONTRIBUTIONPLAN_BUNDLE_CODE_FIELDS_VALIDATION"
+  );
+};
+
+export const contributionPlanBundleCodeSetValid = () => {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_BUNDLE_CODE_FIELDS_VALIDATION_SET_VALID" });
+  };
+};
+
+export const contributionPlanBundleCodeClear = () => {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_BUNDLE_CODE_FIELDS_VALIDATION_CLEAR" });
+  };
+};
+
