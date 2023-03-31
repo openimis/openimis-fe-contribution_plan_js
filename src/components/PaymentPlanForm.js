@@ -73,7 +73,8 @@ class PaymentPlanForm extends Component {
     canSave = () => !this.isMandatoryFieldsEmpty() 
     && this.isPeriodicityValid() 
     && !!this.state.jsonExtValid
-    && !!this.props.isCodeValid;
+    && !!this.props.isCodeValid
+    && !!this.state.requiredValid;
 
     save = paymentPlan => this.props.save(paymentPlan);
 
