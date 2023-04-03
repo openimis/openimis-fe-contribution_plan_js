@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import PaymentPlanHeadPanel from "./PaymentPlanHeadPanel";
 import { fetchPaymentPlan, clearPaymentPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
+import _ from "lodash";
 
 const styles = theme => ({
     paper: theme.paper.paper,
