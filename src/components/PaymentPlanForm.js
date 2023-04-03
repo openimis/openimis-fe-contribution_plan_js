@@ -70,7 +70,7 @@ class PaymentPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
-    doesPaymentPlanChanged = () => {
+    doesPaymentPlanChange = () => {
         const { paymentPlan } = this.props;
         if (_.isEqual(paymentPlan, this.state.paymentPlan)) {
           return false;
@@ -83,7 +83,7 @@ class PaymentPlanForm extends Component {
     this.isPeriodicityValid() &&
     !!this.state.jsonExtValid &&
     !!this.state.requiredValid &&
-    this.doesPaymentPlanChanged();
+    this.doesPaymentPlanChange();
 
     save = paymentPlan => this.props.save(paymentPlan);
 
