@@ -70,15 +70,20 @@ class PaymentPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
-    componentWillUnmount = () => {
-        this.props.clearPaymentPlan();
-    };
+    doesPaymentPlanChanged = () => {
+        const { paymentPlan } = this.props;
+        if (_.isEqual(paymentPlan, this.state.paymentPlan)) {
+          return false;
+        }
+        return true;
+      };
 
-    canSave = () => !this.isMandatoryFieldsEmpty()
-        && this.isPeriodicityValid()
-        && !!this.state.jsonExtValid
-        && !!this.props.isCodeValid
-        && !!this.state.requiredValid;
+    canSave = () => 
+    !this.isMandatoryFieldsEmpty() &&
+    this.isPeriodicityValid() &&
+    !!this.state.jsonExtValid &&
+    !!this.state.requiredValid &&
+    this.doesPaymentPlanChanged();
 
     save = paymentPlan => this.props.save(paymentPlan);
 
