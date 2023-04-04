@@ -734,6 +734,12 @@ export function deletePaymentPlan(
   );
 }
 
+export function clearPaymentPlan() {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_PAYMENTPLAN_CLEAR" });
+  };
+}
+
 export const contributionPlanCodeValidation = (mm, variables) => {
   return graphqlWithVariables(
     `
@@ -755,6 +761,31 @@ export const contributionPlanCodeSetValid = () => {
 export const contributionPlanCodeClear = () => {
   return (dispatch) => {
     dispatch({ type: "CONTRIBUTIONPLAN_CODE_FIELDS_VALIDATION_CLEAR" });
+  };
+};
+
+
+export const paymentPlanCodeValidation = (mm, variables) => {
+  return graphqlWithVariables(
+    `
+    query ($paymentPlanCode: String!) {
+        validatePaymentPlanCode(paymentPlanCode: $paymentPlanCode) 
+    }
+    `,
+    variables,
+    "PAYMENTPLAN_CODE_FIELDS_VALIDATION"
+  );
+};
+
+export const paymentPlanCodeSetValid = () => {
+  return (dispatch) => {
+    dispatch({ type: "PAYMENTPLAN_CODE_FIELDS_VALIDATION_SET_VALID" });
+  };
+};
+
+export const paymentPlanCodeClear = () => {
+  return (dispatch) => {
+    dispatch({ type: "PAYMENTPLAN_CODE_FIELDS_VALIDATION_CLEAR" });
   };
 };
 
@@ -781,3 +812,4 @@ export const contributionPlanBundleCodeClear = () => {
     dispatch({ type: "CONTRIBUTIONPLAN_BUNDLE_CODE_FIELDS_VALIDATION_CLEAR" });
   };
 };
+

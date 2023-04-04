@@ -13,8 +13,9 @@ import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanHeadPanel from "./PaymentPlanHeadPanel";
-import { fetchPaymentPlan } from "../actions";
+import { fetchPaymentPlan, clearPaymentPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
+import _ from "lodash";
 
 const styles = theme => ({
     paper: theme.paper.paper,
@@ -70,7 +71,20 @@ class PaymentPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
-    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid() && !!this.state.jsonExtValid && !!this.state.requiredValid;
+    doesPaymentPlanChange = () => {
+        const { paymentPlan } = this.props;
+        if (_.isEqual(paymentPlan, this.state.paymentPlan)) {
+          return false;
+        }
+        return true;
+      };
+
+    canSave = () => 
+    !this.isMandatoryFieldsEmpty() &&
+    this.isPeriodicityValid() &&
+    !!this.state.jsonExtValid &&
+    !!this.state.requiredValid &&
+    this.doesPaymentPlanChange();
 
     save = paymentPlan => this.props.save(paymentPlan);
 
@@ -115,11 +129,23 @@ const mapStateToProps = state => ({
     paymentPlan: state.contributionPlan.paymentPlan,
     errorPaymentPlan: state.contributionPlan.errorPaymentPlan,
     submittingMutation: state.contributionPlan.submittingMutation,
-    mutation: state.contributionPlan.mutation
+    mutation: state.contributionPlan.mutation,
+    isCodeValid: state.contributionPlan?.validationFields?.paymentPlanCode?.isValid,
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchPaymentPlan, journalize }, dispatch);
+    return bindActionCreators({
+        fetchPaymentPlan, clearPaymentPlan, journalize
+    },
+        dispatch);
 };
 
-export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))))));
+export default withHistory(
+    withModulesManager(
+        injectIntl(
+            withTheme(withStyles(styles)(
+                connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))
+            )
+        )
+    )
+);

@@ -300,6 +300,14 @@ function reducer(
         fetchingPaymentPlan: false,
         errorPaymentPlan: formatServerError(action.payload),
       };
+    case "CONTRIBUTIONPLAN_PAYMENTPLAN_CLEAR":
+      return {
+        ...state,
+        fetchingPaymentPlan: true,
+        fetchedPaymentPlan: false,
+        paymentPlan: {},
+        errorPaymentPlan: null,
+      };
     case "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS_REQ":
       return {
         ...state,
@@ -382,6 +390,68 @@ function reducer(
           },
         },
       };
+    case "PAYMENTPLAN_CODE_FIELDS_VALIDATION_REQ":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          paymentPlanCode: {
+            isValidating: true,
+            isValid: false,
+            validationError: null,
+          },
+        },
+      };
+    case "PAYMENTPLAN_CODE_FIELDS_VALIDATION_RESP":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          paymentPlanCode: {
+            isValidating: false,
+            isValid: action.payload?.data?.validatePaymentPlanCode,
+            validationError: formatGraphQLError(action.payload),
+          },
+        },
+      };
+    case "PAYMENTPLAN_CODE_FIELDS_VALIDATION_ERR":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          paymentPlanCode: {
+            isValidating: false,
+            isValid: false,
+            validationError: formatServerError(action.payload),
+          },
+        },
+      };
+    case "PAYMENTPLAN_CODE_FIELDS_VALIDATION_CLEAR":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          paymentPlanCode: {
+            isValidating: true,
+            isValid: false,
+            validationError: null,
+          },
+        },
+      };
+    case "PAYMENTPLAN_CODE_FIELDS_VALIDATION_SET_VALID":
+      return {
+        ...state,
+        validationFields: {
+          ...state.validationFields,
+          paymentPlanCode: {
+            isValidating: false,
+            isValid: true,
+            validationError: null,
+          },
+        },
+      };
+
+
     case "CONTRIBUTIONPLAN_BUNDLE_CODE_FIELDS_VALIDATION_REQ":
       return {
         ...state,
