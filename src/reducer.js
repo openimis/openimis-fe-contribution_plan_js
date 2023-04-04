@@ -401,7 +401,7 @@ function reducer(
           ...state.validationFields,
           contributionPlanBundleCode: {
             isValidating: false,
-            isValid: action.payload?.data?.validateContributionPlanCode,
+            isValid: action.payload?.data?.validateContributionPlanBundleCode,
             validationError: formatGraphQLError(action.payload),
           },
         },
