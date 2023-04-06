@@ -57,6 +57,7 @@
     "contributionPlan.paymentPlans.searcher.results.title": "{paymentPlansTotalCount} Payment Plans Found",
     "paymentPlan.code": "Code",
     "paymentPlan.name": "Name",
+    "paymentPlan.codeTaken": "Payment plan code already exists",
     "paymentPlan.calculation": "Calculation Rule",
     "paymentPlan.benefitPlan": "Benefit Product",
     "paymentPlan.periodicity": "Periodicity (no of months)",

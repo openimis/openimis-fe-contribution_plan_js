@@ -454,7 +454,7 @@ export function updateContributionPlanBundle(
 ) {
   let mutation = formatMutation(
     "updateContributionPlanBundle",
-    formatContributionPlanBundleGQL(contributionPlanBundle, true),
+    formatContributionPlanBundleGQL(contributionPlanBundle, false),
     clientMutationLabel
   );
   var requestedDateTime = new Date();

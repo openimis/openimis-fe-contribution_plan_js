@@ -45,7 +45,6 @@ const GRID_ITEM_SIZE = 3;
 
 
 class PaymentPlanHeadPanel extends FormPanel {
-
     shouldValidate = (input) => {
         const { savedCode } = this.props;
         return input !== savedCode;
@@ -61,6 +60,7 @@ class PaymentPlanHeadPanel extends FormPanel {
             isCodeValid,
             isCodeValidating,
             validationError,
+            readOnly,
         }
             = this.props;
         const { benefitPlan: product, calculation: calculationId, ...others } = this.props.edited;
@@ -101,7 +101,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             label="code"
                             required={true}
                             value={!!paymentPlan.code ? paymentPlan.code : ""}
-                            readOnly={!!paymentPlan.id}
+                            readOnly={readOnly}
                             itemQueryIdentifier="paymentPlanCode"
                             codeTakenLabel="paymentPlan.codeTaken"
                             shouldValidate={this.shouldValidate}
