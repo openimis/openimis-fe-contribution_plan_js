@@ -83,7 +83,6 @@ class PaymentPlanForm extends Component {
     !this.isMandatoryFieldsEmpty() &&
     this.isPeriodicityValid() &&
     !!this.state.jsonExtValid &&
-    !!this.props.isCodeValid &&
     !!this.state.requiredValid &&
     this.doesPaymentPlanChange();
 

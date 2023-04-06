@@ -57,7 +57,6 @@ class ContributionPlanHeadPanel extends FormPanel {
       isCodeValid,
       isCodeValidating,
       validationError,
-      readOnly,
     } = this.props;
     /**
      * Mapping @see benefitPlan property into @see product property is required
@@ -124,7 +123,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               label="code"
               value={!!contributionPlan.code ? contributionPlan.code : ""}
               onChange={(v) => this.updateAttribute("code", v)}
-              readOnly={readOnly}
+              readOnly={!!contributionPlan.id}
             />
           </Grid>
           <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
