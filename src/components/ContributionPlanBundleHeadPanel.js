@@ -48,7 +48,6 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
       isCodeValid,
       isCodeValidating,
       validationError,
-      readOnly,
     } = this.props;
     return (
       <Fragment>
@@ -101,7 +100,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               label="code"
               value={!!edited && !!edited.code ? edited.code : ""}
               onChange={(v) => this.updateAttribute("code", v)}
-              readOnly={readOnly}
+              readOnly={!!edited && !!edited.id ? true : false}
             />
           </Grid>
           <Grid item xs={3} className={classes.item}>
