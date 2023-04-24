@@ -1,119 +1,173 @@
 import React, { Component, Fragment } from "react";
 import {
-    Form,
-    withModulesManager,
-    withHistory,
-    formatMessage,
-    formatMessageWithValues,
-    Helmet,
-    journalize
+  Form,
+  withModulesManager,
+  withHistory,
+  formatMessage,
+  formatMessageWithValues,
+  Helmet,
+  journalize,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanHeadPanel from "./ContributionPlanHeadPanel";
-import { fetchContributionPlan } from "../actions";
+import { fetchContributionPlan, clearContributionPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
-const styles = theme => ({
-    paper: theme.paper.paper,
-    paperHeader: theme.paper.header,
-    paperHeaderAction: theme.paper.action,
-    item: theme.paper.item,
+const styles = (theme) => ({
+  paper: theme.paper.paper,
+  paperHeader: theme.paper.header,
+  paperHeaderAction: theme.paper.action,
+  item: theme.paper.item,
 });
 
 class ContributionPlanForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            contributionPlan: {},
-            jsonExtValid: true
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      contributionPlan: {},
+      jsonExtValid: true,
+    };
+  }
+
+  componentDidMount() {
+    if (!!this.props.contributionPlanId) {
+      this.props.fetchContributionPlan(
+        this.props.modulesManager,
+        this.props.contributionPlanId
+      );
     }
+  }
 
-    componentDidMount() {
-        if (!!this.props.contributionPlanId) {
-            this.props.fetchContributionPlan(this.props.modulesManager, this.props.contributionPlanId);
-        }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (
+      prevProps.fetchedContributionPlan !==
+        this.props.fetchedContributionPlan &&
+      !!this.props.fetchedContributionPlan
+    ) {
+      this.setState((_, props) => ({
+        contributionPlan: props.contributionPlan,
+      }));
     }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.fetchedContributionPlan !== this.props.fetchedContributionPlan && !!this.props.fetchedContributionPlan) {
-            this.setState(
-                (_, props) => ({ contributionPlan: props.contributionPlan })
-            );
-        }
-        if (prevProps.submittingMutation && !this.props.submittingMutation) {
-            this.props.journalize(this.props.mutation);
-        }
+    if (prevProps.submittingMutation && !this.props.submittingMutation) {
+      this.props.journalize(this.props.mutation);
     }
+  }
 
-    isMandatoryFieldsEmpty = () => {
-        const { contributionPlan } = this.state;
-        if (
-            !!contributionPlan.code &&
-            !!contributionPlan.name &&
-            !!contributionPlan.calculation &&
-            !!contributionPlan.benefitPlan &&
-            !!contributionPlan.periodicity &&
-            !!contributionPlan.dateValidFrom
-        ) {
-            return false;
-        }
-        return true;
+  componentWillUnmount = () => {
+    this.props.clearContributionPlan();
+  };
+
+  isMandatoryFieldsEmpty = () => {
+    const { contributionPlan } = this.state;
+    if (
+      !!contributionPlan.code &&
+      !!contributionPlan.name &&
+      !!contributionPlan.calculation &&
+      !!contributionPlan.benefitPlan &&
+      !!contributionPlan.periodicity &&
+      !!contributionPlan.dateValidFrom
+    ) {
+      return false;
     }
+    return true;
+  };
 
-    isPeriodicityValid = () => {
-        let periodicityInt = parseInt(this.state.contributionPlan.periodicity);
-        return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
+  isPeriodicityValid = () => {
+    let periodicityInt = parseInt(this.state.contributionPlan.periodicity);
+    return !!periodicityInt
+      ? periodicityInt >= MIN_PERIODICITY_VALUE &&
+          periodicityInt <= MAX_PERIODICITY_VALUE
+      : false;
+  };
+
+  doesContributionPlanBundleChange = () => {
+    const { contributionPlan } = this.props;
+    if (_.isEqual(contributionPlan, this.state.contributionPlan)) {
+      return false;
     }
+    return true;
+  };
 
-    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid() && !!this.state.jsonExtValid;
+  canSave = () =>
+    !this.isMandatoryFieldsEmpty() &&
+    this.doesContributionPlanBundleChange() &&
+    this.isPeriodicityValid() &&
+    !!this.state.jsonExtValid &&
+    !!this.props.isCodeValid;
 
-    save = contributionPlan => this.props.save(contributionPlan);
+  save = (contributionPlan) => this.props.save(contributionPlan);
 
-    onEditedChanged = contributionPlan => this.setState({ contributionPlan })
+  onEditedChanged = (contributionPlan) => this.setState({ contributionPlan });
 
-    titleParams = () => this.props.titleParams(this.state.contributionPlan);
+  titleParams = () => this.props.titleParams(this.state.contributionPlan);
 
-    setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
+  setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
 
-    render() {
-        const { intl, back } = this.props;
-        return (
-            <Fragment>
-                <Helmet title={formatMessageWithValues(this.props.intl, "contributionPlan", "contributionPlan.page.title", this.titleParams())} />
-                <Form
-                    module="contributionPlan"
-                    title="contributionPlan.page.title"
-                    titleParams={this.titleParams()}
-                    edited={this.state.contributionPlan}
-                    back={back}
-                    canSave={this.canSave}
-                    save={this.save}
-                    onEditedChanged={this.onEditedChanged}
-                    HeadPanel={ContributionPlanHeadPanel}
-                    mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
-                    saveTooltip={formatMessage(intl, "contributionPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
-                    setJsonExtValid={this.setJsonExtValid}
-                />
-            </Fragment>
-        )
-    }
+  render() {
+    const { intl, back, save } = this.props;
+    return (
+      <Fragment>
+        <Helmet
+          title={formatMessageWithValues(
+            this.props.intl,
+            "contributionPlan",
+            "contributionPlan.page.title",
+            this.titleParams()
+          )}
+        />
+        <Form
+          module="contributionPlan"
+          title="contributionPlan.page.title"
+          titleParams={this.titleParams()}
+          edited={this.state.contributionPlan}
+          back={back}
+          canSave={this.canSave}
+          save={this.save}
+          onEditedChanged={this.onEditedChanged}
+          HeadPanel={ContributionPlanHeadPanel}
+          mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
+          saveTooltip={formatMessage(
+            intl,
+            "contributionPlan",
+            `saveButton.tooltip.${this.canSave() ? "enabled" : "disabled"}`
+          )}
+          setJsonExtValid={this.setJsonExtValid}
+          openDirty={save}
+        />
+      </Fragment>
+    );
+  }
 }
 
-const mapStateToProps = state => ({
-    fetchingContributionPlan: state.contributionPlan.fetchingContributionPlan,
-    fetchedContributionPlan: state.contributionPlan.fetchedContributionPlan,
-    contributionPlan: state.contributionPlan.contributionPlan,
-    errorContributionPlan: state.contributionPlan.errorContributionPlan,
-    submittingMutation: state.contributionPlan.submittingMutation,
-    mutation: state.contributionPlan.mutation
+const mapStateToProps = (state) => ({
+  fetchingContributionPlan: state.contributionPlan.fetchingContributionPlan,
+  fetchedContributionPlan: state.contributionPlan.fetchedContributionPlan,
+  contributionPlan: state.contributionPlan.contributionPlan,
+  errorContributionPlan: state.contributionPlan.errorContributionPlan,
+  submittingMutation: state.contributionPlan.submittingMutation,
+  mutation: state.contributionPlan.mutation,
+  isCodeValid:
+    state.contributionPlan?.validationFields?.contributionPlanCode?.isValid,
 });
 
-const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchContributionPlan, journalize }, dispatch);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    { fetchContributionPlan, clearContributionPlan, journalize },
+    dispatch
+  );
 };
 
-export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanForm))))));
+export default withHistory(
+  withModulesManager(
+    injectIntl(
+      withTheme(
+        withStyles(styles)(
+          connect(mapStateToProps, mapDispatchToProps)(ContributionPlanForm)
+        )
+      )
+    )
+  )
+);

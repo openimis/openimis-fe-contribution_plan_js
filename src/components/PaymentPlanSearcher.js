@@ -6,7 +6,6 @@ import {
     formatMessageWithValues,
     formatDateFromISO,
     Searcher,
-    PublishedComponent,
     withTooltip,
     coreConfirm,
     journalize,
@@ -84,13 +83,7 @@ class PaymentPlanSearcher extends Component {
                     readOnly
                 /> : "",
                 paymentPlan => !!paymentPlan.benefitPlan
-                ? <PublishedComponent
-                    pubRef="product.ProductPicker"
-                    withNull={true}
-                    withLabel={false}
-                    value={paymentPlan.benefitPlan}
-                    readOnly
-                /> : "",
+                ? `${paymentPlan.benefitPlan.code} ${paymentPlan.benefitPlan.name}` : "",
             paymentPlan => !!paymentPlan.periodicity ? paymentPlan.periodicity : "",
             paymentPlan => !!paymentPlan.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, paymentPlan.dateValidFrom)
