@@ -143,6 +143,16 @@ class PaymentPlanFilter extends Component {
                         label={formatMessage(intl, "contributionPlan", "isDeleted")}
                     />
                 </Grid>
+                <Grid item xs={2} className={classes.item}>
+                    <FormControlLabel
+                        control={<Checkbox
+                            checked={!!this._filterValue('showHistory')}
+                            onChange={event => this._onChangeFilter('showHistory', event.target.checked)}
+                            name="showHistory"
+                        />}
+                        label={formatMessage(intl, "contributionPlan", "showHistory")}
+                    />
+                </Grid>
             </Grid>
         )
     }
