@@ -165,6 +165,10 @@ class ContributionPlanSearcher extends Component {
                 value: false,
                 filter: "isDeleted: false"
             },
+            showHistory: {
+                value: false,
+                filter: "showHistory: false"
+            },
             applyDefaultValidityFilter: {
                 value: true,
                 filter: "applyDefaultValidityFilter: true"
