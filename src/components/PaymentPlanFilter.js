@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
+
+import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+
 import {
   withModulesManager,
   formatMessage,
@@ -8,8 +12,6 @@ import {
   PublishedComponent,
   Contributions,
 } from "@openimis/fe-core";
-import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
 import {
   DATE_TO_DATETIME_SUFFIX,
   GREATER_OR_EQUAL_LOOKUP,
@@ -36,6 +38,11 @@ class PaymentPlanFilter extends Component {
     return !!filters[k] ? filters[k].value : null;
   };
 
+  _filterTextFieldValue = (k) => {
+    const { filters } = this.props;
+    return !!filters[k] ? filters[k].value : "";
+  };
+
   _onChangeFilter = (k, v) => {
     this.props.onChangeFilters([
       {
@@ -52,6 +59,16 @@ class PaymentPlanFilter extends Component {
         id: k,
         value: v,
         filter: `${k}: "${v}"`,
+      },
+    ]);
+  };
+
+  _onChangeProductBenefitPlan = (k, v) => {
+    this.props.onChangeFilters([
+      {
+        id: k,
+        value: v,
+        filter: `${k}: "${v?.uuid}"`,
       },
     ]);
   };
@@ -84,7 +101,7 @@ class PaymentPlanFilter extends Component {
           <TextInput
             module="contributionPlan"
             label="code"
-            value={this._filterValue("code")}
+            value={this._filterTextFieldValue("code")}
             onChange={(v) =>
               this._onChangeStringFilter("code", v, CONTAINS_LOOKUP)
             }
@@ -94,7 +111,7 @@ class PaymentPlanFilter extends Component {
           <TextInput
             module="contributionPlan"
             label="name"
-            value={this._filterValue("name")}
+            value={this._filterTextFieldValue("name")}
             onChange={(v) =>
               this._onChangeStringFilter("name", v, CONTAINS_LOOKUP)
             }
@@ -115,10 +132,11 @@ class PaymentPlanFilter extends Component {
             pubRef="product.ProductPicker"
             withNull={true}
             label={formatMessage(intl, "paymentPlan", "benefitPlan")}
+            value={this._filterValue("benefitPlan_Uuid")}
             onChange={(v) =>
-              this._onChangeFilter(
+              this._onChangeProductBenefitPlan(
                 "benefitPlan_Uuid",
-                !!v ? `"${v.uuid}"` : null
+                !!v ? v : null
               )
             }
           />
