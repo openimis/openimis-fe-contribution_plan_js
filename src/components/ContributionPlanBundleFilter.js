@@ -86,7 +86,6 @@ class ContributionPlanBundleFilter extends Component {
 
   render() {
     const { intl, classes } = this.props;
-    console.log(this.props.filters);
     return (
       <Grid container className={classes.form}>
         <Grid item xs={3} className={classes.item}>
