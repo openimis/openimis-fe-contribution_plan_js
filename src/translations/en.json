@@ -14,6 +14,7 @@
     "contributionPlan.dateValidFrom": "Valid from",
     "contributionPlan.dateValidTo": "Valid to",
     "contributionPlan.isDeleted": "Show Deleted",
+    "contributionPlan.showHistory": "Show History",
     "contributionPlan.emptyLabel": " ",
     "contributionPlan.any": "Any",
     "contributionPlan.contributionPlan.createButton.tooltip": "Create new Contribution Plan",
