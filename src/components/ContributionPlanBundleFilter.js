@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
+
+import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+
 import {
   withModulesManager,
   formatMessage,
@@ -9,8 +13,6 @@ import {
   decodeId,
   Contributions,
 } from "@openimis/fe-core";
-import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
 import {
   EMPTY_PERIODICITY_VALUE,
   MIN_PERIODICITY_VALUE,
@@ -37,12 +39,27 @@ class ContributionPlanBundleFilter extends Component {
     return !!filters[k] ? filters[k].value : null;
   };
 
+  _filterTextFieldValue = (k) => {
+    const { filters } = this.props;
+    return !!filters[k] ? filters[k].value : "";
+  };
+
   _onChangeFilter = (k, v) => {
     this.props.onChangeFilters([
       {
         id: k,
         value: v,
         filter: `${k}: ${v}`,
+      },
+    ]);
+  };
+
+  _onChangeProductInsuranceProduct = (k, v) => {
+    this.props.onChangeFilters([
+      {
+        id: k,
+        value: v,
+        filter: `${k}: ${!!v ? decodeId(v.id) : null}`,
       },
     ]);
   };
@@ -69,13 +86,14 @@ class ContributionPlanBundleFilter extends Component {
 
   render() {
     const { intl, classes } = this.props;
+    console.log(this.props.filters);
     return (
       <Grid container className={classes.form}>
         <Grid item xs={3} className={classes.item}>
           <TextInput
             module="contributionPlan"
             label="code"
-            value={this._filterValue("code")}
+            value={this._filterTextFieldValue("code")}
             onChange={(v) =>
               this._onChangeStringFilter("code", v, CONTAINS_LOOKUP)
             }
@@ -85,7 +103,7 @@ class ContributionPlanBundleFilter extends Component {
           <TextInput
             module="contributionPlan"
             label="name"
-            value={this._filterValue("name")}
+            value={this._filterTextFieldValue("name")}
             onChange={(v) =>
               this._onChangeStringFilter("name", v, CONTAINS_LOOKUP)
             }
@@ -106,11 +124,9 @@ class ContributionPlanBundleFilter extends Component {
             pubRef="product.ProductPicker"
             withNull={true}
             label={formatMessage(intl, "contributionPlan", "benefitPlan")}
+            value={this._filterValue("insuranceProduct")}
             onChange={(v) =>
-              this._onChangeFilter(
-                "insuranceProduct",
-                !!v ? decodeId(v.id) : null
-              )
+              this._onChangeProductInsuranceProduct("insuranceProduct", v)
             }
           />
         </Grid>
