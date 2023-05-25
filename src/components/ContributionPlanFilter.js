@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
+
+import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+
 import {
   withModulesManager,
   formatMessage,
@@ -7,8 +11,6 @@ import {
   NumberInput,
   PublishedComponent,
 } from "@openimis/fe-core";
-import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
 import {
   DATE_TO_DATETIME_SUFFIX,
   GREATER_OR_EQUAL_LOOKUP,
@@ -32,6 +34,11 @@ class ContributionPlanFilter extends Component {
   _filterValue = (k) => {
     const { filters } = this.props;
     return !!filters[k] ? filters[k].value : null;
+  };
+
+  _filterTextFieldValue = (k) => {
+    const { filters } = this.props;
+    return !!filters[k] ? filters[k].value : "";
   };
 
   _onChangeFilter = (k, v) => {
@@ -72,7 +79,7 @@ class ContributionPlanFilter extends Component {
           <TextInput
             module="contributionPlan"
             label="code"
-            value={this._filterValue("code")}
+            value={this._filterTextFieldValue("code")}
             onChange={(v) =>
               this._onChangeStringFilter("code", v, CONTAINS_LOOKUP)
             }
@@ -82,7 +89,7 @@ class ContributionPlanFilter extends Component {
           <TextInput
             module="contributionPlan"
             label="name"
-            value={this._filterValue("name")}
+            value={this._filterTextFieldValue("name")}
             onChange={(v) =>
               this._onChangeStringFilter("name", v, CONTAINS_LOOKUP)
             }
