@@ -13,8 +13,9 @@ import { withTheme, withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanHeadPanel from "./PaymentPlanHeadPanel";
-import { fetchPaymentPlan } from "../actions";
+import { fetchPaymentPlan, clearPaymentPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
+import _ from "lodash";
 
 const styles = theme => ({
     paper: theme.paper.paper,
@@ -28,7 +29,8 @@ class PaymentPlanForm extends Component {
         super(props);
         this.state = {
             paymentPlan: {},
-            jsonExtValid: true
+            jsonExtValid: true,
+            requiredValid: false,
         };
     }
 
@@ -69,7 +71,20 @@ class PaymentPlanForm extends Component {
         return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
     }
 
-    canSave = () => !this.isMandatoryFieldsEmpty() && this.isPeriodicityValid() && !!this.state.jsonExtValid;
+    doesPaymentPlanChange = () => {
+        const { paymentPlan } = this.props;
+        if (_.isEqual(paymentPlan, this.state.paymentPlan)) {
+          return false;
+        }
+        return true;
+      };
+
+    canSave = () => 
+    !this.isMandatoryFieldsEmpty() &&
+    this.isPeriodicityValid() &&
+    !!this.state.jsonExtValid &&
+    !!this.state.requiredValid &&
+    this.doesPaymentPlanChange();
 
     save = paymentPlan => this.props.save(paymentPlan);
 
@@ -78,9 +93,10 @@ class PaymentPlanForm extends Component {
     titleParams = () => this.props.titleParams(this.state.paymentPlan);
 
     setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
+    setRequiredValid = (valid) => this.setState({ requiredValid: !!valid });
 
     render() {
-        const { intl, back, paymentPlanId, title, isReplacing = false } = this.props;
+        const { intl, back, paymentPlanId, title, save, isReplacing = false } = this.props;
         return (
             <Fragment>
                 <Helmet title={formatMessageWithValues(this.props.intl, "paymentPlan", "paymentPlan.page.title", this.titleParams())} />
@@ -97,8 +113,10 @@ class PaymentPlanForm extends Component {
                     mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
                     saveTooltip={formatMessage(intl, "paymentPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
                     setJsonExtValid={this.setJsonExtValid}
+                    setRequiredValid={this.setRequiredValid}
                     paymentPlanId={paymentPlanId}
                     isReplacing={isReplacing}
+                    openDirty={save}
                 />
             </Fragment>
         )
@@ -111,11 +129,23 @@ const mapStateToProps = state => ({
     paymentPlan: state.contributionPlan.paymentPlan,
     errorPaymentPlan: state.contributionPlan.errorPaymentPlan,
     submittingMutation: state.contributionPlan.submittingMutation,
-    mutation: state.contributionPlan.mutation
+    mutation: state.contributionPlan.mutation,
+    isCodeValid: state.contributionPlan?.validationFields?.paymentPlanCode?.isValid,
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchPaymentPlan, journalize }, dispatch);
+    return bindActionCreators({
+        fetchPaymentPlan, clearPaymentPlan, journalize
+    },
+        dispatch);
 };
 
-export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))))));
+export default withHistory(
+    withModulesManager(
+        injectIntl(
+            withTheme(withStyles(styles)(
+                connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))
+            )
+        )
+    )
+);

@@ -6,7 +6,6 @@ import {
     formatMessageWithValues,
     formatDateFromISO,
     Searcher,
-    PublishedComponent,
     withTooltip,
     coreConfirm,
     journalize,
@@ -79,13 +78,7 @@ class ContributionPlanSearcher extends Component {
                     readOnly
                 /> : "",
             contributionPlan => !!contributionPlan.benefitPlan
-                ? <PublishedComponent
-                    pubRef="product.ProductPicker"
-                    withNull={true}
-                    withLabel={false}
-                    value={contributionPlan.benefitPlan}
-                    readOnly
-                /> : "",
+                ? `${contributionPlan.benefitPlan.code} ${contributionPlan.benefitPlan.name}` : "",
             contributionPlan => !!contributionPlan.periodicity ? contributionPlan.periodicity : "",
             contributionPlan => !!contributionPlan.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, contributionPlan.dateValidFrom)
@@ -171,6 +164,10 @@ class ContributionPlanSearcher extends Component {
             isDeleted: {
                 value: false,
                 filter: "isDeleted: false"
+            },
+            showHistory: {
+                value: false,
+                filter: "showHistory: false"
             },
             applyDefaultValidityFilter: {
                 value: true,

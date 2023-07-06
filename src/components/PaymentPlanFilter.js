@@ -129,6 +129,7 @@ class PaymentPlanFilter extends Component {
                         module="contributionPlan"
                         label="dateValidTo"
                         value={this._filterValue('dateValidTo')}
+                        minDate={this.props.filters?.dateValidFrom?.value}
                         onChange={v => this._onChangeDateFilter('dateValidTo', v, LESS_OR_EQUAL_LOOKUP)}
                     />
                 </Grid>
@@ -140,6 +141,16 @@ class PaymentPlanFilter extends Component {
                             name="isDeleted" 
                         />}
                         label={formatMessage(intl, "contributionPlan", "isDeleted")}
+                    />
+                </Grid>
+                <Grid item xs={2} className={classes.item}>
+                    <FormControlLabel
+                        control={<Checkbox
+                            checked={!!this._filterValue('showHistory')}
+                            onChange={event => this._onChangeFilter('showHistory', event.target.checked)}
+                            name="showHistory"
+                        />}
+                        label={formatMessage(intl, "contributionPlan", "showHistory")}
                     />
                 </Grid>
             </Grid>
