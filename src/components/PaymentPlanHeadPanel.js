@@ -75,7 +75,6 @@ class PaymentPlanHeadPanel extends FormPanel {
         const calculation = !!calculationId ? { id: calculationId } : null;
         const paymentPlan = { productOrBenefitPlan, calculation, ...others };
         const paymentPlanType = paymentPlan?.benefitPlanType
-        console.log(paymentPlan)
 
         if (paymentPlanType) {
             return (
