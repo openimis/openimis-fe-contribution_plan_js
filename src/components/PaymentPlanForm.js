@@ -56,6 +56,7 @@ class PaymentPlanForm extends Component {
         if (
             !!paymentPlan.code &&
             !!paymentPlan.name &&
+            !!paymentPlan.benefitPlanType &&
             !!paymentPlan.calculation &&
             !!paymentPlan.benefitPlan &&
             !!paymentPlan.periodicity &&

@@ -52,8 +52,6 @@ function reducer(
     pickerPaymentPlans: [],
     fetchingPaymentPlan: false,
     fetchedPaymentPlan: false,
-    fetchingPaymentPlan: false,
-    fetchedPaymentPlan: false,
     paymentPlan: {},
     errorPaymentPlan: null,
   },
@@ -289,9 +287,10 @@ function reducer(
         ...state,
         fetchingPaymentPlan: false,
         fetchedPaymentPlan: true,
-        paymentPlan: parseData(action.payload.data.paymentPlan).find(
-          (paymentPlan) => !!paymentPlan
-        ),
+        paymentPlan: parseData(action.payload.data.paymentPlan)?.map((paymentPlan) => ({
+          ...paymentPlan,
+          benefitPlan: JSON.parse(paymentPlan.benefitPlan),
+        }))?.[0],
         errorPaymentPlan: formatGraphQLError(action.payload),
       };
     case "CONTRIBUTIONPLAN_PAYMENTPLAN_ERR":

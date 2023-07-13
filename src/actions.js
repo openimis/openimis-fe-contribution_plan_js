@@ -50,8 +50,9 @@ const PAYMENTPLAN_FULL_PROJECTION = (modulesManager) => [
   "name",
   "calculation",
   "jsonExt",
-  "benefitPlan" +
-    modulesManager.getProjection("product.ProductPicker.projection"),
+  "benefitPlan",
+  "benefitPlanType",
+  "benefitPlanTypeName",
   "periodicity",
   "dateValidFrom",
   "dateValidTo",
@@ -329,9 +330,14 @@ function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
             : ""
         }
         ${
-          !!paymentPlan.benefitPlan
-            ? `benefitPlanId: ${decodeId(paymentPlan.benefitPlan.id)}`
+          !!paymentPlan.benefitPlanType
+            ? `benefitPlanType: ${formatGQLString(paymentPlan.benefitPlanType)}`
             : ""
+        }
+        ${
+          !!paymentPlan.benefitPlan
+              ? `benefitPlanId: ${decodeId(paymentPlan.benefitPlan.id)}`
+              : ""
         }
         ${
           !!paymentPlan.periodicity
