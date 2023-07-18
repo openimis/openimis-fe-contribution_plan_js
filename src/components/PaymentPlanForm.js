@@ -56,7 +56,7 @@ class PaymentPlanForm extends Component {
         if (
             !!paymentPlan.code &&
             !!paymentPlan.name &&
-            !!paymentPlan.benefitPlanType &&
+            !!paymentPlan.benefitPlanTypeName &&
             !!paymentPlan.calculation &&
             !!paymentPlan.benefitPlan &&
             !!paymentPlan.periodicity &&
@@ -80,12 +80,12 @@ class PaymentPlanForm extends Component {
         return true;
       };
 
-    canSave = () => 
-    !this.isMandatoryFieldsEmpty() &&
+    canSave = () => {  
+        return !this.isMandatoryFieldsEmpty() &&
     this.isPeriodicityValid() &&
     !!this.state.jsonExtValid &&
-    !!this.state.requiredValid &&
     this.doesPaymentPlanChange();
+    }
 
     save = paymentPlan => this.props.save(paymentPlan);
 

@@ -84,6 +84,6 @@
     "paymentPlan.DeletePaymentPlan.mutationLabel": "Delete Payment Plan - {label}",
     "paymentPlan.ReplacePaymentPlan.mutationLabel": "Replace Payment Plan - {label}",
     "paymentPlan.type": "Type",
-    "paymentPlan.type.Product": "PRODUCT",
-    "paymentPlan.type.BenefitPlan": "BENEFIT PLAN"
+    "paymentPlan.type.product": "Product",
+    "paymentPlan.type.benefitplan": "Benefit Plan"
 }

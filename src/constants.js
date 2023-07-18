@@ -19,7 +19,6 @@ export const DEFAULT_PAGE_SIZE = 10
 export const ROWS_PER_PAGE_OPTIONS = [10, 20, 50, 100]
 export const CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY = "contributionPlan.ContributionPlan.calculation"
 export const CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY = "contributionPlan.ContributionPlan.calculationRule"
-export const CONTRIBUTIONPLAN_CALCULATIONRULE_BENEFITPLAN_CONTRIBUTION_KEY = ""
 export const CONTRIBUTIONPLAN_CLASSNAME = "ContributionPlan"
 export const PAYMENTPLAN_CLASSNAME = "PaymentPlan"
 export const RIGHT_CALCULATION_WRITE = "write"
@@ -32,8 +31,8 @@ export const RIGHT_PAYMENT_PLAN_REPLACE = 157106
 export const MODULE_NAME = "contributionPlan";
 
 export const PAYMENT_PLAN_TYPE = {
-    PRODUCT: 'Product',
-    BENEFIT_PLAN: 'BenefitPlan'
+    PRODUCT: 'product',
+    BENEFIT_PLAN: 'benefitplan'
 }
 
 export const PAYMENT_PLAN_TYPE_LIST = [PAYMENT_PLAN_TYPE.PRODUCT, PAYMENT_PLAN_TYPE.BENEFIT_PLAN]

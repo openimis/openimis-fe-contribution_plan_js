@@ -23,9 +23,7 @@ import {
     PAYMENTPLAN_CLASSNAME,
     RIGHT_CALCULATION_WRITE,
     RIGHT_CALCULATION_UPDATE,
-    EMPTY_STRING,
     PAYMENT_PLAN_TYPE,
-    CONTRIBUTIONPLAN_CALCULATIONRULE_BENEFITPLAN_CONTRIBUTION_KEY
 } from "../constants";
 
 import {
@@ -34,6 +32,7 @@ import {
     paymentPlanCodeValidation,
 } from "../actions"
 import PaymentPlanTypePicker from "../pickers/PaymentPlanTypePicker";
+import { isEmptyObject } from "../utils";
 
 
 const styles = theme => ({
@@ -59,6 +58,12 @@ class PaymentPlanHeadPanel extends FormPanel {
         return input !== savedCode;
     };
 
+    updateTypeOfPaymentPlan = (field, value) => {
+        this.updateAttributes({
+            "benefitPlan": null, [field]: value, "calculation": null
+        })
+    };
+
     render() {
         const {
             intl,
@@ -74,9 +79,12 @@ class PaymentPlanHeadPanel extends FormPanel {
         const { benefitPlan: productOrBenefitPlan, calculation: calculationId, ...others } = this.props.edited;
         const calculation = !!calculationId ? { id: calculationId } : null;
         const paymentPlan = { productOrBenefitPlan, calculation, ...others };
-        const paymentPlanType = paymentPlan?.benefitPlanType
+        const paymentPlanType = paymentPlan?.benefitPlanTypeName;
 
         if (paymentPlanType) {
+            const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
+              paymentPlan.productOrBenefitPlan : JSON.parse(paymentPlan.productOrBenefitPlan || '{}');
+            paymentPlan.benefitPlan = objectBenefitPlan;
             return (
                 <Fragment>
                     <Grid container className={classes.tableTitle}>
@@ -110,10 +118,11 @@ class PaymentPlanHeadPanel extends FormPanel {
                             <PaymentPlanTypePicker
                                 module="contributionPlan"
                                 label="type"
+                                readOnly={!!paymentPlan.id}
                                 withNull={false}
                                 required
-                                value={paymentPlan?.benefitPlanType}
-                                onChange={(v) => this.updateAttribute("benefitPlanType", v)}
+                                value={paymentPlan?.benefitPlanTypeName}
+                                onChange={(v) => this.updateTypeOfPaymentPlan("benefitPlanTypeName", v)}
                                 withLabel
                             />
                         </Grid>
@@ -148,13 +157,11 @@ class PaymentPlanHeadPanel extends FormPanel {
                         </Grid>
                         <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                             <Contributions
-                                contributionKey={paymentPlanType === PAYMENT_PLAN_TYPE.PRODUCT
-                                    ? CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
-                                    : CONTRIBUTIONPLAN_CALCULATIONRULE_BENEFITPLAN_CONTRIBUTION_KEY
-                                }
+                                contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
                                 label={formatMessage(intl, "paymentPlan", "calculation")}
                                 value={!!calculationId ? calculationId : null}
                                 onChange={this.updateAttribute}
+                                context={paymentPlanType}
                                 required
                             />
                         </Grid>
@@ -166,7 +173,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 withNull={true}
                                 label={formatMessage(intl, "paymentPlan", "benefitPlan")}
                                 required
-                                value={!!paymentPlan.product ? paymentPlan.product : null}
+                                value={paymentPlan.benefitPlan !== undefined && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) ? null : paymentPlan.benefitPlan) : null}
                                 onChange={(v) => this.updateAttribute("benefitPlan", v)}
                             />
                         </Grid>
@@ -266,8 +273,8 @@ class PaymentPlanHeadPanel extends FormPanel {
                             label="type"
                             withNull={false}
                             required
-                            value={paymentPlan?.benefitPlanType}
-                            onChange={(v) => this.updateAttribute("benefitPlanType", v)}
+                            value={paymentPlan?.benefitPlanTypeName}
+                            onChange={(v) => this.updateAttribute("benefitPlanTypeName", v)}
                             withLabel
                         />
                     </Grid>
