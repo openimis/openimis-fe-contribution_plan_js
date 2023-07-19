@@ -33,7 +33,8 @@ import {
 } from "../actions"
 import PaymentPlanTypePicker from "../pickers/PaymentPlanTypePicker";
 import { isEmptyObject } from "../utils";
-
+import AdvancedCriteriaDialog from "../dialogs/AdvancedCriteriaDialog";
+import { CLEARED_STATE_FILTER } from "../constants";
 
 const styles = theme => ({
     tableTitle: theme.table.title,
@@ -45,9 +46,15 @@ const styles = theme => ({
 
 const GRID_ITEM_SIZE = 3;
 
-
-
 class PaymentPlanHeadPanel extends FormPanel {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+          appliedCustomFilters: [CLEARED_STATE_FILTER],
+          appliedFiltersRowStructure: [CLEARED_STATE_FILTER],
+        };
+    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         super.componentDidUpdate(prevProps, prevState, snapshot);
@@ -62,6 +69,55 @@ class PaymentPlanHeadPanel extends FormPanel {
         this.updateAttributes({
             "benefitPlan": null, [field]: value, "calculation": null
         })
+    };
+
+    updateJsonExt = (value) => {
+        this.updateAttributes({
+            "jsonExt": value
+        })
+    };
+
+    onChangeFilters = (fltrs) => {
+        let filters = { ...this.state.paymentPlan.jsonExt };
+        fltrs.forEach((filter) => {
+          if (filter.value === null) {
+            delete filters[filter.id];
+          } else {
+            filters[filter.id] = { value: filter.value, filter: filter.filter };
+          }
+        });
+        this.setState({ filters }, (e) => this.applyFilters());
+    };
+
+    getDefaultAppliedCustomFilters = () => {
+        const { jsonExt } = this.props.edited;
+        try {
+          const jsonData = JSON.parse(jsonExt);
+          const advancedCriteria = jsonData.advanced_criteria || [];
+          const parsedFilters = advancedCriteria.map(({ amount, custom_filter_condition }) => {
+            const [field, filter, typeValue] = custom_filter_condition.split('__');
+            const [type, value] = typeValue.split('=');
+            return {
+              amount,
+              custom_filter_condition,
+              field,
+              filter,
+              type,
+              value
+            };
+          });
+          return parsedFilters;
+        } catch (error) {
+          return [];
+        }
+      };
+
+    setAppliedCustomFilters = (appliedCustomFilters) => {
+        this.setState({ appliedCustomFilters: appliedCustomFilters });
+    };
+
+    setAppliedFiltersRowStructure = (appliedFiltersRowStructure) => {
+        this.setState({ appliedFiltersRowStructure: appliedFiltersRowStructure });
     };
 
     render() {
@@ -80,6 +136,9 @@ class PaymentPlanHeadPanel extends FormPanel {
         const calculation = !!calculationId ? { id: calculationId } : null;
         const paymentPlan = { productOrBenefitPlan, calculation, ...others };
         const paymentPlanType = paymentPlan?.benefitPlanTypeName;
+        const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
+
+        console.log(paymentPlan);
 
         if (paymentPlanType) {
             const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
@@ -89,6 +148,20 @@ class PaymentPlanHeadPanel extends FormPanel {
                 <Fragment>
                     <Grid container className={classes.tableTitle}>
                         <Grid item>
+                        {paymentPlanType === "benefit plan" && (
+                          <AdvancedCriteriaDialog
+                              object={paymentPlan.benefitPlan}
+                              objectToSave={paymentPlan}
+                              moduleName="social_protection"
+                              objectType="BenefitPlan"
+                              setAppliedCustomFilters={this.setAppliedCustomFilters}
+                              appliedCustomFilters={appliedCustomFilters}
+                              appliedFiltersRowStructure={appliedFiltersRowStructure}
+                              setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
+                              updateAttributes={this.updateJsonExt}
+                              getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
+                          />
+                        )}
                             <Grid
                                 container
                                 align="center"
@@ -121,7 +194,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 readOnly={!!paymentPlan.id}
                                 withNull={false}
                                 required
-                                value={paymentPlan?.benefitPlanTypeName}
+                                value={paymentPlan?.benefitPlanTypeName?.replace(/\s+/g, '') ?? ''}
                                 onChange={(v) => this.updateTypeOfPaymentPlan("benefitPlanTypeName", v)}
                                 withLabel
                             />
@@ -273,7 +346,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             label="type"
                             withNull={false}
                             required
-                            value={paymentPlan?.benefitPlanTypeName}
+                            value={paymentPlan?.benefitPlanTypeName?.replace(/\s+/g, '') ?? ''}
                             onChange={(v) => this.updateAttribute("benefitPlanTypeName", v)}
                             withLabel
                         />

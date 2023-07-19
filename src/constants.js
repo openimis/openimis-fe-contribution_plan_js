@@ -37,3 +37,14 @@ export const PAYMENT_PLAN_TYPE = {
 
 export const PAYMENT_PLAN_TYPE_LIST = [PAYMENT_PLAN_TYPE.PRODUCT, PAYMENT_PLAN_TYPE.BENEFIT_PLAN]
 export const EMPTY_STRING = " "
+
+export const CLEARED_STATE_FILTER = { field: "", filter: "", type: "", value: "" }
+export const BENEFIT_PLAN = "BenefitPlan";
+export const INTEGER = "integer";
+export const STRING = "string";
+export const BOOLEAN = "boolean";
+export const DATE = "date";
+export const BOOL_OPTIONS = [
+  { value: "True", label: "True" },
+  { value: "False", label: "False" },
+];
