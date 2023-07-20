@@ -9,7 +9,6 @@ import {
   decodeId,
   formatMessage,
   fetchCustomFilter,
-  formatJsonField,
 } from "@openimis/fe-core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -92,35 +91,18 @@ const AdvancedCriteriaDialog = ({
       filters.map(({ filter, value, field, type, amount }) => {
         return {
           amount: amount,
-          custom_filter_condition: `${field}__${filter}__${type}=${JSON.stringify(value)}`
+          custom_filter_condition: `${field}__${filter}__${type}=${value}`
         };
       })
     );
-    if (checkArrayFilterStructure() === false) {
-      const jsonExt = updateJsonExt(objectToSave.jsonExt, outputFilters)
-      updateAttributes(jsonExt);
-      setAppliedCustomFilters(outputFilters);
-    }
+    const jsonExt = updateJsonExt(objectToSave.jsonExt, outputFilters)
+    updateAttributes(jsonExt);
+    setAppliedCustomFilters(outputFilters);
     handleClose();
   };
 
-  function checkArrayFilterStructure() {
-    if (filters.length === 1) {
-      const firstObj = filters[0];
-      if (checkFilterFields(firstObj)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function checkFilterFields(dict) {
-    return Object.entries(dict).some(([key, value]) => key !== 'value' && (value === null || value === ''));
-  }
-
   useEffect(() => {
     if (object && isEmptyObject(object) === false) {
-      // Update the state with new parameters
       let paramsToFetchFilters = [];
       if (objectType === BENEFIT_PLAN) {
         paramsToFetchFilters = createParams(
@@ -138,7 +120,6 @@ const AdvancedCriteriaDialog = ({
     }
   }, [object]);
  
-  // refresh component when list of filters is changed
   useEffect(() => {}, [filters]);
 
   return (
