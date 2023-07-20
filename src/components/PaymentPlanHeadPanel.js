@@ -138,8 +138,6 @@ class PaymentPlanHeadPanel extends FormPanel {
         const paymentPlanType = paymentPlan?.benefitPlanTypeName;
         const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
 
-        console.log(paymentPlan);
-
         if (paymentPlanType) {
             const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
               paymentPlan.productOrBenefitPlan : JSON.parse(paymentPlan.productOrBenefitPlan || '{}');
@@ -147,21 +145,7 @@ class PaymentPlanHeadPanel extends FormPanel {
             return (
                 <Fragment>
                     <Grid container className={classes.tableTitle}>
-                        <Grid item>
-                        {paymentPlanType === "benefit plan" && (
-                          <AdvancedCriteriaDialog
-                              object={paymentPlan.benefitPlan}
-                              objectToSave={paymentPlan}
-                              moduleName="social_protection"
-                              objectType="BenefitPlan"
-                              setAppliedCustomFilters={this.setAppliedCustomFilters}
-                              appliedCustomFilters={appliedCustomFilters}
-                              appliedFiltersRowStructure={appliedFiltersRowStructure}
-                              setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
-                              updateAttributes={this.updateJsonExt}
-                              getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
-                          />
-                        )}
+                        <Grid item style={{ flex: 1 }}>
                             <Grid
                                 container
                                 align="center"
@@ -169,10 +153,27 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 direction="column"
                                 className={classes.fullHeight}
                             >
-                                <Grid item>
-                                    <Typography>
-                                        <FormattedMessage module="contributionPlan" id="paymentPlan.headPanel.title" />
+                                <Grid item style={{ flex: 1, display: "flex" }}>
+                                    <Typography style={{ marginTop: "6px" }}>
+                                        <FormattedMessage 
+                                          module="contributionPlan" 
+                                          id="paymentPlan.headPanel.title" 
+                                        />
                                     </Typography>
+                                    {paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN && (
+                                      <AdvancedCriteriaDialog
+                                          object={paymentPlan.benefitPlan}
+                                          objectToSave={paymentPlan}
+                                          moduleName="social_protection"
+                                          objectType="BenefitPlan"
+                                          setAppliedCustomFilters={this.setAppliedCustomFilters}
+                                          appliedCustomFilters={appliedCustomFilters}
+                                          appliedFiltersRowStructure={appliedFiltersRowStructure}
+                                          setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
+                                          updateAttributes={this.updateJsonExt}
+                                          getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
+                                      />
+                                    )}
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -6,8 +6,10 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import {
+  decodeId,
   formatMessage,
-  fetchCustomFilter
+  fetchCustomFilter,
+  formatJsonField,
 } from "@openimis/fe-core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -15,6 +17,8 @@ import { bindActionCreators } from "redux";
 import AdvancedCriteriaRowValue from "./AdvancedCriteriaRowValue";
 import AddCircle from '@material-ui/icons/Add';
 import { BENEFIT_PLAN, CLEARED_STATE_FILTER } from "../constants";
+import { isBase64Encoded, isEmptyObject } from "../utils";
+
 
 const styles = (theme) => ({
   item: theme.paper.item,
@@ -72,7 +76,7 @@ const AdvancedCriteriaDialog = ({
   };
 
   function updateJsonExt(inputJsonExt, outputFilters) {
-    const existingData = JSON.parse(inputJsonExt);
+    const existingData = JSON.parse(inputJsonExt || '{}');
     if (!existingData.hasOwnProperty("advanced_criteria")) {
       existingData.advanced_criteria = [];
     }
@@ -115,14 +119,14 @@ const AdvancedCriteriaDialog = ({
   }
 
   useEffect(() => {
-    if (object) {
+    if (object && isEmptyObject(object) === false) {
       // Update the state with new parameters
-      let paramsToFetchFilters = []
+      let paramsToFetchFilters = [];
       if (objectType === BENEFIT_PLAN) {
         paramsToFetchFilters = createParams(
           moduleName,
           objectType,
-          object.id
+          isBase64Encoded(object.id) ? decodeId(object.id) : object.id
         );
       } else {
         paramsToFetchFilters = createParams(
@@ -145,10 +149,14 @@ const AdvancedCriteriaDialog = ({
         color="#DFEDEF" 
         className={classes.button}
         style={{ 
-          border: "0px", 
+          border: "0px",
+          textAlign: "right",
+          display: "block",
+          marginLeft: "auto",
+          marginRight: 0
         }}
       >
-        {formatMessage(intl, "core", "advancedFilters")}
+        {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria")}
       </Button>
       <Dialog 
         open={isOpen} 
@@ -165,7 +173,7 @@ const AdvancedCriteriaDialog = ({
             marginTop: "10px",
           }}
         >
-          {formatMessage(intl, "core", "advancedFilters.button.AdvancedFilters")}
+          {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.AdvancedCriteria")}
         </DialogTitle>
         <DialogContent>
           {filters.map((filter, index) => {
@@ -199,7 +207,7 @@ const AdvancedCriteriaDialog = ({
                 fontSize: "0.8rem" 
               }}
             >
-              {formatMessage(intl, "core", "core.advancedFilters.button.addFilters")}
+              {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.addFilters")}
             </Button>
           </div>
         </DialogContent>
@@ -216,9 +224,11 @@ const AdvancedCriteriaDialog = ({
               <Button 
                 onClick={handleRemoveFilter} 
                 variant="outlined"
-                style={{ border: "0px" }}
+                style={{ 
+                  border: "0px"
+                }}
               >
-                {formatMessage(intl, "core", "core.advancedFilters.button.clearAllFilters")}
+                {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.clearAllFilters")}
               </Button>
             </div>
             <div style={{ 
@@ -232,7 +242,7 @@ const AdvancedCriteriaDialog = ({
                 autoFocus
                 style={{ margin: "0 16px" }} 
               >
-                {formatMessage(intl, "core", "core.advancedFilters.button.cancel")}
+                {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.cancel")}
               </Button>
               <Button 
                 onClick={saveCriteria} 
@@ -240,7 +250,7 @@ const AdvancedCriteriaDialog = ({
                 color="primary" 
                 autoFocus
               >
-                {formatMessage(intl, "core", "core.advancedFilters.button.filter")}
+                {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.filter")}
               </Button>
             </div>
           </div>

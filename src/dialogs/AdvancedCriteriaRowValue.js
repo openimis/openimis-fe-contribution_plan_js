@@ -68,8 +68,8 @@ const AdvancedCriteriaRowValue = ({
 
   const renderInputBasedOnType = (type) => {
     const commonProps = {
-      module: "core",
-      label: "core.advancedFilters.value",
+      module: "paymentPlan",
+      label: "paymentPlan.advancedCriteria.value",
       value: currentFilter.value,
       onChange: onAttributeChange("value"),
     };
@@ -117,7 +117,7 @@ const AdvancedCriteriaRowValue = ({
       style={{ backgroundColor: "#DFEDEF" }}
     >
       {filters.length > 0 ? (
-        <div style={{ backgroundColor: '#DFEDEF', width: '25px', height: '25px', marginTop: '25px' }}>
+        <div style={{ backgroundColor: '#DFEDEF', width: '10px', height: '25px', marginTop: '25px' }}>
           <span
             style={{
               transform: 'translate(-50%, -50%)',
@@ -133,8 +133,8 @@ const AdvancedCriteriaRowValue = ({
       }
       <Grid item xs={3} className={classes.item}>
         <CustomFilterFieldStatusPicker
-          module="core"
-          label="core.advancedFilters.field"
+          module="paymentPlan"
+          label="paymentPlan.advancedCriteria.field"
           value={{ field: currentFilter.field, type: currentFilter.type }}
           onChange={onAttributeChange("field")}
           customFilters={customFilters}
@@ -143,8 +143,8 @@ const AdvancedCriteriaRowValue = ({
         {currentFilter.field !== "" ? (
           <Grid item xs={3} className={classes.item}>
             <CustomFilterTypeStatusPicker
-              module="core"
-              label="core.advancedFilters.filter"
+              module="paymentPlan"
+              label="paymentPlan.advancedCriteria.filter"
               value={currentFilter.filter}
               onChange={onAttributeChange("filter")}
               customFilters={customFilters}
@@ -158,14 +158,16 @@ const AdvancedCriteriaRowValue = ({
           </Grid>
         ) : (<></>) }
         {currentFilter.field !== "" && currentFilter.filter !== "" && currentFilter.value !== "" ? (
-          <NumberInput
-            min={0}
-            displayZero
-            module="core"
-            label="amount"
-            value={currentFilter.amount}
-            onChange={onAttributeChange("amount")}
-          />
+          <Grid item xs={2} className={classes.item}>
+            <NumberInput
+              min={0}
+              displayZero
+              module="paymentPlan"
+              label="paymentPlan.advancedCriteria.amount"
+              value={currentFilter.amount}
+              onChange={onAttributeChange("amount")}
+            />
+          </Grid>
         ) : (<></>) }
     </Grid>
   );
