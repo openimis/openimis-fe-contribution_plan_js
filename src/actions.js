@@ -7,6 +7,7 @@ import {
   formatGQLString,
   graphqlWithVariables,
 } from "@openimis/fe-core";
+import { isBase64Encoded } from "./utils";
 
 const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
   "id",
@@ -191,7 +192,7 @@ function formatContributionPlanGQL(contributionPlan) {
         }
         ${
           !!contributionPlan.benefitPlan
-            ? `benefitPlanId: ${decodeId(contributionPlan.benefitPlan.id)}`
+            ? `benefitPlanId: "${decodeId(contributionPlan.benefitPlan.id)}"`
             : ""
         }
         ${
@@ -301,6 +302,9 @@ function formatContributionPlanBundleDetailsGQL(
 }
 
 function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
+  const objectBenefitPlan = typeof paymentPlan.benefitPlan === 'object' ? 
+    paymentPlan.benefitPlan : JSON.parse(paymentPlan.benefitPlan || '{}');
+  paymentPlan.benefitPlan = objectBenefitPlan;
   return `
         ${
           !!paymentPlan.id
@@ -330,13 +334,15 @@ function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
             : ""
         }
         ${
-          !!paymentPlan.benefitPlanType
-            ? `benefitPlanType: ${formatGQLString(paymentPlan.benefitPlanType)}`
+          !!paymentPlan.benefitPlanTypeName
+            ? `benefitPlanType: "${formatGQLString(paymentPlan.benefitPlanTypeName.replace(/\s+/g, ''))}"`
             : ""
         }
         ${
           !!paymentPlan.benefitPlan
-              ? `benefitPlanId: ${decodeId(paymentPlan.benefitPlan.id)}`
+              ? (isBase64Encoded(paymentPlan.benefitPlan.id) 
+                ? `benefitPlanId: "${decodeId(paymentPlan.benefitPlan.id)}"` 
+                : `benefitPlanId: "${paymentPlan.benefitPlan.id}"`) 
               : ""
         }
         ${
