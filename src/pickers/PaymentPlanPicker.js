@@ -16,8 +16,6 @@ class PaymentPlanPicker extends Component {
         if (!!periodicity) {
             params.push(`periodicity: ${periodicity}`);
         }
-        
-        console.log(params);
         return params;
     }
 
