@@ -158,7 +158,7 @@ export function fetchPaymentPlan(modulesManager, paymentPlanId) {
   return graphql(payload, "CONTRIBUTIONPLAN_PAYMENTPLAN");
 }
 
-export function fetchPickerPaymentPlans(params) {
+export function fetchPickerPaymentPlans(modulesManager, params) {
   const payload = formatPageQuery(
     "paymentPlan",
     params,
