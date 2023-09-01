@@ -6,6 +6,7 @@ import {
   dispatchMutationReq,
   dispatchMutationResp,
   dispatchMutationErr,
+  decodeId,
 } from "@openimis/fe-core";
 
 function reducer(
@@ -73,7 +74,10 @@ function reducer(
         ...state,
         fetchingContributionPlans: false,
         fetchedContributionPlans: true,
-        contributionPlans: parseData(action.payload.data.contributionPlan),
+        contributionPlans: parseData(action.payload.data.contributionPlan)?.map((contributionPlan) => ({
+          ...contributionPlan,
+          benefitPlan: JSON.parse(JSON.parse(contributionPlan.benefitPlan)),
+        })),
         contributionPlansPageInfo: pageInfo(
           action.payload.data.contributionPlan
         ),
@@ -125,9 +129,10 @@ function reducer(
         ...state,
         fetchingContributionPlan: false,
         fetchedContributionPlan: true,
-        contributionPlan: parseData(action.payload.data.contributionPlan).find(
-          (contributionPlan) => !!contributionPlan
-        ),
+        contributionPlan: parseData(action.payload.data.contributionPlan)?.map((contributionPlan) => ({
+          ...contributionPlan,
+          benefitPlan: JSON.parse(JSON.parse(contributionPlan.benefitPlan)),
+        }))?.[0],
         errorContributionPlan: formatGraphQLError(action.payload),
       };
     case "CONTRIBUTIONPLAN_CONTRIBUTIONPLAN_ERR":
@@ -209,6 +214,16 @@ function reducer(
         contributionPlanBundle: {},
         errorContributionPlanBundle: null,
       };
+    case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS_CLEAR":
+      return {
+        ...state,
+        fetchingContributionPlanBundleContributionPlans: false,
+        fetchedContributionPlanBundleContributionPlans: false,
+        contributionPlanBundleContributionPlans: [],
+        contributionPlanBundleContributionPlansPageInfo: {},
+        contributionPlanBundleContributionPlansTotalCount: 0,
+        errorContributionPlanBundleContributionPlans: null,
+      };
     case "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS_REQ":
       return {
         ...state,
@@ -226,7 +241,12 @@ function reducer(
         fetchedContributionPlanBundleContributionPlans: true,
         contributionPlanBundleContributionPlans: parseData(
           action.payload.data.contributionPlanBundleDetails
-        ),
+        ).map(bundle => ({
+          ...bundle,
+          contributionPlan:
+            {...bundle.contributionPlan,
+              benefitPlan: JSON.parse(JSON.parse(bundle.contributionPlan.benefitPlan))},
+        })),
         contributionPlanBundleContributionPlansPageInfo: pageInfo(
           action.payload.data.contributionPlanBundleDetails
         ),

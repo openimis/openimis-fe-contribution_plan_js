@@ -139,6 +139,7 @@ class PaymentPlanHeadPanel extends FormPanel {
         const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
 
         if (paymentPlanType) {
+            // probably could get rid of that if we use double JSON.parse in reducer
             const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
               paymentPlan.productOrBenefitPlan : JSON.parse(paymentPlan.productOrBenefitPlan || '{}');
             paymentPlan.benefitPlan = objectBenefitPlan;
