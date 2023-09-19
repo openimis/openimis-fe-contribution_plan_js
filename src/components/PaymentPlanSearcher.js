@@ -83,7 +83,16 @@ class PaymentPlanSearcher extends Component {
                     readOnly
                 /> : "",
                 paymentPlan => !!paymentPlan.benefitPlan
-                ? `${paymentPlan.benefitPlan.code} ${paymentPlan.benefitPlan.name}` : "",
+                ? <PublishedComponent
+                    pubRef={paymentPlan.benefitPlanTypeName === PAYMENT_PLAN_TYPE.PRODUCT
+                      ? "product.ProductPicker"
+                      : "socialProtection.BenefitPlanPicker"}
+                    withNull={true}
+                    label={formatMessage(intl, "paymentPlan", "benefitPlan")}
+                    required
+                    value={paymentPlan.benefitPlan !== undefined && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) ? null : paymentPlan.benefitPlan) : null}
+                    readOnly
+                />: "",
             paymentPlan => !!paymentPlan.periodicity ? paymentPlan.periodicity : "",
             paymentPlan => !!paymentPlan.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, paymentPlan.dateValidFrom)
