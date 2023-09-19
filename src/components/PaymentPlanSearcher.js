@@ -9,6 +9,7 @@ import {
     withTooltip,
     coreConfirm,
     journalize,
+    PublishedComponent,
     Contributions
 } from "@openimis/fe-core";
 import { fetchPaymentPlans, deletePaymentPlan } from "../actions";
