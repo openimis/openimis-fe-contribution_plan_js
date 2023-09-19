@@ -86,8 +86,8 @@ class PaymentPlanSearcher extends Component {
                     readOnly
                 /> : "",
             paymentPlan => { 
-                const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
-                  paymentPlan.productOrBenefitPlan : JSON.parse(paymentPlan.productOrBenefitPlan || '{}');
+                const objectBenefitPlan = typeof paymentPlan.benefitPlan === 'object' ? 
+                  paymentPlan.benefitPlan : JSON.parse(paymentPlan.benefitPlan || '{}');
                 console.log(objectBenefitPlan);
                 paymentPlan.benefitPlan = objectBenefitPlan;
                 console.log(paymentPlan.benefitPlan);
