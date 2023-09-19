@@ -85,8 +85,13 @@ class PaymentPlanSearcher extends Component {
                     value={paymentPlan.calculation}
                     readOnly
                 /> : "",
-                paymentPlan => !!paymentPlan.benefitPlan
-                ? <PublishedComponent
+            paymentPlan => { 
+                const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
+                paymentPlan.productOrBenefitPlan : JSON.parse(paymentPlan.productOrBenefitPlan || '{}');
+                paymentPlan.benefitPlan = objectBenefitPlan;
+                return (
+                  !!paymentPlan.benefitPlan
+                    ? <PublishedComponent
                     pubRef={paymentPlan.benefitPlanTypeName === PAYMENT_PLAN_TYPE.PRODUCT
                       ? "product.ProductPicker"
                       : "socialProtection.BenefitPlanPicker"}
@@ -95,7 +100,8 @@ class PaymentPlanSearcher extends Component {
                     required
                     value={paymentPlan.benefitPlan !== undefined && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) ? null : paymentPlan.benefitPlan) : null}
                     readOnly
-                />: "",
+                  />: "")
+                },
             paymentPlan => !!paymentPlan.periodicity ? paymentPlan.periodicity : "",
             paymentPlan => !!paymentPlan.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, paymentPlan.dateValidFrom)
