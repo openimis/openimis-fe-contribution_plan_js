@@ -98,7 +98,11 @@ class PaymentPlanSearcher extends Component {
                     withNull={true}
                     label={formatMessage(intl, "paymentPlan", "benefitPlan")}
                     required
-                    value={paymentPlan.benefitPlan !== undefined && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) ? null : paymentPlan.benefitPlan) : null}
+                    value={
+                      paymentPlan.benefitPlan !== undefined 
+                      && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) 
+                      ? null : paymentPlan.benefitPlan) : null
+                    }
                     readOnly
                   />: "")
                 },
