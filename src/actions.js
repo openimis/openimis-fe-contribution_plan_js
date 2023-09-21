@@ -278,6 +278,7 @@ function formatContributionPlanBundleDetailsGQL(
   contributionPlanBundleDetails,
   isReplaceMutation = false
 ) {
+  console.log(contributionPlanBundleDetails.contributionPlan);
   return `
         ${
           !!contributionPlanBundleDetails.id
