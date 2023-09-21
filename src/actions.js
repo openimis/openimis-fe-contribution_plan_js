@@ -278,7 +278,6 @@ function formatContributionPlanBundleDetailsGQL(
   contributionPlanBundleDetails,
   isReplaceMutation = false
 ) {
-  console.log(contributionPlanBundleDetails.contributionPlan);
   return `
         ${
           !!contributionPlanBundleDetails.id
@@ -296,7 +295,7 @@ function formatContributionPlanBundleDetailsGQL(
         }
         ${
           !!contributionPlanBundleDetails.contributionPlanBundleId
-            ? `contributionPlanBundleId: "${contributionPlanBundleDetails.contributionPlanBundleId}"`
+            ? `contributionPlanBundleId: "${decodeId(contributionPlanBundleDetails.contributionPlanBundleId)}"`
             : ""
         }
         ${
