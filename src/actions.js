@@ -295,7 +295,7 @@ function formatContributionPlanBundleDetailsGQL(
         }
         ${
           !!contributionPlanBundleDetails.contributionPlanBundleId
-            ? `contributionPlanBundleId: "${contributionPlanBundleDetails.contributionPlanBundleId}"`
+            ? `contributionPlanBundleId: "${decodeId(contributionPlanBundleDetails.contributionPlanBundleId)}"`
             : ""
         }
         ${
