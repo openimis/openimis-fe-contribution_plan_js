@@ -330,8 +330,13 @@ function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
         }
         ${
           !!paymentPlan.benefitPlan
-            ? `benefitPlanId: ${decodeId(paymentPlan.benefitPlan.id)}`
+            ? `benefitPlanId: "${decodeId(paymentPlan.benefitPlan.id)}"`
             : ""
+        }
+        ${
+          !!paymentPlan.benefitPlanType
+            ? `benefitPlanType: "${paymentPlan.benefitPlanType}"`
+            : `benefitPlanType: "product"`
         }
         ${
           !!paymentPlan.periodicity
