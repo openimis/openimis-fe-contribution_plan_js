@@ -334,11 +334,6 @@ function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
             : ""
         }
         ${
-          !!paymentPlan.benefitPlanType
-            ? `benefitPlanType: "${paymentPlan.benefitPlanType}"`
-            : `benefitPlanType: "product"`
-        }
-        ${
           !!paymentPlan.periodicity
             ? `periodicity: ${paymentPlan.periodicity}`
             : ""
