@@ -17,6 +17,7 @@ import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 import {
   fetchContributionPlanBundle,
   clearContributionPlanBundle,
+  clearContributionPlanBundleDetails
 } from "../actions";
 import ContributionPlanBundleContributionPlans from "./ContributionPlanBundleContributionPlans";
 import ContributionPlanBundleHeadPanel from "./ContributionPlanBundleHeadPanel";
@@ -26,6 +27,7 @@ class ContributionPlanBundleForm extends Component {
     super(props);
     this.state = {
       contributionPlanBundle: {},
+      createMutationId: null,
     };
   }
 
@@ -46,14 +48,20 @@ class ContributionPlanBundleForm extends Component {
       this.setState((state, props) => ({
         contributionPlanBundle: props.contributionPlanBundle,
       }));
+      const contributionPlanBundleRouteRef = this.props.modulesManager.getRef('contributionPlan.route.contributionPlanBundle');
+      this.props.history.replace(`/${contributionPlanBundleRouteRef}/${this.props.contributionPlanBundle.id}`);
     }
     if (prevProps.submittingMutation && !this.props.submittingMutation) {
       this.props.journalize(this.props.mutation);
+      if (!this.props?.contributionPlanBundleId) {
+        this.props.fetchContributionPlanBundle(null, [`clientMutationId: "${this.props.mutation.clientMutationId}"`]);
+      }
     }
   }
 
   componentWillUnmount = () => {
     this.props.clearContributionPlanBundle();
+    this.props.clearContributionPlanBundleDetails();
   };
 
   isMandatoryFieldsEmpty = () => {
@@ -162,7 +170,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { fetchContributionPlanBundle, clearContributionPlanBundle, journalize },
+    {
+      fetchContributionPlanBundle,
+      clearContributionPlanBundle,
+      journalize,
+      clearContributionPlanBundleDetails
+    },
     dispatch
   );
 };

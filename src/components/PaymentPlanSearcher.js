@@ -9,6 +9,7 @@ import {
     withTooltip,
     coreConfirm,
     journalize,
+    PublishedComponent,
     Contributions
 } from "@openimis/fe-core";
 import { fetchPaymentPlans, deletePaymentPlan } from "../actions";
@@ -19,12 +20,14 @@ import { IconButton } from "@material-ui/core";
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from "@material-ui/icons/Delete";
+import { isEmptyObject } from "../utils";
 import {
     ROWS_PER_PAGE_OPTIONS,
     DEFAULT_PAGE_SIZE,
     RIGHT_PAYMENT_PLAN_DELETE,
     RIGHT_PAYMENT_PLAN_UPDATE,
     RIGHT_PAYMENT_PLAN_REPLACE,
+    PAYMENT_PLAN_TYPE,
     CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
 } from "../constants";
 
@@ -82,8 +85,27 @@ class PaymentPlanSearcher extends Component {
                     value={paymentPlan.calculation}
                     readOnly
                 /> : "",
-                paymentPlan => !!paymentPlan.benefitPlan
-                ? `${paymentPlan.benefitPlan.code} ${paymentPlan.benefitPlan.name}` : "",
+            paymentPlan => { 
+                const objectBenefitPlan = typeof paymentPlan.benefitPlan === 'object' ? 
+                  paymentPlan.benefitPlan : JSON.parse(paymentPlan.benefitPlan || '{}');
+                paymentPlan.benefitPlan = objectBenefitPlan;
+                return (
+                  !!paymentPlan.benefitPlan
+                    ? <PublishedComponent
+                    pubRef={paymentPlan.benefitPlanTypeName === PAYMENT_PLAN_TYPE.PRODUCT
+                      ? "product.ProductPicker"
+                      : "socialProtection.BenefitPlanPicker"}
+                    withNull={true}
+                    label={formatMessage(intl, "paymentPlan", "benefitPlan")}
+                    required
+                    value={
+                      paymentPlan.benefitPlan !== undefined 
+                      && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) 
+                      ? null : paymentPlan.benefitPlan) : null
+                    }
+                    readOnly
+                  />: "")
+                },
             paymentPlan => !!paymentPlan.periodicity ? paymentPlan.periodicity : "",
             paymentPlan => !!paymentPlan.dateValidFrom
                 ? formatDateFromISO(modulesManager, intl, paymentPlan.dateValidFrom)

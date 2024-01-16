@@ -29,3 +29,22 @@ export const RIGHT_PAYMENT_PLAN_UPDATE = 157103
 export const RIGHT_PAYMENT_PLAN_DELETE = 157104
 export const RIGHT_PAYMENT_PLAN_REPLACE = 157106
 export const MODULE_NAME = "contributionPlan";
+
+export const PAYMENT_PLAN_TYPE = {
+    PRODUCT: 'product',
+    BENEFIT_PLAN: 'benefitplan'
+}
+
+export const PAYMENT_PLAN_TYPE_LIST = [PAYMENT_PLAN_TYPE.PRODUCT, PAYMENT_PLAN_TYPE.BENEFIT_PLAN]
+export const EMPTY_STRING = " "
+
+export const CLEARED_STATE_FILTER = { field: "", filter: "", type: "", value: "" }
+export const BENEFIT_PLAN = "BenefitPlan";
+export const INTEGER = "integer";
+export const STRING = "string";
+export const BOOLEAN = "boolean";
+export const DATE = "date";
+export const BOOL_OPTIONS = [
+  { value: "True", label: "True" },
+  { value: "False", label: "False" },
+];

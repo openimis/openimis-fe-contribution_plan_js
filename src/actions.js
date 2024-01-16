@@ -7,6 +7,8 @@ import {
   formatGQLString,
   graphqlWithVariables,
 } from "@openimis/fe-core";
+import { isBase64Encoded } from "./utils";
+import { PAYMENT_PLAN_TYPE } from "./constants";
 
 const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
   "id",
@@ -14,8 +16,9 @@ const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
   "name",
   "calculation",
   "jsonExt",
-  "benefitPlan" +
-    modulesManager.getProjection("product.ProductPicker.projection"),
+  "benefitPlan",
+  "benefitPlanType",
+  "benefitPlanTypeName",
   "periodicity",
   "dateValidFrom",
   "dateValidTo",
@@ -50,8 +53,9 @@ const PAYMENTPLAN_FULL_PROJECTION = (modulesManager) => [
   "name",
   "calculation",
   "jsonExt",
-  "benefitPlan" +
-    modulesManager.getProjection("product.ProductPicker.projection"),
+  "benefitPlan",
+  "benefitPlanType",
+  "benefitPlanTypeName",
   "periodicity",
   "dateValidFrom",
   "dateValidTo",
@@ -107,13 +111,14 @@ export function fetchContributionPlanBundles(params) {
   return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLES");
 }
 
-export function fetchContributionPlanBundle(contributionPlanBundleId) {
+export function fetchContributionPlanBundle(contributionPlanBundleId, filters=[]) {
   let filter = !!contributionPlanBundleId
     ? `id: "${contributionPlanBundleId}"`
     : "";
+  filters.push(filter)
   const payload = formatPageQuery(
     "contributionPlanBundle",
-    [filter],
+    filters,
     CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION()
   );
   return graphql(payload, "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLE");
@@ -122,6 +127,12 @@ export function fetchContributionPlanBundle(contributionPlanBundleId) {
 export function clearContributionPlanBundle() {
   return (dispatch) => {
     dispatch({ type: "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLE_CLEAR" });
+  };
+}
+
+export function clearContributionPlanBundleDetails() {
+  return (dispatch) => {
+    dispatch({ type: "CONTRIBUTIONPLAN_CONTRIBUTIONPLANBUNDLEDETAILS_CLEAR" });
   };
 }
 
@@ -156,7 +167,7 @@ export function fetchPaymentPlan(modulesManager, paymentPlanId) {
   return graphql(payload, "CONTRIBUTIONPLAN_PAYMENTPLAN");
 }
 
-export function fetchPickerPaymentPlans(params) {
+export function fetchPickerPaymentPlans(modulesManager, params) {
   const payload = formatPageQuery(
     "paymentPlan",
     params,
@@ -189,8 +200,13 @@ function formatContributionPlanGQL(contributionPlan) {
             : ""
         }
         ${
+          `benefitPlanType: "${formatGQLString(PAYMENT_PLAN_TYPE.PRODUCT)}"`
+        }
+        ${
           !!contributionPlan.benefitPlan
-            ? `benefitPlanId: ${decodeId(contributionPlan.benefitPlan.id)}`
+            ? (isBase64Encoded(contributionPlan.benefitPlan.id)
+              ? `benefitPlanId: "${decodeId(contributionPlan.benefitPlan.id)}"`
+              : `benefitPlanId: "${contributionPlan.benefitPlan.id}"`)
             : ""
         }
         ${
@@ -279,7 +295,7 @@ function formatContributionPlanBundleDetailsGQL(
         }
         ${
           !!contributionPlanBundleDetails.contributionPlanBundleId
-            ? `contributionPlanBundleId: "${contributionPlanBundleDetails.contributionPlanBundleId}"`
+            ? `contributionPlanBundleId: "${decodeId(contributionPlanBundleDetails.contributionPlanBundleId)}"`
             : ""
         }
         ${
@@ -300,6 +316,10 @@ function formatContributionPlanBundleDetailsGQL(
 }
 
 function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
+  // probably could get rid of that if we use double JSON.parse in reducer
+  const objectBenefitPlan = typeof paymentPlan.benefitPlan === 'object' ? 
+    paymentPlan.benefitPlan : JSON.parse(paymentPlan.benefitPlan || '{}');
+  paymentPlan.benefitPlan = objectBenefitPlan;
   return `
         ${
           !!paymentPlan.id
@@ -329,9 +349,16 @@ function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
             : ""
         }
         ${
-          !!paymentPlan.benefitPlan
-            ? `benefitPlanId: ${decodeId(paymentPlan.benefitPlan.id)}`
+          !!paymentPlan.benefitPlanTypeName
+            ? `benefitPlanType: "${formatGQLString(paymentPlan.benefitPlanTypeName.replace(/\s+/g, ''))}"`
             : ""
+        }
+        ${
+          !!paymentPlan.benefitPlan
+              ? (isBase64Encoded(paymentPlan.benefitPlan.id) 
+                ? `benefitPlanId: "${decodeId(paymentPlan.benefitPlan.id)}"` 
+                : `benefitPlanId: "${paymentPlan.benefitPlan.id}"`) 
+              : ""
         }
         ${
           !!paymentPlan.periodicity

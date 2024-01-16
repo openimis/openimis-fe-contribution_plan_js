@@ -12,6 +12,7 @@ import ContributionPlanPicker from "./pickers/ContributionPlanPicker";
 import PaymentPlansPage from "./pages/PaymentPlansPage";
 import PaymentPlanPage from "./pages/PaymentPlanPage";
 import PaymentPlanReplacePage from "./pages/PaymentPlanReplacePage";
+import PaymentPlanPicker from "./pickers/PaymentPlanPicker";
 import {
     RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH,
     RIGHT_CONTRIBUTION_PLAN_SEARCH, 
@@ -43,6 +44,8 @@ const DEFAULT_CONFIG = {
         { key: "contributionPlan.ContributionPlanPicker.projection", ref: ["id", "code", "name"] },
         { key: "contributionPlan.route.paymentPlans", ref: ROUTE_PAYMENT_PLANS },
         { key: "contributionPlan.route.paymentPlan", ref: ROUTE_PAYMENT_PLAN },
+        { key: "contributionPlan.PaymentPlanPicker", ref: PaymentPlanPicker },
+        { key: "contributionPlan.PaymentPlanPicker.projection", ref: ["id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo", "isDeleted", "replacementUuid"] },
         { key: "contributionPlan.route.replacePaymentPlan", ref: ROUTE_PAYMENT_PLAN_REPLACE },
     ],
     "core.Router": [

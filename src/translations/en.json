@@ -14,6 +14,7 @@
     "contributionPlan.dateValidFrom": "Valid from",
     "contributionPlan.dateValidTo": "Valid to",
     "contributionPlan.isDeleted": "Show Deleted",
+    "contributionPlan.showHistory": "Show History",
     "contributionPlan.emptyLabel": " ",
     "contributionPlan.any": "Any",
     "contributionPlan.contributionPlan.createButton.tooltip": "Create new Contribution Plan",
@@ -81,5 +82,18 @@
     "paymentPlan.CreatePaymentPlan.mutationLabel": "Create Payment Plan - {label}",
     "paymentPlan.UpdatePaymentPlan.mutationLabel": "Update Payment Plan - {label}",
     "paymentPlan.DeletePaymentPlan.mutationLabel": "Delete Payment Plan - {label}",
-    "paymentPlan.ReplacePaymentPlan.mutationLabel": "Replace Payment Plan - {label}"
+    "paymentPlan.ReplacePaymentPlan.mutationLabel": "Replace Payment Plan - {label}",
+    "paymentPlan.type": "Type",
+    "paymentPlan.type.product": "Product",
+    "paymentPlan.type.benefitplan": "Benefit Plan",
+    "paymentPlan.advancedCriteria": "Advanced Criteria",
+    "paymentPlan.advancedCriteria.field": "Field",
+    "paymentPlan.advancedCriteria.filter": "Filter",
+    "paymentPlan.advancedCriteria.value": "Value",
+    "paymentPlan.advancedCriteria.amount": "Amount",
+    "paymentPlan.advancedCriteria.button.AdvancedCriteria": "Advanced Criteria",
+    "paymentPlan.advancedCriteria.button.addFilters": "Add filter",
+    "paymentPlan.advancedCriteria.button.clearAllFilters": "Clear All Criteria",
+    "paymentPlan.advancedCriteria.button.cancel": "Cancel",
+    "paymentPlan.advancedCriteria.button.filter": "Filter"
 }
