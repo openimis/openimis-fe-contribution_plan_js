@@ -45,7 +45,7 @@ class PaymentPlanPicker extends Component {
         return (
             <SelectInput
                 module="contributionPlan"
-                label={withLabel ? "paymentPlan.label" : null}
+                label={withLabel ? "paymentPlanPicker.label" : null}
                 required={required}
                 options={options}
                 value={paymentPlanPickerValue}
