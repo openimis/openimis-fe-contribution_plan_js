@@ -10,11 +10,14 @@ class PaymentPlanPicker extends Component {
     }
 
     queryParams = () => {
-        const { periodicity, withDeleted = false } = this.props;
+        const { periodicity, benefitPlanId, withDeleted = false } = this.props;
         let params = [];
         params.push(`isDeleted: ${withDeleted}`);
         if (!!periodicity) {
             params.push(`periodicity: ${periodicity}`);
+        }
+        if (!!benefitPlanId) {
+            params.push(`benefitPlanId: "${benefitPlanId}"`);
         }
         return params;
     }
