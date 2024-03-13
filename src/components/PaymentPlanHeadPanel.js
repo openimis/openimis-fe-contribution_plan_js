@@ -143,6 +143,10 @@ class PaymentPlanHeadPanel extends FormPanel {
             const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
               paymentPlan.productOrBenefitPlan : JSON.parse(paymentPlan.productOrBenefitPlan || '{}');
             paymentPlan.benefitPlan = objectBenefitPlan;
+            if (paymentPlanType === 'benefitplan' || paymentPlanType === 'benefit plan') {
+                paymentPlan.periodicity = 1;
+                this.state.data.periodicity = paymentPlan.periodicity;
+            }
             return (
                 <Fragment>
                     <Grid container className={classes.tableTitle}>
@@ -252,20 +256,22 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 onChange={(v) => this.updateAttribute("benefitPlan", v)}
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
-                            <NumberInput
-                                module="contributionPlan"
-                                label="periodicity"
-                                required
-                                /**
-                                 * @see min set to @see EMPTY_PERIODICITY_FILTER when filter unset to avoid @see NumberInput error message
-                                 */
-                                min={!!paymentPlan.periodicity ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
-                                max={MAX_PERIODICITY_VALUE}
-                                value={!!paymentPlan.periodicity ? paymentPlan.periodicity : null}
-                                onChange={(v) => this.updateAttribute("periodicity", v)}
-                            />
-                        </Grid>
+                        {paymentPlanType !== 'benefitplan' && paymentPlanType !== 'benefit plan' && (
+                            <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                                <NumberInput
+                                    module="contributionPlan"
+                                    label="periodicity"
+                                    required
+                                    /**
+                                    * @see min set to @see EMPTY_PERIODICITY_FILTER when filter unset to avoid @see NumberInput error message
+                                    */
+                                    min={!!paymentPlan.periodicity ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
+                                    max={MAX_PERIODICITY_VALUE}
+                                    value={!!paymentPlan.periodicity ? paymentPlan.periodicity : null}
+                                    onChange={(v) => this.updateAttribute("periodicity", v)}
+                                />
+                            </Grid>
+                        )}
                         <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                             <PublishedComponent
                                 pubRef="core.DatePicker"
