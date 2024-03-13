@@ -146,7 +146,6 @@ class PaymentPlanHeadPanel extends FormPanel {
             if (paymentPlanType === 'benefitplan' || paymentPlanType === 'benefit plan') {
                 paymentPlan.periodicity = 1;
                 this.state.data.periodicity = paymentPlan.periodicity;
-                console.log(this.state);
             }
             return (
                 <Fragment>
