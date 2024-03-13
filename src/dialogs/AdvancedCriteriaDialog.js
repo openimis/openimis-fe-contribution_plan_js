@@ -37,18 +37,43 @@ const AdvancedCriteriaDialog = ({
   setAppliedFiltersRowStructure,
   updateAttributes,
   getDefaultAppliedCustomFilters,
+  additionalParams,
+  confirmed,
+  edited,
 }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentFilter, setCurrentFilter] = useState({ field: "", filter: "", type: "", value: "", amount: "" })
   const [filters, setFilters] = useState(getDefaultAppliedCustomFilters());
 
-  const createParams = (moduleName, objectTypeName, uuidOfObject=null) => {
-    return [
+  const getBenefitPlanDefaultCriteria = () => {
+    const { jsonExt } = edited?.benefitPlan ?? {};
+    try {
+      const jsonData = JSON.parse(jsonExt);
+      return jsonData.advanced_criteria || [];
+    } catch (error) {
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    if (!getDefaultAppliedCustomFilters().length) {
+      setFilters(getBenefitPlanDefaultCriteria());
+    }
+  }, [edited]);
+  
+  const createParams = (moduleName, objectTypeName, uuidOfObject = null, additionalParams = null) => {
+    const params = [
       `moduleName: "${moduleName}"`,
       `objectTypeName: "${objectTypeName}"`,
-      uuidOfObject !== null ? `uuidOfObject: "${uuidOfObject}"`: ``,
     ];
+    if (uuidOfObject) {
+      params.push(`uuidOfObject: "${uuidOfObject}"`);
+    }
+    if (additionalParams) {
+      params.push(`additionalParams: ${JSON.stringify(JSON.stringify(additionalParams))}`);
+    }
+    return params;
   };
 
   const fetchFilters = (params) => fetchCustomFilter(params);
@@ -60,13 +85,6 @@ const AdvancedCriteriaDialog = ({
 
   const handleClose = () => {
     setCurrentFilter(CLEARED_STATE_FILTER);
-    setIsOpen(false);
-  };
-
-  const handleRemoveFilter = () => {
-    setCurrentFilter(CLEARED_STATE_FILTER);
-    setAppliedFiltersRowStructure([CLEARED_STATE_FILTER]);
-    setFilters([CLEARED_STATE_FILTER]);
   };
 
   const handleAddFilter = () => {
@@ -85,6 +103,12 @@ const AdvancedCriteriaDialog = ({
     return updatedJsonExt;
   }
 
+  const handleRemoveFilter = () => {
+    setCurrentFilter(CLEARED_STATE_FILTER);
+    setAppliedFiltersRowStructure([CLEARED_STATE_FILTER]);
+    setFilters([]);
+  };
+
   const saveCriteria = () => {
     setAppliedFiltersRowStructure(filters);
     const outputFilters = JSON.stringify(
@@ -101,6 +125,7 @@ const AdvancedCriteriaDialog = ({
     handleClose();
   };
 
+
   useEffect(() => {
     if (object && isEmptyObject(object) === false) {
       let paramsToFetchFilters = [];
@@ -108,55 +133,22 @@ const AdvancedCriteriaDialog = ({
         paramsToFetchFilters = createParams(
           moduleName,
           objectType,
-          isBase64Encoded(object.id) ? decodeId(object.id) : object.id
+          isBase64Encoded(object.id) ? decodeId(object.id) : object.id,
+          additionalParams,
         );
       } else {
         paramsToFetchFilters = createParams(
           moduleName,
           objectType,
+          additionalParams,
         );
       }
       fetchFilters(paramsToFetchFilters);
     }
   }, [object]);
- 
-  useEffect(() => {}, [filters]);
 
   return (
     <>
-      <Button 
-        onClick={handleOpen} 
-        variant="outlined" 
-        color="#DFEDEF" 
-        className={classes.button}
-        style={{ 
-          border: "0px",
-          textAlign: "right",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: 0
-        }}
-      >
-        {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria")}
-      </Button>
-      <Dialog 
-        open={isOpen} 
-        onClose={handleClose} 
-        PaperProps={{
-          style: {
-            width: 900,
-            maxWidth: 900,
-          },
-        }}
-      >
-        <DialogTitle 
-          style={{ 
-            marginTop: "10px",
-          }}
-        >
-          {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.AdvancedCriteria")}
-        </DialogTitle>
-        <DialogContent>
           {filters.map((filter, index) => {
             return (<AdvancedCriteriaRowValue 
               customFilters={customFilters}
@@ -165,8 +157,10 @@ const AdvancedCriteriaDialog = ({
               index={index}
               filters={filters}
               setFilters={setFilters}
+              readOnly={confirmed}
             />)
           })}
+          { !confirmed ? (
           <div 
             style={{ backgroundColor: "#DFEDEF", paddingLeft: "10px", paddingBottom: "10px" }}
           >
@@ -178,6 +172,7 @@ const AdvancedCriteriaDialog = ({
                 height: "16px" 
               }} 
               onClick={handleAddFilter}
+              disabled={confirmed}
             />
             <Button 
               onClick={handleAddFilter} 
@@ -187,59 +182,44 @@ const AdvancedCriteriaDialog = ({
                 "marginBottom": "6px", 
                 fontSize: "0.8rem" 
               }}
+              disabled={confirmed}
             >
               {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.addFilters")}
             </Button>
           </div>
-        </DialogContent>
-        <DialogActions 
-          style={{ 
-            display: "inline", 
-            paddingLeft: "10px",
-            marginTop: "25px",
-            marginBottom: "15px"  
-          }}
-        >
+          ) : (<></>) }
           <div>
-            <div style={{ float: "left" }}>
-              <Button 
-                onClick={handleRemoveFilter} 
-                variant="outlined"
-                style={{ 
-                  border: "0px"
-                }}
-              >
-                {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.clearAllFilters")}
-              </Button>
-            </div>
-            <div style={{ 
-                float: "right", 
-                paddingRight: "16px" 
+          <div style={{ float: 'left' }}>
+            <Button
+              onClick={handleRemoveFilter}
+              variant="outlined"
+              style={{
+                border: '0px',
               }}
+              disabled={confirmed}
             >
-              <Button 
-                onClick={handleClose} 
-                variant="outlined" 
-                autoFocus
-                style={{ margin: "0 16px" }} 
-              >
-                {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.cancel")}
-              </Button>
-              <Button 
-                onClick={saveCriteria} 
-                variant="contained" 
-                color="primary" 
-                autoFocus
-              >
-                {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.filter")}
-              </Button>
-            </div>
+              {formatMessage(intl, 'individual', 'paymentPlan.advancedCriteria.button.clearAllFilters')}
+            </Button>
           </div>
-        </DialogActions>
-      </Dialog>
-    </>
+          <div style={{
+            float: 'right',
+            paddingRight: '16px',
+            }}
+          >
+            <Button 
+              onClick={saveCriteria} 
+              variant="contained" 
+              color="primary" 
+              autoFocus
+              disabled={!object || confirmed}
+            >
+              {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.filter")}
+            </Button>
+          </div>
+        </div>
+  </>
   );
-};
+}
 
 const mapStateToProps = (state, props) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],

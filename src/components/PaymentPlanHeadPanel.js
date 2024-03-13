@@ -165,20 +165,6 @@ class PaymentPlanHeadPanel extends FormPanel {
                                           id="paymentPlan.headPanel.title" 
                                         />
                                     </Typography>
-                                    {paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN && (
-                                      <AdvancedCriteriaDialog
-                                          object={paymentPlan.benefitPlan}
-                                          objectToSave={paymentPlan}
-                                          moduleName="social_protection"
-                                          objectType="BenefitPlan"
-                                          setAppliedCustomFilters={this.setAppliedCustomFilters}
-                                          appliedCustomFilters={appliedCustomFilters}
-                                          appliedFiltersRowStructure={appliedFiltersRowStructure}
-                                          setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
-                                          updateAttributes={this.updateJsonExt}
-                                          getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
-                                      />
-                                    )}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -292,6 +278,30 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                     </Grid>
+                    <Divider />                 
+                    <Fragment>
+                        <div className={classes.item}>
+                            <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
+                        </div>
+                        <Divider />
+                        <Grid container className={classes.item}>
+                        {paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN && (
+                            <AdvancedCriteriaDialog
+                                object={paymentPlan.benefitPlan}
+                                objectToSave={paymentPlan}
+                                moduleName="social_protection"
+                                objectType="BenefitPlan"
+                                setAppliedCustomFilters={this.setAppliedCustomFilters}
+                                appliedCustomFilters={appliedCustomFilters}
+                                appliedFiltersRowStructure={appliedFiltersRowStructure}
+                                setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
+                                updateAttributes={this.updateJsonExt}
+                                getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
+                                edited={this.props.edited}
+                            />
+                        )}
+                        </Grid>
+                    </Fragment>
                     <Divider />
                     <Fragment>
                         <div className={classes.item}>
