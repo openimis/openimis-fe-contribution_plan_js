@@ -278,35 +278,45 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                     </Grid>
-                    <Divider />                 
+                    {paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN && (
+                    <>
+                      <Divider />
+                        <Fragment>
+                            <Typography>
+                                <div className={classes.item}>
+                                    <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
+                                </div>
+                            </Typography>
+                            <div className={classes.item}>
+                                <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria.tip" />
+                            </div>
+                            <Divider />
+                            <Grid container className={classes.item}>
+
+                                <AdvancedCriteriaDialog
+                                    object={paymentPlan.benefitPlan}
+                                    objectToSave={paymentPlan}
+                                    moduleName="social_protection"
+                                    objectType="BenefitPlan"
+                                    setAppliedCustomFilters={this.setAppliedCustomFilters}
+                                    appliedCustomFilters={appliedCustomFilters}
+                                    appliedFiltersRowStructure={appliedFiltersRowStructure}
+                                    setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
+                                    updateAttributes={this.updateJsonExt}
+                                    getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
+                                    edited={this.props.edited} />
+
+                            </Grid>
+                        </Fragment>
+                      <Divider />
+                    </>
+                    )}
                     <Fragment>
-                        <div className={classes.item}>
-                            <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
-                        </div>
-                        <Divider />
-                        <Grid container className={classes.item}>
-                        {paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN && (
-                            <AdvancedCriteriaDialog
-                                object={paymentPlan.benefitPlan}
-                                objectToSave={paymentPlan}
-                                moduleName="social_protection"
-                                objectType="BenefitPlan"
-                                setAppliedCustomFilters={this.setAppliedCustomFilters}
-                                appliedCustomFilters={appliedCustomFilters}
-                                appliedFiltersRowStructure={appliedFiltersRowStructure}
-                                setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
-                                updateAttributes={this.updateJsonExt}
-                                getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
-                                edited={this.props.edited}
-                            />
-                        )}
-                        </Grid>
-                    </Fragment>
-                    <Divider />
-                    <Fragment>
-                        <div className={classes.item}>
-                            <FormattedMessage module="contributionPlan" id="calculationParams" />
-                        </div>
+                        <Typography>
+                            <div className={classes.item}>
+                                <FormattedMessage module="contributionPlan" id="calculationParams" />
+                            </div>
+                        </Typography>
                         <Divider />
                         <Grid container className={classes.item}>
                             <Contributions
