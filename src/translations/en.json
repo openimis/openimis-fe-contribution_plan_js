@@ -87,14 +87,15 @@
     "paymentPlan.type.product": "Product",
     "paymentPlan.type.benefitplan": "Benefit Plan",
     "paymentPlan.advancedCriteria": "Advanced Criteria",
+    "paymentPlan.advancedCriteria.tip": "Please click the 'Confirm Filters' button to apply your chosen criteria.",
     "paymentPlan.advancedCriteria.field": "Field",
-    "paymentPlan.advancedCriteria.filter": "Filter",
+    "paymentPlan.advancedCriteria.filter": "Confirm Filters",
     "paymentPlan.advancedCriteria.value": "Value",
     "paymentPlan.advancedCriteria.amount": "Amount",
     "paymentPlan.advancedCriteria.button.AdvancedCriteria": "Advanced Criteria",
     "paymentPlan.advancedCriteria.button.addFilters": "Add filter",
     "paymentPlan.advancedCriteria.button.clearAllFilters": "Clear All Criteria",
     "paymentPlan.advancedCriteria.button.cancel": "Cancel",
-    "paymentPlan.advancedCriteria.button.filter": "Filter",
+    "paymentPlan.advancedCriteria.button.filter": "Confirm Filters",
     "paymentPlanPicker.label": "Payment Plan Picker"
 }
