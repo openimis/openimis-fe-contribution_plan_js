@@ -85,7 +85,7 @@ class PaymentPlanSearcher extends Component {
                     value={paymentPlan.calculation}
                     readOnly
                 /> : "",
-            paymentPlan => { 
+            paymentPlan => {
                 const objectBenefitPlan = typeof paymentPlan.benefitPlan === 'object' ? 
                   paymentPlan.benefitPlan : JSON.parse(paymentPlan.benefitPlan || '{}');
                 paymentPlan.benefitPlan = objectBenefitPlan;

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Grid, Divider, Typography } from "@material-ui/core";
+import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import {
     withModulesManager,
     formatMessage,
@@ -177,6 +177,28 @@ class PaymentPlanHeadPanel extends FormPanel {
                             </div>
                             <Divider />
                         </Fragment>
+                    )}
+                    {paymentPlan.id && (
+                      <Button 
+                        onClick={() => {
+                          const currentDateObject = new Date();
+                          const currentDate = currentDateObject.toISOString();
+                          paymentPlan.dateValidTo = currentDate;                      
+                          this.updateAttribute("dateValidTo", currentDate);
+                        }} 
+                        variant="outlined" 
+                        color="#DFEDEF" 
+                        className={classes.button}
+                        style={{ 
+                          border: "0px",
+                          textAlign: "right",
+                          display: "block",
+                          marginLeft: "auto",
+                          marginRight: 0
+                       }}
+                      >
+                        {formatMessage(intl, "paymentPlan", "paymentPlan.deactivatePaymentPlan")}
+                      </Button>
                     )}
                     <Grid container className={classes.item}>
                         <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
