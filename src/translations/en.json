@@ -97,5 +97,6 @@
     "paymentPlan.advancedCriteria.button.clearAllFilters": "Clear All Criteria",
     "paymentPlan.advancedCriteria.button.cancel": "Cancel",
     "paymentPlan.advancedCriteria.button.filter": "Confirm Filters",
-    "paymentPlanPicker.label": "Payment Plan Picker"
+    "paymentPlanPicker.label": "Payment Plan Picker",
+    "paymentPlan.deactivatePaymentPlan": "Deactivate Payment Plan"
 }
