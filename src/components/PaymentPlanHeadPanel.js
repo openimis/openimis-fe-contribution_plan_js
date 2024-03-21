@@ -138,6 +138,8 @@ class PaymentPlanHeadPanel extends FormPanel {
         const paymentPlanType = paymentPlan?.benefitPlanTypeName;
         const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
 
+        const isBenefitPlanType = () => paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN;
+
         if (paymentPlanType) {
             // probably could get rid of that if we use double JSON.parse in reducer
             const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
@@ -300,43 +302,13 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                     </Grid>
-                    {paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN && (
-                    <>
-                      <Divider />
-                        <Fragment>
-                            <Typography>
-                                <div className={classes.item}>
-                                    <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
-                                </div>
-                            </Typography>
-                            <div className={classes.item}>
-                                <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria.tip" />
-                            </div>
-                            <Divider />
-                            <Grid container className={classes.item}>
-
-                                <AdvancedCriteriaDialog
-                                    object={paymentPlan.benefitPlan}
-                                    objectToSave={paymentPlan}
-                                    moduleName="social_protection"
-                                    objectType="BenefitPlan"
-                                    setAppliedCustomFilters={this.setAppliedCustomFilters}
-                                    appliedCustomFilters={appliedCustomFilters}
-                                    appliedFiltersRowStructure={appliedFiltersRowStructure}
-                                    setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
-                                    updateAttributes={this.updateJsonExt}
-                                    getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
-                                    edited={this.props.edited} />
-
-                            </Grid>
-                        </Fragment>
-                      <Divider />
-                    </>
-                    )}
                     <Fragment>
                         <Typography>
                             <div className={classes.item}>
-                                <FormattedMessage module="contributionPlan" id="calculationParams" />
+                                {isBenefitPlanType() ?
+                                    <FormattedMessage module="contributionPlan" id="calculationParamsBFType"/> :
+                                    <FormattedMessage module="contributionPlan" id="calculationParams"/>
+                                }
                             </div>
                         </Typography>
                         <Divider />
@@ -357,6 +329,39 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                     </Fragment>
+                    {isBenefitPlanType() && (
+                        <>
+                            <Divider />
+                            <Fragment>
+                                <Typography>
+                                    <div className={classes.item}>
+                                        <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
+                                    </div>
+                                </Typography>
+                                <div className={classes.item}>
+                                    <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria.tip" />
+                                </div>
+                                <Divider />
+                                <Grid container className={classes.item}>
+
+                                    <AdvancedCriteriaDialog
+                                        object={paymentPlan.benefitPlan}
+                                        objectToSave={paymentPlan}
+                                        moduleName="social_protection"
+                                        objectType="BenefitPlan"
+                                        setAppliedCustomFilters={this.setAppliedCustomFilters}
+                                        appliedCustomFilters={appliedCustomFilters}
+                                        appliedFiltersRowStructure={appliedFiltersRowStructure}
+                                        setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
+                                        updateAttributes={this.updateJsonExt}
+                                        getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
+                                        edited={this.props.edited} />
+
+                                </Grid>
+                            </Fragment>
+                            <Divider />
+                        </>
+                    )}
                 </Fragment>
             );
         }
