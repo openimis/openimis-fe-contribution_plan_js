@@ -33,6 +33,7 @@ const AdvancedCriteriaRowValue = ({
   index,
   filters,
   setFilters,
+  readOnly,
 }) => {
 
   const onAttributeChange = (attribute) => (value) => {
@@ -79,6 +80,7 @@ const AdvancedCriteriaRowValue = ({
         return (
           <SelectInput
             options={BOOL_OPTIONS}
+            readOnly={readOnly}
             {...commonProps}
           />
         );
@@ -87,6 +89,7 @@ const AdvancedCriteriaRowValue = ({
           <NumberInput
             min={0}
             displayZero
+            readOnly={readOnly}
             {...commonProps}
           />
         );
@@ -96,12 +99,14 @@ const AdvancedCriteriaRowValue = ({
           return (
             <PublishedComponent
               pubRef="core.DatePicker"
+              readOnly={readOnly}
               {...commonProps}
             />
           );
         } else {
           return (
             <TextInput
+              readOnly={readOnly}
               {...commonProps}
             />
           );

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Grid, Divider, Typography } from "@material-ui/core";
+import { Grid, Divider, Typography, Button } from "@material-ui/core";
 import {
     withModulesManager,
     formatMessage,
@@ -138,11 +138,17 @@ class PaymentPlanHeadPanel extends FormPanel {
         const paymentPlanType = paymentPlan?.benefitPlanTypeName;
         const { appliedCustomFilters, appliedFiltersRowStructure } = this.state;
 
+        const isBenefitPlanType = () => paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN;
+
         if (paymentPlanType) {
             // probably could get rid of that if we use double JSON.parse in reducer
             const objectBenefitPlan = typeof paymentPlan.productOrBenefitPlan === 'object' ? 
               paymentPlan.productOrBenefitPlan : JSON.parse(paymentPlan.productOrBenefitPlan || '{}');
             paymentPlan.benefitPlan = objectBenefitPlan;
+            if (paymentPlanType === 'benefitplan' || paymentPlanType === 'benefit plan') {
+                paymentPlan.periodicity = 1;
+                this.state.data.periodicity = paymentPlan.periodicity;
+            }
             return (
                 <Fragment>
                     <Grid container className={classes.tableTitle}>
@@ -161,20 +167,6 @@ class PaymentPlanHeadPanel extends FormPanel {
                                           id="paymentPlan.headPanel.title" 
                                         />
                                     </Typography>
-                                    {paymentPlanType.replace(/\s+/g, '') === PAYMENT_PLAN_TYPE.BENEFIT_PLAN && (
-                                      <AdvancedCriteriaDialog
-                                          object={paymentPlan.benefitPlan}
-                                          objectToSave={paymentPlan}
-                                          moduleName="social_protection"
-                                          objectType="BenefitPlan"
-                                          setAppliedCustomFilters={this.setAppliedCustomFilters}
-                                          appliedCustomFilters={appliedCustomFilters}
-                                          appliedFiltersRowStructure={appliedFiltersRowStructure}
-                                          setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
-                                          updateAttributes={this.updateJsonExt}
-                                          getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
-                                      />
-                                    )}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -187,6 +179,28 @@ class PaymentPlanHeadPanel extends FormPanel {
                             </div>
                             <Divider />
                         </Fragment>
+                    )}
+                    {paymentPlan.id && (
+                      <Button 
+                        onClick={() => {
+                          const currentDateObject = new Date();
+                          const currentDate = currentDateObject.toISOString();
+                          paymentPlan.dateValidTo = currentDate;                      
+                          this.updateAttribute("dateValidTo", currentDate);
+                        }} 
+                        variant="outlined" 
+                        color="#DFEDEF" 
+                        className={classes.button}
+                        style={{ 
+                          border: "0px",
+                          textAlign: "right",
+                          display: "block",
+                          marginLeft: "auto",
+                          marginRight: 0
+                       }}
+                      >
+                        {formatMessage(intl, "paymentPlan", "paymentPlan.deactivatePaymentPlan")}
+                      </Button>
                     )}
                     <Grid container className={classes.item}>
                         <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
@@ -252,20 +266,22 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 onChange={(v) => this.updateAttribute("benefitPlan", v)}
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
-                            <NumberInput
-                                module="contributionPlan"
-                                label="periodicity"
-                                required
-                                /**
-                                 * @see min set to @see EMPTY_PERIODICITY_FILTER when filter unset to avoid @see NumberInput error message
-                                 */
-                                min={!!paymentPlan.periodicity ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
-                                max={MAX_PERIODICITY_VALUE}
-                                value={!!paymentPlan.periodicity ? paymentPlan.periodicity : null}
-                                onChange={(v) => this.updateAttribute("periodicity", v)}
-                            />
-                        </Grid>
+                        {paymentPlanType !== 'benefitplan' && paymentPlanType !== 'benefit plan' && (
+                            <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                                <NumberInput
+                                    module="contributionPlan"
+                                    label="periodicity"
+                                    required
+                                    /**
+                                    * @see min set to @see EMPTY_PERIODICITY_FILTER when filter unset to avoid @see NumberInput error message
+                                    */
+                                    min={!!paymentPlan.periodicity ? MIN_PERIODICITY_VALUE : EMPTY_PERIODICITY_VALUE}
+                                    max={MAX_PERIODICITY_VALUE}
+                                    value={!!paymentPlan.periodicity ? paymentPlan.periodicity : null}
+                                    onChange={(v) => this.updateAttribute("periodicity", v)}
+                                />
+                            </Grid>
+                        )}
                         <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                             <PublishedComponent
                                 pubRef="core.DatePicker"
@@ -286,11 +302,15 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                     </Grid>
-                    <Divider />
                     <Fragment>
-                        <div className={classes.item}>
-                            <FormattedMessage module="contributionPlan" id="calculationParams" />
-                        </div>
+                        <Typography>
+                            <div className={classes.item}>
+                                {isBenefitPlanType() ?
+                                    <FormattedMessage module="contributionPlan" id="calculationParamsBFType"/> :
+                                    <FormattedMessage module="contributionPlan" id="calculationParams"/>
+                                }
+                            </div>
+                        </Typography>
                         <Divider />
                         <Grid container className={classes.item}>
                             <Contributions
@@ -309,6 +329,39 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                     </Fragment>
+                    {isBenefitPlanType() && (
+                        <>
+                            <Divider />
+                            <Fragment>
+                                <Typography>
+                                    <div className={classes.item}>
+                                        <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
+                                    </div>
+                                </Typography>
+                                <div className={classes.item}>
+                                    <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria.tip" />
+                                </div>
+                                <Divider />
+                                <Grid container className={classes.item}>
+
+                                    <AdvancedCriteriaDialog
+                                        object={paymentPlan.benefitPlan}
+                                        objectToSave={paymentPlan}
+                                        moduleName="social_protection"
+                                        objectType="BenefitPlan"
+                                        setAppliedCustomFilters={this.setAppliedCustomFilters}
+                                        appliedCustomFilters={appliedCustomFilters}
+                                        appliedFiltersRowStructure={appliedFiltersRowStructure}
+                                        setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
+                                        updateAttributes={this.updateJsonExt}
+                                        getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
+                                        edited={this.props.edited} />
+
+                                </Grid>
+                            </Fragment>
+                            <Divider />
+                        </>
+                    )}
                 </Fragment>
             );
         }
