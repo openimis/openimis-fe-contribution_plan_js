@@ -130,6 +130,7 @@ class PaymentPlanHeadPanel extends FormPanel {
             isCodeValid,
             isCodeValidating,
             validationError,
+            readOnly = false,
         }
             = this.props;
         const { benefitPlan: productOrBenefitPlan, calculation: calculationId, ...others } = this.props.edited;
@@ -191,6 +192,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                         variant="outlined" 
                         color="#DFEDEF" 
                         className={classes.button}
+                        disabled={readOnly}
                         style={{ 
                           border: "0px",
                           textAlign: "right",
@@ -207,7 +209,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             <PaymentPlanTypePicker
                                 module="contributionPlan"
                                 label="type"
-                                readOnly={!!paymentPlan.id}
+                                readOnly={!!paymentPlan.id || readOnly}
                                 withNull={false}
                                 required
                                 value={paymentPlan?.benefitPlanTypeName?.replace(/\s+/g, '') ?? ''}
@@ -221,7 +223,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 label="code"
                                 required={true}
                                 value={!!paymentPlan.code ? paymentPlan.code : ""}
-                                readOnly={!!paymentPlan.id}
+                                readOnly={!!paymentPlan.id || readOnly}
                                 itemQueryIdentifier="paymentPlanCode"
                                 codeTakenLabel="paymentPlan.codeTaken"
                                 shouldValidate={this.shouldValidate}
@@ -239,6 +241,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             <TextInput
                                 module="contributionPlan"
                                 label="name"
+                                readOnly={readOnly}
                                 required
                                 value={!!paymentPlan.name ? paymentPlan.name : ""}
                                 onChange={(v) => this.updateAttribute("name", v)}
@@ -251,6 +254,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 value={!!calculationId ? calculationId : null}
                                 onChange={this.updateAttribute}
                                 context={paymentPlanType}
+                                readOnly={readOnly}
                                 required
                             />
                         </Grid>
@@ -260,6 +264,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                     ? "product.ProductPicker"
                                     : "socialProtection.BenefitPlanPicker"}
                                 withNull={true}
+                                readOnly={readOnly}
                                 label={formatMessage(intl, "paymentPlan", "benefitPlan")}
                                 required
                                 value={paymentPlan.benefitPlan !== undefined && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) ? null : paymentPlan.benefitPlan) : null}
@@ -270,6 +275,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                                 <NumberInput
                                     module="contributionPlan"
+                                    readOnly={readOnly}
                                     label="periodicity"
                                     required
                                     /**
@@ -286,6 +292,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             <PublishedComponent
                                 pubRef="core.DatePicker"
                                 module="contributionPlan"
+                                readOnly={readOnly}
                                 label="dateValidFrom"
                                 required
                                 value={!!paymentPlan.dateValidFrom ? paymentPlan.dateValidFrom : null}
@@ -296,6 +303,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             <PublishedComponent
                                 pubRef="core.DatePicker"
                                 module="contributionPlan"
+                                readOnly={readOnly}
                                 label="dateValidTo"
                                 value={!!paymentPlan.dateValidTo ? paymentPlan.dateValidTo : null}
                                 onChange={(v) => this.updateAttribute("dateValidTo", v)}
@@ -318,6 +326,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 intl={intl}
                                 className={PAYMENTPLAN_CLASSNAME}
                                 entity={paymentPlan}
+                                readOnly={readOnly}
                                 requiredRights={[!!paymentPlan.id ? RIGHT_CALCULATION_UPDATE : RIGHT_CALCULATION_WRITE]}
                                 value={!!paymentPlan.jsonExt ? paymentPlan.jsonExt : null}
                                 onChange={this.updateAttribute}
@@ -355,7 +364,9 @@ class PaymentPlanHeadPanel extends FormPanel {
                                         setAppliedFiltersRowStructure={this.setAppliedFiltersRowStructure}
                                         updateAttributes={this.updateJsonExt}
                                         getDefaultAppliedCustomFilters={this.getDefaultAppliedCustomFilters}
-                                        edited={this.props.edited} />
+                                        edited={this.props.edited}
+                                        readOnly={readOnly}
+                                        />
 
                                 </Grid>
                             </Fragment>
