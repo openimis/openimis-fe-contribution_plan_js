@@ -40,6 +40,7 @@ const AdvancedCriteriaDialog = ({
   additionalParams,
   confirmed,
   edited,
+  readOnly = false,
 }) => {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -157,32 +158,33 @@ const AdvancedCriteriaDialog = ({
               index={index}
               filters={filters}
               setFilters={setFilters}
-              readOnly={confirmed}
+              readOnly={confirmed || readOnly}
             />)
           })}
           { !confirmed ? (
           <div 
             style={{ backgroundColor: "#DFEDEF", paddingLeft: "10px", paddingBottom: "10px" }}
           >
-            <AddCircle 
-              style={{ 
-                border: "thin solid", 
-                borderRadius: "40px", 
-                width: "16px", 
-                height: "16px" 
-              }} 
-              onClick={handleAddFilter}
-              disabled={confirmed}
-            />
+
             <Button 
               onClick={handleAddFilter} 
               variant="outlined"
+              startIcon={
+                <AddCircle
+                  style={{
+                    border: 'thin solid',
+                    borderRadius: '40px',
+                    width: '16px',
+                    height: '16px',
+                  }}
+                />
+              }
               style={{ 
                 border: "0px", 
                 "marginBottom": "6px", 
                 fontSize: "0.8rem" 
               }}
-              disabled={confirmed}
+              disabled={confirmed || readOnly}
             >
               {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.addFilters")}
             </Button>
@@ -196,7 +198,7 @@ const AdvancedCriteriaDialog = ({
               style={{
                 border: '0px',
               }}
-              disabled={confirmed}
+              disabled={confirmed || readOnly}
             >
               {formatMessage(intl, 'individual', 'paymentPlan.advancedCriteria.button.clearAllFilters')}
             </Button>
@@ -211,7 +213,7 @@ const AdvancedCriteriaDialog = ({
               variant="contained" 
               color="primary" 
               autoFocus
-              disabled={!object || confirmed}
+              disabled={!object || confirmed || readOnly}
             >
               {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.filter")}
             </Button>
