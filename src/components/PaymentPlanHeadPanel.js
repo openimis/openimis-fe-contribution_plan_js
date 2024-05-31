@@ -269,6 +269,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 required
                                 value={paymentPlan.benefitPlan !== undefined && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) ? null : paymentPlan.benefitPlan) : null}
                                 onChange={(v) => this.updateAttribute("benefitPlan", v)}
+                                type='EVERY_TYPE'
                             />
                         </Grid>
                         {paymentPlanType !== 'benefitplan' && paymentPlanType !== 'benefit plan' && (
