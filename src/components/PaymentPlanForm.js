@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import {
     Form,
     withModulesManager,
@@ -22,6 +22,7 @@ const styles = theme => ({
     paperHeader: theme.paper.header,
     paperHeaderAction: theme.paper.action,
     item: theme.paper.item,
+    lockedPage: theme.page.locked,
 });
 
 class PaymentPlanForm extends Component {
@@ -31,6 +32,7 @@ class PaymentPlanForm extends Component {
             paymentPlan: {},
             jsonExtValid: true,
             requiredValid: false,
+            clientMutationId: null,
         };
     }
 
@@ -48,6 +50,9 @@ class PaymentPlanForm extends Component {
         }
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
+            this.setState((state, props) => ({
+              clientMutationId: props.mutation.clientMutationId,
+            }));
         }
     }
 
@@ -96,9 +101,17 @@ class PaymentPlanForm extends Component {
     setRequiredValid = (valid) => this.setState({ requiredValid: !!valid });
 
     render() {
-        const { intl, back, paymentPlanId, title, save, isReplacing = false } = this.props;
+        const {
+          intl,
+          back,
+          paymentPlanId,
+          save,
+          isReplacing = false,
+          classes,
+        } = this.props;
+        const shouldBeLocked = Boolean(this.state.clientMutationId);
         return (
-            <Fragment>
+            <div className={shouldBeLocked ? classes.lockedPage : null}>
                 <Helmet title={formatMessageWithValues(this.props.intl, "paymentPlan", "paymentPlan.page.title", this.titleParams())} />
                 <Form
                     module="paymentPlan"
@@ -117,8 +130,9 @@ class PaymentPlanForm extends Component {
                     paymentPlanId={paymentPlanId}
                     isReplacing={isReplacing}
                     openDirty={save}
+                    readOnly={shouldBeLocked}
                 />
-            </Fragment>
+            </div>
         )
     }
 }

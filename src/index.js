@@ -45,7 +45,7 @@ const DEFAULT_CONFIG = {
         { key: "contributionPlan.route.paymentPlans", ref: ROUTE_PAYMENT_PLANS },
         { key: "contributionPlan.route.paymentPlan", ref: ROUTE_PAYMENT_PLAN },
         { key: "contributionPlan.PaymentPlanPicker", ref: PaymentPlanPicker },
-        { key: "contributionPlan.PaymentPlanPicker.projection", ref: ["id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo", "isDeleted", "replacementUuid"] },
+        { key: "contributionPlan.PaymentPlanPicker.projection", ref: ["id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo", "isDeleted", "replacementUuid", "benefitPlan"] },
         { key: "contributionPlan.route.replacePaymentPlan", ref: ROUTE_PAYMENT_PLAN_REPLACE },
     ],
     "core.Router": [

@@ -8,6 +8,7 @@
     "contributionPlan.bundleCodeTaken": "Contribution plan bundle code already exists",
     "contributionPlan.name": "Name",
     "contributionPlan.calculationParams": "Additional parameters",
+    "contributionPlan.calculationParamsBFType": "Parameters",
     "contributionPlan.calculation": "Calculation Rule",
     "contributionPlan.benefitPlan": "Insurance Product",
     "contributionPlan.periodicity": "Periodicity (no of months)",
@@ -87,13 +88,16 @@
     "paymentPlan.type.product": "Product",
     "paymentPlan.type.benefitplan": "Benefit Plan",
     "paymentPlan.advancedCriteria": "Advanced Criteria",
+    "paymentPlan.advancedCriteria.tip": "Please click the 'Confirm Criteria' button to apply your chosen criteria.",
     "paymentPlan.advancedCriteria.field": "Field",
-    "paymentPlan.advancedCriteria.filter": "Filter",
+    "paymentPlan.advancedCriteria.filter": "Confirm Filters",
     "paymentPlan.advancedCriteria.value": "Value",
     "paymentPlan.advancedCriteria.amount": "Amount",
     "paymentPlan.advancedCriteria.button.AdvancedCriteria": "Advanced Criteria",
-    "paymentPlan.advancedCriteria.button.addFilters": "Add filter",
+    "paymentPlan.advancedCriteria.button.addFilters": "Add criterion",
     "paymentPlan.advancedCriteria.button.clearAllFilters": "Clear All Criteria",
     "paymentPlan.advancedCriteria.button.cancel": "Cancel",
-    "paymentPlan.advancedCriteria.button.filter": "Filter"
+    "paymentPlan.advancedCriteria.button.filter": "Confirm Criteria",
+    "paymentPlanPicker.label": "Payment Plan Picker",
+    "paymentPlan.deactivatePaymentPlan": "Deactivate Payment Plan"
 }

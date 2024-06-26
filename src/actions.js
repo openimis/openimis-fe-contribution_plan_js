@@ -62,7 +62,7 @@ const PAYMENTPLAN_FULL_PROJECTION = (modulesManager) => [
   "isDeleted",
 ];
 
-const PAYMENTPLAN_PICKER_PROJECTION = () => ["id", "code", "name"];
+const PAYMENTPLAN_PICKER_PROJECTION = () => ["id", "code", "name", "benefitPlan"];
 
 function dateTimeToDate(date) {
   return date.split("T")[0];
