@@ -48,18 +48,25 @@ const AdvancedCriteriaDialog = ({
   const [filters, setFilters] = useState(getDefaultAppliedCustomFilters());
 
   const getBenefitPlanDefaultCriteria = () => {
-    const { jsonExt } = edited?.benefitPlan ?? {};
-    try {
-      const jsonData = JSON.parse(jsonExt);
-      return jsonData.advanced_criteria || [];
-    } catch (error) {
-      return [];
+    const jsonExt = edited?.benefitPlan?.jsonExt ?? '{}';
+    const jsonData = JSON.parse(jsonExt);
+
+    // Note: advanced_criteria is migrated from [filters] to {status: filters}
+    // For backward compatibility default status take on the old filters
+    let criteria = jsonData?.advanced_criteria || {};
+    if (Array.isArray(criteria)) {
+      return criteria;
     }
+
+    return criteria['ACTIVE'] || [];
   };
 
   useEffect(() => {
-    if (!getDefaultAppliedCustomFilters().length) {
+    const defaultAppliedCustomFilters = getDefaultAppliedCustomFilters();
+    if (!defaultAppliedCustomFilters.length) {
       setFilters(getBenefitPlanDefaultCriteria());
+    } else {
+      setFilters(defaultAppliedCustomFilters);
     }
   }, [edited]);
   
