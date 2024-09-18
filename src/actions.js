@@ -350,7 +350,7 @@ function formatPaymentPlanGQL(paymentPlan, isReplaceMutation = false) {
         }
         ${
           !!paymentPlan.benefitPlanTypeName
-            ? `benefitPlanType: "${formatGQLString(paymentPlan.benefitPlanTypeName.replace(/\s+/g, ''))}"`
+            ? `benefitPlanType_Model: "${formatGQLString(paymentPlan.benefitPlanTypeName.replace(/\s+/g, ''))}"`
             : ""
         }
         ${
