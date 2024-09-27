@@ -113,7 +113,7 @@ export function fetchContributionPlanBundles(params) {
 
 export function fetchContributionPlanBundle(contributionPlanBundleId, filters=[]) {
   let filter = !!contributionPlanBundleId
-    ? `id: "${contributionPlanBundleId}"`
+    ? `id: "${decodeId(contributionPlanBundleId)}"`
     : "";
   filters.push(filter)
   const payload = formatPageQuery(

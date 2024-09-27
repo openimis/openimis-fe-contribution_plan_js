@@ -11,6 +11,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants";
 import CreateContributionPlanBundleDetailsDialog from "../dialogs/CreateContributionPlanBundleDetailsDialog";
 import UpdateContributionPlanBundleDetailsDialog from "../dialogs/UpdateContributionPlanBundleDetailsDialog";
+import {
+    decodeId,
+} from "@openimis/fe-core";
 
 const styles = theme => ({
     tableTitle: theme.table.title,
@@ -48,7 +51,7 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         let params = [];
         if (!!this.props.contributionPlanBundleId) {
             params.push("isDeleted: false");
-            params.push(`contributionPlanBundle_Id: "${this.props.contributionPlanBundleId}"`);
+            params.push(`contributionPlanBundle_Id: "${decodeId(this.props.contributionPlanBundleId)}"`);
             return params;
         }
         return null;
