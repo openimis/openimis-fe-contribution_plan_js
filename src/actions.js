@@ -113,7 +113,7 @@ export function fetchContributionPlanBundles(params) {
 
 export function fetchContributionPlanBundle(contributionPlanBundleId, filters=[]) {
   let filter = !!contributionPlanBundleId
-    ? `id: "${decodeId(contributionPlanBundleId)}"`
+    ? `id: "${contributionPlanBundleId}"`
     : "";
   filters.push(filter)
   const payload = formatPageQuery(
@@ -295,7 +295,7 @@ function formatContributionPlanBundleDetailsGQL(
         }
         ${
           !!contributionPlanBundleDetails.contributionPlanBundleId
-            ? `contributionPlanBundleId: "${decodeId(contributionPlanBundleDetails.contributionPlanBundleId)}"`
+            ? `contributionPlanBundleId: "${contributionPlanBundleDetails.contributionPlanBundleId}"`
             : ""
         }
         ${

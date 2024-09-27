@@ -51,7 +51,7 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         let params = [];
         if (!!this.props.contributionPlanBundleId) {
             params.push("isDeleted: false");
-            params.push(`contributionPlanBundle_Id: "${decodeId(this.props.contributionPlanBundleId)}"`);
+            params.push(`contributionPlanBundle_Id: "${this.props.contributionPlanBundleId}"`);
             return params;
         }
         return null;
