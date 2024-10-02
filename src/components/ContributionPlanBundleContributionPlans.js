@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { injectIntl } from 'react-intl';
 import { withModulesManager, FormattedMessage, formatMessage, formatMessageWithValues, formatDateFromISO, Table,
-    PublishedComponent, withTooltip, coreConfirm, journalize, PagedDataHandler } from "@openimis/fe-core";
+    PublishedComponent, withTooltip, coreConfirm, journalize, PagedDataHandler, decodeId } from "@openimis/fe-core";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { fetchContributionPlanBundleContributionPlans, deleteContributionPlanBundleContributionPlan } from "../actions"
 import { bindActionCreators } from "redux";
@@ -11,9 +11,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants";
 import CreateContributionPlanBundleDetailsDialog from "../dialogs/CreateContributionPlanBundleDetailsDialog";
 import UpdateContributionPlanBundleDetailsDialog from "../dialogs/UpdateContributionPlanBundleDetailsDialog";
-import {
-    decodeId,
-} from "@openimis/fe-core";
 
 const styles = theme => ({
     tableTitle: theme.table.title,
