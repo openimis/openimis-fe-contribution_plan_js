@@ -11,6 +11,7 @@ import {
   formatMessage,
   formatMessageWithValues,
   Helmet,
+  decodeId,
   journalize,
 } from "@openimis/fe-core";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
@@ -49,7 +50,7 @@ class ContributionPlanBundleForm extends Component {
         contributionPlanBundle: props.contributionPlanBundle,
       }));
       const contributionPlanBundleRouteRef = this.props.modulesManager.getRef('contributionPlan.route.contributionPlanBundle');
-      this.props.history.replace(`/${contributionPlanBundleRouteRef}/${this.props.contributionPlanBundle.id}`);
+      this.props.history.replace(`/${contributionPlanBundleRouteRef}/${decodeId(this.props.contributionPlanBundle.id)}`);
     }
     if (prevProps.submittingMutation && !this.props.submittingMutation) {
       this.props.journalize(this.props.mutation);
@@ -174,6 +175,7 @@ const mapDispatchToProps = (dispatch) => {
       fetchContributionPlanBundle,
       clearContributionPlanBundle,
       journalize,
+      decodeId,
       clearContributionPlanBundleDetails
     },
     dispatch

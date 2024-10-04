@@ -17,8 +17,7 @@ const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
   "calculation",
   "jsonExt",
   "benefitPlan",
-  "benefitPlanType",
-  "benefitPlanTypeName",
+  "benefitPlanType_Model",
   "periodicity",
   "dateValidFrom",
   "dateValidTo",
@@ -295,7 +294,7 @@ function formatContributionPlanBundleDetailsGQL(
         }
         ${
           !!contributionPlanBundleDetails.contributionPlanBundleId
-            ? `contributionPlanBundleId: "${decodeId(contributionPlanBundleDetails.contributionPlanBundleId)}"`
+            ? `contributionPlanBundleId: "${contributionPlanBundleDetails.contributionPlanBundleId}"`
             : ""
         }
         ${
@@ -839,4 +838,3 @@ export const contributionPlanBundleCodeClear = () => {
     dispatch({ type: "CONTRIBUTIONPLAN_BUNDLE_CODE_FIELDS_VALIDATION_CLEAR" });
   };
 };
-
