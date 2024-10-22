@@ -18,6 +18,7 @@ const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
   "jsonExt",
   "benefitPlan",
   "benefitPlanType_Model",
+  "benefitPlanTypeName",
   "periodicity",
   "dateValidFrom",
   "dateValidTo",
@@ -199,7 +200,7 @@ function formatContributionPlanGQL(contributionPlan) {
             : ""
         }
         ${
-          `benefitPlanType: "${formatGQLString(PAYMENT_PLAN_TYPE.PRODUCT)}"`
+          `benefitPlanType_Model: "${formatGQLString(PAYMENT_PLAN_TYPE.PRODUCT)}"`
         }
         ${
           !!contributionPlan.benefitPlan
