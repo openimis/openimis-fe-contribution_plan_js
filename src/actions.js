@@ -18,7 +18,6 @@ const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
   "jsonExt",
   "benefitPlan",
   "benefitPlanType_Model",
-  "benefitPlanTypeName",
   "periodicity",
   "dateValidFrom",
   "dateValidTo",
