@@ -80,7 +80,7 @@ const DEFAULT_CONFIG = {
             icon: <LocalOffer />,
             route: "/" + ROUTE_PAYMENT_PLANS,
             filter: rights => rights.includes(RIGHT_PAYMENT_PLAN_SEARCH),
-            id: 'admin.paymentPlans'
+            id: 'legalAndFinance.paymentPlans'
         }
     ]
 }
