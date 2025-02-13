@@ -63,13 +63,15 @@ const DEFAULT_CONFIG = {
             text: <FormattedMessage module="contributionPlan" id="contributionPlans.page.title" />,
             icon: <LocalOffer />,
             route: "/" + ROUTE_CONTRIBUTION_PLANS,
-            filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_SEARCH) 
+            filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_SEARCH),
+            id: 'admin.contributionPlans'
         },
         {
             text: <FormattedMessage module="contributionPlan" id="contributionPlanBundles.page.title" />,
             icon: <Folder />,
             route: "/" + ROUTE_CONTRIBUTION_PLAN_BUNDLES,
-            filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) 
+            filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH),
+            id: 'admin.contributionPlanBundles'
         },
     ],
     "invoice.MainMenu": [
@@ -77,7 +79,8 @@ const DEFAULT_CONFIG = {
             text: <FormattedMessage module="contributionPlan" id="paymentPlans.page.title" />,
             icon: <LocalOffer />,
             route: "/" + ROUTE_PAYMENT_PLANS,
-            filter: rights => rights.includes(RIGHT_PAYMENT_PLAN_SEARCH)
+            filter: rights => rights.includes(RIGHT_PAYMENT_PLAN_SEARCH),
+            id: 'legalAndFinance.paymentPlans'
         }
     ]
 }
