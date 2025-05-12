@@ -99,5 +99,20 @@
     "paymentPlan.advancedCriteria.button.cancel": "Cancel",
     "paymentPlan.advancedCriteria.button.filter": "Confirm Criteria",
     "paymentPlanPicker.label": "Payment Plan Picker",
-    "paymentPlan.deactivatePaymentPlan": "Deactivate Payment Plan"
+    "paymentPlan.deactivatePaymentPlan": "Deactivate Payment Plan",
+    "contribution_plan.gql_query_contributionplanbundle_perms": "Contribution Plan | Query Contributionplanbundle",
+    "contribution_plan.gql_query_contributionplan_perms": "Contribution Plan | Query Contributionplan",
+    "contribution_plan.gql_query_paymentplan_perms": "Contribution Plan | Query Paymentplan",
+    "contribution_plan.gql_mutation_create_contributionplanbundle_perms": "Contribution Plan | Mutation Create Contributionplanbundle",
+    "contribution_plan.gql_mutation_update_contributionplanbundle_perms": "Contribution Plan | Mutation Update Contributionplanbundle",
+    "contribution_plan.gql_mutation_delete_contributionplanbundle_perms": "Contribution Plan | Mutation Delete Contributionplanbundle",
+    "contribution_plan.gql_mutation_replace_contributionplanbundle_perms": "Contribution Plan | Mutation Replace Contributionplanbundle",
+    "contribution_plan.gql_mutation_create_contributionplan_perms": "Contribution Plan | Mutation Create Contributionplan",
+    "contribution_plan.gql_mutation_update_contributionplan_perms": "Contribution Plan | Mutation Update Contributionplan",
+    "contribution_plan.gql_mutation_delete_contributionplan_perms": "Contribution Plan | Mutation Delete Contributionplan",
+    "contribution_plan.gql_mutation_replace_contributionplan_perms": "Contribution Plan | Mutation Replace Contributionplan",
+    "contribution_plan.gql_mutation_create_paymentplan_perms": "Contribution Plan | Mutation Create Paymentplan",
+    "contribution_plan.gql_mutation_update_paymentplan_perms": "Contribution Plan | Mutation Update Paymentplan",
+    "contribution_plan.gql_mutation_delete_paymentplan_perms": "Contribution Plan | Mutation Delete Paymentplan",
+    "contribution_plan.gql_mutation_replace_paymentplan_perms": "Contribution Plan | Mutation Replace Paymentplan"
 }
