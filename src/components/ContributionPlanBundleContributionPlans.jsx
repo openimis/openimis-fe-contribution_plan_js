@@ -2,12 +2,12 @@ import React, { Fragment } from "react";
 import { injectIntl } from 'react-intl';
 import { withModulesManager, FormattedMessage, formatMessage, formatMessageWithValues, formatDateFromISO, Table,
     PublishedComponent, withTooltip, coreConfirm, journalize, PagedDataHandler, decodeId } from "@openimis/fe-core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withTheme, withStyles } from "@mui/material/styles";
 import { fetchContributionPlanBundleContributionPlans, deleteContributionPlanBundleContributionPlan } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Paper, IconButton, Grid, Typography, Divider } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Paper, IconButton, Grid, Typography, Divider } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants";
 import CreateContributionPlanBundleDetailsDialog from "../dialogs/CreateContributionPlanBundleDetailsDialog";
 import UpdateContributionPlanBundleDetailsDialog from "../dialogs/UpdateContributionPlanBundleDetailsDialog";

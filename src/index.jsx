@@ -1,7 +1,7 @@
 import React from "react";
 import messages_en from "./translations/en.json";
 import reducer from "./reducer";
-import { LocalOffer, Folder } from "@material-ui/icons";
+import { LocalOffer, Folder } from "@mui/icons-material";
 import ContributionPlansPage from "./pages/ContributionPlansPage";
 import ContributionPlanPage from "./pages/ContributionPlanPage";
 import ContributionPlanBundlesPage from "./pages/ContributionPlanBundlesPage";

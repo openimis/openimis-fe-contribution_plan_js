@@ -8,8 +8,8 @@ import {
   CustomFilterTypeStatusPicker,
   CustomFilterFieldStatusPicker
 } from "@openimis/fe-core";
-import { Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid } from "@mui/material";
+import { withTheme, withStyles } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { 
   BOOLEAN,

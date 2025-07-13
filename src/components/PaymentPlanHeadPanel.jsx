@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Grid, Divider, Typography, Button } from "@material-ui/core";
+import { Grid, Divider, Typography, Button } from "@mui/material";
 import {
     withModulesManager,
     formatMessage,
@@ -13,7 +13,7 @@ import {
 } from "@openimis/fe-core";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withTheme, withStyles } from "@mui/material/styles";
 import {
     EMPTY_PERIODICITY_VALUE,
     MIN_PERIODICITY_VALUE,

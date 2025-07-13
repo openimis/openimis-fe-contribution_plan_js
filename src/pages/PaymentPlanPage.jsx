@@ -3,7 +3,7 @@ import { withModulesManager, withHistory, historyPush, formatMessageWithValues }
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withTheme, withStyles } from "@mui/material/styles";
 import { createPaymentPlan, updatePaymentPlan } from "../actions"
 import PaymentPlanForm from "../components/PaymentPlanForm"
 import { RIGHT_PAYMENT_PLAN_CREATE, RIGHT_PAYMENT_PLAN_UPDATE } from "../constants"

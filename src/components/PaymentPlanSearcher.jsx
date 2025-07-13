@@ -16,10 +16,10 @@ import { fetchPaymentPlans, deletePaymentPlan } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanFilter from "./PaymentPlanFilter";
-import { IconButton } from "@material-ui/core";
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from "@material-ui/icons/Delete";
+import { IconButton } from "@mui/material";
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { isEmptyObject } from "../utils";
 import {
     ROWS_PER_PAGE_OPTIONS,
