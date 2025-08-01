@@ -9,7 +9,7 @@ import {
   CustomFilterFieldStatusPicker
 } from "@openimis/fe-core";
 import { Grid } from "@mui/material";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { 
   BOOLEAN,
@@ -20,13 +20,12 @@ import {
   BOOL_OPTIONS 
 } from "../constants";
 
-const styles = (theme) => ({
-  item: theme.paper.item,
-});
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  '& .item': theme.paper.item,
+}));
 
 const AdvancedCriteriaRowValue = ({
   intl,
-  classes,
   customFilters,
   currentFilter,
   setCurrentFilter,
@@ -115,10 +114,10 @@ const AdvancedCriteriaRowValue = ({
   };
 
   return (
-    <Grid 
+    <StyledGrid 
       container 
       direction="row" 
-      className={classes.item}
+      className="item"
       style={{ backgroundColor: "#DFEDEF" }}
     >
       {filters.length > 0 ? (
@@ -136,7 +135,7 @@ const AdvancedCriteriaRowValue = ({
         </div> 
       ) : (<></>)
       }
-      <Grid item xs={3} className={classes.item}>
+      <Grid item xs={3} className="item">
         <CustomFilterFieldStatusPicker
           module="paymentPlan"
           label="paymentPlan.advancedCriteria.field"
@@ -146,7 +145,7 @@ const AdvancedCriteriaRowValue = ({
         />
       </Grid>
         {currentFilter.field !== "" ? (
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={3} className="item">
             <CustomFilterTypeStatusPicker
               module="paymentPlan"
               label="paymentPlan.advancedCriteria.filter"
@@ -158,12 +157,12 @@ const AdvancedCriteriaRowValue = ({
           </Grid>
         ) : (<></>) }
         {currentFilter.field !== "" && currentFilter.filter !== "" ? (
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={3} className="item">
             {renderInputBasedOnType(currentFilter.type)}
           </Grid>
         ) : (<></>) }
         {currentFilter.field !== "" && currentFilter.filter !== "" && currentFilter.value !== "" ? (
-          <Grid item xs={2} className={classes.item}>
+          <Grid item xs={2} className="item">
             <NumberInput
               min={0}
               displayZero
@@ -174,8 +173,8 @@ const AdvancedCriteriaRowValue = ({
             />
           </Grid>
         ) : (<></>) }
-    </Grid>
+    </StyledGrid>
   );
 };
 
-export default injectIntl(withTheme(withStyles(styles)(connect(null, null)(AdvancedCriteriaRowValue))));
+export default injectIntl(connect(null, null)(AdvancedCriteriaRowValue));

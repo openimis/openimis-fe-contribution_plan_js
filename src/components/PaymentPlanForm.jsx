@@ -9,7 +9,7 @@ import {
     journalize
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanHeadPanel from "./PaymentPlanHeadPanel";
@@ -17,13 +17,13 @@ import { fetchPaymentPlan, clearPaymentPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 import _ from "lodash";
 
-const styles = theme => ({
-    paper: theme.paper.paper,
-    paperHeader: theme.paper.header,
-    paperHeaderAction: theme.paper.action,
-    item: theme.paper.item,
-    lockedPage: theme.page.locked,
-});
+const StyledForm = styled('div')(({ theme }) => ({
+  ...theme.paper.paper,
+  '& .paperHeader': theme.paper.header,
+  '& .paperHeaderAction': theme.paper.action,
+  '& .item': theme.paper.item,
+  '& .lockedPage': theme.page.locked,
+}));
 
 class PaymentPlanForm extends Component {
     constructor(props) {
@@ -107,11 +107,10 @@ class PaymentPlanForm extends Component {
           paymentPlanId,
           save,
           isReplacing = false,
-          classes,
         } = this.props;
         const shouldBeLocked = Boolean(this.state.clientMutationId);
         return (
-            <div className={shouldBeLocked ? classes.lockedPage : null}>
+            <StyledForm className={shouldBeLocked ? "lockedPage" : null}>
                 <Helmet title={formatMessageWithValues(this.props.intl, "paymentPlan", "paymentPlan.page.title", this.titleParams())} />
                 <Form
                     module="paymentPlan"
@@ -132,7 +131,7 @@ class PaymentPlanForm extends Component {
                     openDirty={save}
                     readOnly={shouldBeLocked}
                 />
-            </div>
+            </StyledForm>
         )
     }
 }
@@ -157,9 +156,7 @@ const mapDispatchToProps = dispatch => {
 export default withHistory(
     withModulesManager(
         injectIntl(
-            withTheme(withStyles(styles)(
-                connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))
-            )
+            connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm)
         )
     )
 );

@@ -13,7 +13,7 @@ import {
 } from "@openimis/fe-core";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import {
     EMPTY_PERIODICITY_VALUE,
     MIN_PERIODICITY_VALUE,
@@ -36,13 +36,20 @@ import { isEmptyObject } from "../utils";
 import AdvancedCriteriaDialog from "../dialogs/AdvancedCriteriaDialog";
 import { CLEARED_STATE_FILTER } from "../constants";
 
-const styles = theme => ({
-    tableTitle: theme.table.title,
-    item: theme.paper.item,
-    fullHeight: {
-        height: "100%"
-    }
-});
+const StyledPanel = styled('div')(({ theme }) => ({
+  '& .tableTitle': theme.table.title,
+  '& .item': theme.paper.item,
+  '& .fullHeight': {
+    height: "100%"
+  },
+  '& .button': {
+    border: "0px",
+    textAlign: "right",
+    display: "block",
+    marginLeft: "auto",
+    marginRight: 0
+  }
+}));
 
 const GRID_ITEM_SIZE = 3;
 
@@ -123,7 +130,6 @@ class PaymentPlanHeadPanel extends FormPanel {
     render() {
         const {
             intl,
-            classes,
             mandatoryFieldsEmpty,
             setJsonExtValid,
             setRequiredValid,
@@ -151,15 +157,15 @@ class PaymentPlanHeadPanel extends FormPanel {
                 this.state.data.periodicity = paymentPlan.periodicity;
             }
             return (
-                <Fragment>
-                    <Grid container className={classes.tableTitle}>
+                <StyledPanel>
+                    <Grid container className="tableTitle">
                         <Grid item style={{ flex: 1 }}>
                             <Grid
                                 container
                                 align="center"
                                 justify="center"
                                 direction="column"
-                                className={classes.fullHeight}
+                                className="fullHeight"
                             >
                                 <Grid item style={{ flex: 1, display: "flex" }}>
                                     <Typography style={{ marginTop: "6px" }}>
@@ -175,7 +181,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                     <Divider />
                     {mandatoryFieldsEmpty && (
                         <Fragment>
-                            <div className={classes.item}>
+                            <div className="item">
                                 <FormattedMessage module="contributionPlan" id="mandatoryFieldsEmptyError" />
                             </div>
                             <Divider />
@@ -191,21 +197,14 @@ class PaymentPlanHeadPanel extends FormPanel {
                         }} 
                         variant="outlined" 
                         color="#DFEDEF" 
-                        className={classes.button}
+                        className="button"
                         disabled={readOnly}
-                        style={{ 
-                          border: "0px",
-                          textAlign: "right",
-                          display: "block",
-                          marginLeft: "auto",
-                          marginRight: 0
-                       }}
                       >
                         {formatMessage(intl, "paymentPlan", "paymentPlan.deactivatePaymentPlan")}
                       </Button>
                     )}
-                    <Grid container className={classes.item}>
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                    <Grid container className="item">
+                        <Grid item xs={GRID_ITEM_SIZE} className="item">
                             <PaymentPlanTypePicker
                                 module="contributionPlan"
                                 label="type"
@@ -217,7 +216,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 withLabel
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                        <Grid item xs={GRID_ITEM_SIZE} className="item">
                             <ValidatedTextInput
                                 module="contributionPlan"
                                 label="code"
@@ -237,7 +236,7 @@ class PaymentPlanHeadPanel extends FormPanel {
 
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                        <Grid item xs={GRID_ITEM_SIZE} className="item">
                             <TextInput
                                 module="contributionPlan"
                                 label="name"
@@ -247,7 +246,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 onChange={(v) => this.updateAttribute("name", v)}
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                        <Grid item xs={GRID_ITEM_SIZE} className="item">
                             <Contributions
                                 contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
                                 label={formatMessage(intl, "paymentPlan", "calculation")}
@@ -258,7 +257,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 required
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                        <Grid item xs={GRID_ITEM_SIZE} className="item">
                             <PublishedComponent
                                 pubRef={paymentPlanType === PAYMENT_PLAN_TYPE.PRODUCT
                                     ? "product.ProductPicker"
@@ -273,7 +272,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                         {paymentPlanType !== 'benefitplan' && paymentPlanType !== 'benefit plan' && (
-                            <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                            <Grid item xs={GRID_ITEM_SIZE} className="item">
                                 <NumberInput
                                     module="contributionPlan"
                                     readOnly={readOnly}
@@ -289,7 +288,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 />
                             </Grid>
                         )}
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                        <Grid item xs={GRID_ITEM_SIZE} className="item">
                             <PublishedComponent
                                 pubRef="core.DatePicker"
                                 module="contributionPlan"
@@ -300,7 +299,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 onChange={(v) => this.updateAttribute("dateValidFrom", v)}
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                        <Grid item xs={GRID_ITEM_SIZE} className="item">
                             <PublishedComponent
                                 pubRef="core.DatePicker"
                                 module="contributionPlan"
@@ -313,7 +312,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                     </Grid>
                     <Fragment>
                         <Typography>
-                            <div className={classes.item}>
+                            <div className="item">
                                 {isBenefitPlanType() ?
                                     <FormattedMessage module="contributionPlan" id="calculationParamsBFType"/> :
                                     <FormattedMessage module="contributionPlan" id="calculationParams"/>
@@ -321,7 +320,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             </div>
                         </Typography>
                         <Divider />
-                        <Grid container className={classes.item}>
+                        <Grid container className="item">
                             <Contributions
                                 contributionKey={CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY}
                                 intl={intl}
@@ -331,7 +330,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 requiredRights={[!!paymentPlan.id ? RIGHT_CALCULATION_UPDATE : RIGHT_CALCULATION_WRITE]}
                                 value={!!paymentPlan.jsonExt ? paymentPlan.jsonExt : null}
                                 onChange={this.updateAttribute}
-                                gridItemStyle={classes.item}
+                                gridItemStyle="item"
                                 gridItemSize={GRID_ITEM_SIZE}
                                 setRequiredValid={setRequiredValid}
                                 setJsonExtValid={setJsonExtValid}
@@ -344,15 +343,15 @@ class PaymentPlanHeadPanel extends FormPanel {
                             <Divider />
                             <Fragment>
                                 <Typography>
-                                    <div className={classes.item}>
+                                    <div className="item">
                                         <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
                                     </div>
                                 </Typography>
-                                <div className={classes.item}>
+                                <div className="item">
                                     <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria.tip" />
                                 </div>
                                 <Divider />
-                                <Grid container className={classes.item}>
+                                <Grid container className="item">
 
                                     <AdvancedCriteriaDialog
                                         object={paymentPlan.benefitPlan}
@@ -374,20 +373,20 @@ class PaymentPlanHeadPanel extends FormPanel {
                             <Divider />
                         </>
                     )}
-                </Fragment>
+                </StyledPanel>
             );
         }
 
         return (
-            <Fragment>
-                <Grid container className={classes.tableTitle}>
+            <StyledPanel>
+                <Grid container className="tableTitle">
                     <Grid item>
                         <Grid
                             container
                             align="center"
                             justify="center"
                             direction="column"
-                            className={classes.fullHeight}
+                            className="fullHeight"
                         >
                             <Grid item>
                                 <Typography>
@@ -400,14 +399,14 @@ class PaymentPlanHeadPanel extends FormPanel {
                 <Divider />
                 {mandatoryFieldsEmpty && (
                     <Fragment>
-                        <div className={classes.item}>
+                        <div className="item">
                             <FormattedMessage module="contributionPlan" id="mandatoryFieldsEmptyError" />
                         </div>
                         <Divider />
                     </Fragment>
                 )}
-                <Grid container className={classes.item}>
-                    <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+                <Grid container className="item">
+                    <Grid item xs={GRID_ITEM_SIZE} className="item">
                         <PaymentPlanTypePicker
                             module="contributionPlan"
                             label="type"
@@ -419,7 +418,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                         />
                     </Grid>
                 </Grid>
-            </Fragment>
+            </StyledPanel>
         );
     }
 }
@@ -441,6 +440,6 @@ export default withModulesManager(
         connect(
             mapStateToProps,
             null
-        )(withTheme(withStyles(styles)(PaymentPlanHeadPanel)))
+        )(PaymentPlanHeadPanel)
     )
 );

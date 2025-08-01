@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
-import { Grid, Divider, Typography } from "@mui/material";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { Grid, Divider, Typography} from "@mui/material";
+import {styled} from "@mui/material/styles";
 
 import {
   withModulesManager,
@@ -25,13 +25,13 @@ import {
   MAX_PERIODICITY_VALUE,
 } from "../constants";
 
-const styles = (theme) => ({
-  tableTitle: theme.table.title,
-  item: theme.paper.item,
-  fullHeight: {
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  '& .tableTitle': theme.table.title,
+  '& .item': theme.paper.item,
+  '& .fullHeight': {
     height: "100%",
   },
-});
+}));
 
 class ContributionPlanBundleHeadPanel extends FormPanel {
   shouldValidate = (input) => {
@@ -41,7 +41,6 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
 
   render() {
     const {
-      classes,
       edited,
       mandatoryFieldsEmpty,
       isReplacing,
@@ -51,14 +50,14 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
     } = this.props;
     return (
       <Fragment>
-        <Grid container className={classes.tableTitle}>
+        <StyledGrid container className="tableTitle">
           <Grid item>
             <Grid
               container
               align="center"
               justify="center"
               direction="column"
-              className={classes.fullHeight}
+              className="fullHeight"
             >
               <Grid item>
                 <Typography>
@@ -70,11 +69,11 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </StyledGrid>
         <Divider />
         {mandatoryFieldsEmpty && (
           <Fragment>
-            <div className={classes.item}>
+            <div className="item">
               <FormattedMessage
                 module="contributionPlan"
                 id="mandatoryFieldsEmptyError"
@@ -83,8 +82,8 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
             <Divider />
           </Fragment>
         )}
-        <Grid container className={classes.item}>
-          <Grid item xs={3} className={classes.item}>
+        <StyledGrid container className="item">
+          <Grid item xs={3} className="item">
             <ValidatedTextInput
               itemQueryIdentifier="contributionPlanBundleCode"
               codeTakenLabel="contributionPlan.bundleCodeTaken"
@@ -103,7 +102,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               readOnly={!!edited && !!edited.id ? true : false}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={3} className="item">
             <TextInput
               module="contributionPlan"
               label="name"
@@ -112,7 +111,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("name", v)}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid item xs={2} className="item">
             <NumberInput
               module="contributionPlan"
               label="periodicity"
@@ -133,7 +132,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               readOnly={!isReplacing && !!edited && !!edited.id ? true : false}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid item xs={2} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -145,7 +144,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
             />
           </Grid>
-          <Grid item xs={2} className={classes.item}>
+          <Grid item xs={2} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -156,7 +155,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("dateValidTo", v)}
             />
           </Grid>
-        </Grid>
+        </StyledGrid>
       </Fragment>
     );
   }
@@ -180,6 +179,6 @@ export default withModulesManager(
     connect(
       mapStateToProps,
       null
-    )(withTheme(withStyles(styles)(ContributionPlanBundleHeadPanel)))
+    )(ContributionPlanBundleHeadPanel)
   )
 );

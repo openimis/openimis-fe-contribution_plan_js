@@ -3,14 +3,14 @@ import { withModulesManager, withHistory, historyPush, formatMessageWithValues }
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { createContributionPlan, updateContributionPlan } from "../actions"
 import ContributionPlanForm from "../components/ContributionPlanForm"
 import { RIGHT_CONTRIBUTION_PLAN_CREATE, RIGHT_CONTRIBUTION_PLAN_UPDATE } from "../constants"
 
-const styles = theme => ({
-    page: theme.page,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page,
+}));
 
 class ContributionPlanPage extends Component {
     back = () => {
@@ -44,17 +44,17 @@ class ContributionPlanPage extends Component {
     titleParams = contributionPlan => ({ label: !!contributionPlan.name ? contributionPlan.name : null });
 
     render() {
-        const { classes, rights, contributionPlanId } = this.props;
+        const { rights, contributionPlanId } = this.props;
         return (
             rights.includes(RIGHT_CONTRIBUTION_PLAN_CREATE) && rights.includes(RIGHT_CONTRIBUTION_PLAN_UPDATE) && (
-                <div className={classes.page}>
+                <StyledPage>
                     <ContributionPlanForm
                         contributionPlanId={contributionPlanId}
                         back={this.back}
                         save={this.save}
                         titleParams={this.titleParams}
                     />
-                </div>
+                </StyledPage>
             )
         )
     }
@@ -69,4 +69,4 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ createContributionPlan, updateContributionPlan }, dispatch);
 };
 
-export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanPage))))));
+export default withHistory(withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanPage))));

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
 import { Grid, Divider, Typography } from "@mui/material";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { styled } from '@mui/material/styles';
 
 import {
   withModulesManager,
@@ -32,13 +32,13 @@ import {
   RIGHT_CALCULATION_UPDATE,
 } from "../constants";
 
-const styles = (theme) => ({
-  tableTitle: theme.table.title,
-  item: theme.paper.item,
-  fullHeight: {
+const StyledPanel = styled('div')(({ theme }) => ({
+  '& .tableTitle': theme.table.title,
+  '& .item': theme.paper.item,
+  '& .fullHeight': {
     height: "100%",
   },
-});
+}));
 
 const GRID_ITEM_SIZE = 3;
 
@@ -51,7 +51,6 @@ class ContributionPlanHeadPanel extends FormPanel {
   render() {
     const {
       intl,
-      classes,
       mandatoryFieldsEmpty,
       setJsonExtValid,
       isCodeValid,
@@ -73,15 +72,15 @@ class ContributionPlanHeadPanel extends FormPanel {
     const calculation = !!calculationId ? { id: calculationId } : null;
     const contributionPlan = { product, calculation, ...others };
     return (
-      <Fragment>
-        <Grid container className={classes.tableTitle}>
+      <StyledPanel>
+        <Grid container className="tableTitle">
           <Grid item>
             <Grid
               container
               align="center"
               justify="center"
               direction="column"
-              className={classes.fullHeight}
+              className="fullHeight"
             >
               <Grid item>
                 <Typography>
@@ -97,7 +96,7 @@ class ContributionPlanHeadPanel extends FormPanel {
         <Divider />
         {mandatoryFieldsEmpty && (
           <Fragment>
-            <div className={classes.item}>
+            <div className="item">
               <FormattedMessage
                 module="contributionPlan"
                 id="mandatoryFieldsEmptyError"
@@ -106,8 +105,8 @@ class ContributionPlanHeadPanel extends FormPanel {
             <Divider />
           </Fragment>
         )}
-        <Grid container className={classes.item}>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+        <Grid container className="item">
+          <Grid item xs={GRID_ITEM_SIZE} className="item">
             <ValidatedTextInput
               itemQueryIdentifier="contributionPlanCode"
               codeTakenLabel="contributionPlan.codeTaken"
@@ -126,7 +125,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               readOnly={!!contributionPlan.id}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid item xs={GRID_ITEM_SIZE} className="item">
             <TextInput
               module="contributionPlan"
               label="name"
@@ -135,7 +134,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("name", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid item xs={GRID_ITEM_SIZE} className="item">
             <Contributions
               contributionKey={
                 CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
@@ -146,7 +145,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               required
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid item xs={GRID_ITEM_SIZE} className="item">
             <PublishedComponent
               pubRef="product.ProductPicker"
               withNull={true}
@@ -158,7 +157,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("benefitPlan", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid item xs={GRID_ITEM_SIZE} className="item">
             <NumberInput
               module="contributionPlan"
               label="periodicity"
@@ -180,7 +179,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("periodicity", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid item xs={GRID_ITEM_SIZE} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -194,7 +193,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid item xs={GRID_ITEM_SIZE} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -210,14 +209,14 @@ class ContributionPlanHeadPanel extends FormPanel {
         </Grid>
         <Divider />
         <Fragment>
-          <div className={classes.item}>
+          <div className="item">
             <FormattedMessage
               module="contributionPlan"
               id="calculationParams"
             />
           </div>
           <Divider />
-          <Grid container className={classes.item}>
+          <Grid container className="item">
             <Contributions
               contributionKey={CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY}
               intl={intl}
@@ -232,13 +231,13 @@ class ContributionPlanHeadPanel extends FormPanel {
                 !!contributionPlan.jsonExt ? contributionPlan.jsonExt : null
               }
               onChange={this.updateAttribute}
-              gridItemStyle={classes.item}
+              gridItemStyle="item"
               gridItemSize={GRID_ITEM_SIZE}
               setJsonExtValid={setJsonExtValid}
             />
           </Grid>
         </Fragment>
-      </Fragment>
+      </StyledPanel>
     );
   }
 }
@@ -260,6 +259,6 @@ export default withModulesManager(
     connect(
       mapStateToProps,
       null
-    )(withTheme(withStyles(styles)(ContributionPlanHeadPanel)))
+    )(ContributionPlanHeadPanel)
   )
 );

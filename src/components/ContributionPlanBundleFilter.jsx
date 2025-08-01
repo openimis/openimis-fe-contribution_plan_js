@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { injectIntl } from "react-intl";
 
 import { Grid, FormControlLabel, Checkbox } from "@mui/material";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { useTheme, styled } from "@mui/material/styles";
 
 import {
   withModulesManager,
@@ -10,28 +10,25 @@ import {
   TextInput,
   NumberInput,
   PublishedComponent,
-  decodeId,
-  Contributions,
 } from "@openimis/fe-core";
 import {
+  DATE_TO_DATETIME_SUFFIX,
+  GREATER_OR_EQUAL_LOOKUP,
+  LESS_OR_EQUAL_LOOKUP,
+  CONTAINS_LOOKUP,
   EMPTY_PERIODICITY_VALUE,
   MIN_PERIODICITY_VALUE,
   MAX_PERIODICITY_VALUE,
-  DATE_TO_DATETIME_SUFFIX,
-  CONTAINS_LOOKUP,
-  GREATER_OR_EQUAL_LOOKUP,
-  LESS_OR_EQUAL_LOOKUP,
-  CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY,
 } from "../constants";
 
-const styles = (theme) => ({
-  form: {
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  '&.form': {
     padding: 0,
   },
-  item: {
+  '& .item': {
     padding: theme.spacing(1),
   },
-});
+}));
 
 class ContributionPlanBundleFilter extends Component {
   _filterValue = (k) => {
@@ -59,7 +56,7 @@ class ContributionPlanBundleFilter extends Component {
       {
         id: k,
         value: v,
-        filter: `${k}: ${!!v ? decodeId(v.id) : null}`,
+        filter: `${k}: "${v}"`,
       },
     ]);
   };
@@ -69,7 +66,7 @@ class ContributionPlanBundleFilter extends Component {
       {
         id: k,
         value: v,
-        filter: !!lookup ? `${k}_${lookup}: "${v}"` : `${k}: "${v}"`,
+        filter: `${k}_${lookup}: "${v}"`,
       },
     ]);
   };
@@ -85,10 +82,10 @@ class ContributionPlanBundleFilter extends Component {
   };
 
   render() {
-    const { intl, classes } = this.props;
+    const { intl } = this.props;
     return (
-      <Grid container className={classes.form}>
-        <Grid item xs={3} className={classes.item}>
+      <StyledGrid container className="form">
+        <Grid item xs={2} className="item">
           <TextInput
             module="contributionPlan"
             label="code"
@@ -98,7 +95,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={3} className={classes.item}>
+        <Grid item xs={2} className="item">
           <TextInput
             module="contributionPlan"
             label="name"
@@ -108,31 +105,24 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={3} className={classes.item}>
-          <Contributions
-            contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
-            label={formatMessage(intl, "contributionPlan", "calculation")}
-            value={this._filterValue("calculation")}
-            onChange={this._onChangeStringFilter}
-            withNull
-            nullLabel={formatMessage(intl, "contributionPlan", "any")}
-          />
-        </Grid>
-        <Grid item xs={3} className={classes.item}>
+        <Grid item xs={2} className="item">
           <PublishedComponent
-            pubRef="product.ProductPicker"
-            withNull={true}
-            label={formatMessage(intl, "contributionPlan", "benefitPlan")}
+            pubRef="product.InsuranceProductPicker"
+            module="contributionPlan"
+            label="insuranceProduct"
             value={this._filterValue("insuranceProduct")}
             onChange={(v) =>
               this._onChangeProductInsuranceProduct("insuranceProduct", v)
             }
           />
         </Grid>
-        <Grid item xs={3} className={classes.item}>
+        <Grid item xs={2} className="item">
           <NumberInput
             module="contributionPlan"
             label="periodicity"
+            /**
+             * @see min set to @see EMPTY_PERIODICITY_VALUE when filter unset to avoid @see NumberInput error message
+             */
             min={
               !!this._filterValue("periodicity")
                 ? MIN_PERIODICITY_VALUE
@@ -145,7 +135,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={3} className={classes.item}>
+        <Grid item xs={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -160,7 +150,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={3} className={classes.item}>
+        <Grid item xs={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -171,7 +161,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={3} className={classes.item}>
+        <Grid item xs={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -185,7 +175,7 @@ class ContributionPlanBundleFilter extends Component {
             label={formatMessage(intl, "contributionPlan", "isDeleted")}
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid item xs={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -199,11 +189,11 @@ class ContributionPlanBundleFilter extends Component {
             label={formatMessage(intl, "contributionPlan", "showHistory")}
           />
         </Grid>
-      </Grid>
+      </StyledGrid>
     );
   }
 }
 
 export default withModulesManager(
-  injectIntl(withTheme(withStyles(styles)(ContributionPlanBundleFilter)))
+  injectIntl(ContributionPlanBundleFilter)
 );

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { injectIntl } from "react-intl";
 
-import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid, FormControlLabel, Checkbox } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 import {
   withModulesManager,
@@ -23,14 +23,14 @@ import {
   CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY,
 } from "../constants";
 
-const styles = (theme) => ({
-  form: {
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  '&.form': {
     padding: 0,
   },
-  item: {
+  '& .item': {
     padding: theme.spacing(1),
   },
-});
+}));
 
 class PaymentPlanFilter extends Component {
   _filterValue = (k) => {
@@ -94,10 +94,10 @@ class PaymentPlanFilter extends Component {
   };
 
   render() {
-    const { intl, classes } = this.props;
+    const { intl } = this.props;
     return (
-      <Grid container className={classes.form}>
-        <Grid item xs={2} className={classes.item}>
+      <StyledGrid container className="form">
+        <Grid item xs={2} className="item">
           <TextInput
             module="contributionPlan"
             label="code"
@@ -107,7 +107,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid item xs={2} className="item">
           <TextInput
             module="contributionPlan"
             label="name"
@@ -117,7 +117,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={3} className={classes.item}>
+        <Grid item xs={3} className="item">
           <Contributions
             contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
             label={formatMessage(intl, "contributionPlan", "calculation")}
@@ -127,7 +127,7 @@ class PaymentPlanFilter extends Component {
             nullLabel={formatMessage(intl, "contributionPlan", "any")}
           />
         </Grid>
-        <Grid item xs={3} className={classes.item}>
+        <Grid item xs={3} className="item">
           <PublishedComponent
             pubRef="product.ProductPicker"
             withNull={true}
@@ -141,7 +141,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid item xs={2} className="item">
           <NumberInput
             module="contributionPlan"
             label="periodicity"
@@ -160,7 +160,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid item xs={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -175,7 +175,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid item xs={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -187,7 +187,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid item xs={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -201,7 +201,7 @@ class PaymentPlanFilter extends Component {
             label={formatMessage(intl, "contributionPlan", "isDeleted")}
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid item xs={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -215,11 +215,11 @@ class PaymentPlanFilter extends Component {
             label={formatMessage(intl, "contributionPlan", "showHistory")}
           />
         </Grid>
-      </Grid>
+      </StyledGrid>
     );
   }
 }
 
 export default withModulesManager(
-  injectIntl(withTheme(withStyles(styles)(PaymentPlanFilter)))
+  injectIntl(PaymentPlanFilter)
 );

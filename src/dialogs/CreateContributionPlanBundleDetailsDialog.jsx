@@ -7,16 +7,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import { FormattedMessage, formatMessageWithValues, PublishedComponent } from "@openimis/fe-core";
 import { Fab, Grid } from "@mui/material";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import ContributionPlanPicker from '../pickers/ContributionPlanPicker';
 import { createContributionPlanBundleContributionPlan } from "../actions";
 import { injectIntl } from 'react-intl';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-const styles = theme => ({
-    item: theme.paper.item
-});
+const StyledDialog = styled('div')(({ theme }) => ({
+  '& .item': theme.paper.item
+}));
 
 class CreateContributionPlanBundleDetailsDialog extends Component {
     constructor(props) {
@@ -63,7 +63,7 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
     }
 
     render() {
-        const { classes, disabled, contributionPlanBundle } = this.props;
+        const { disabled, contributionPlanBundle } = this.props;
         const { open, contributionPlanAttached } = this.state;
         return (
             <Fragment>
@@ -79,34 +79,36 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
                         <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.createContributionPlan" />
                     </DialogTitle>
                     <DialogContent>
-                        <Grid container direction="column" className={classes.item}>
-                            <Grid item className={classes.item}>
-                                <ContributionPlanPicker
-                                    periodicity={!!contributionPlanBundle ? contributionPlanBundle.periodicity : null}
-                                    withNull={true}
-                                    required
-                                    value={!!contributionPlanAttached.contributionPlan && contributionPlanAttached.contributionPlan}
-                                    onChange={v => this.updateAttribute('contributionPlan', v)}
-                                />
+                        <StyledDialog>
+                            <Grid container direction="column" className="item">
+                                <Grid item className="item">
+                                    <ContributionPlanPicker
+                                        periodicity={!!contributionPlanBundle ? contributionPlanBundle.periodicity : null}
+                                        withNull={true}
+                                        required
+                                        value={!!contributionPlanAttached.contributionPlan && contributionPlanAttached.contributionPlan}
+                                        onChange={v => this.updateAttribute('contributionPlan', v)}
+                                    />
+                                </Grid>
+                                <Grid item className="item">
+                                    <PublishedComponent
+                                        pubRef="core.DatePicker"
+                                        module="contributionPlan"
+                                        label="dateValidFrom"
+                                        required
+                                        onChange={v => this.updateAttribute('dateValidFrom', v)}
+                                    />
+                                </Grid>
+                                <Grid item className="item">
+                                    <PublishedComponent
+                                        pubRef="core.DatePicker"
+                                        module="contributionPlan"
+                                        label="dateValidTo"
+                                        onChange={v => this.updateAttribute('dateValidTo', v)}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item className={classes.item}>
-                                <PublishedComponent
-                                    pubRef="core.DatePicker"
-                                    module="contributionPlan"
-                                    label="dateValidFrom"
-                                    required
-                                    onChange={v => this.updateAttribute('dateValidFrom', v)}
-                                />
-                            </Grid>
-                            <Grid item className={classes.item}>
-                                <PublishedComponent
-                                    pubRef="core.DatePicker"
-                                    module="contributionPlan"
-                                    label="dateValidTo"
-                                    onChange={v => this.updateAttribute('dateValidTo', v)}
-                                />
-                            </Grid>
-                        </Grid>
+                        </StyledDialog>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} variant="outlined">
@@ -126,4 +128,4 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ createContributionPlanBundleContributionPlan }, dispatch);
 };
 
-export default injectIntl(withTheme(withStyles(styles)(connect(null, mapDispatchToProps)(CreateContributionPlanBundleDetailsDialog))));
+export default injectIntl(connect(null, mapDispatchToProps)(CreateContributionPlanBundleDetailsDialog));

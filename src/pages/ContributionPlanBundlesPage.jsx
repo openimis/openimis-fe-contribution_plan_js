@@ -10,7 +10,7 @@ import {
   clearCurrentPaginationPage,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import {
   RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH,
@@ -23,10 +23,10 @@ import ContributionPlanBundleSearcher from "../components/ContributionPlanBundle
 import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-const styles = (theme) => ({
-  page: theme.page,
-  fab: theme.fab,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page,
+  '& .fab': theme.fab,
+}));
 
 class ContributionPlanBundlesPage extends Component {
   onAdd = () =>
@@ -81,10 +81,10 @@ class ContributionPlanBundlesPage extends Component {
   };
 
   render() {
-    const { intl, classes, rights } = this.props;
+    const { intl, rights } = this.props;
     return (
       rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH) && (
-        <div className={classes.page}>
+        <StyledPage>
           <Helmet
             title={formatMessage(
               this.props.intl,
@@ -100,7 +100,7 @@ class ContributionPlanBundlesPage extends Component {
           />
           {rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE) &&
             withTooltip(
-              <div className={classes.fab}>
+              <div className="fab">
                 <Fab color="primary" onClick={this.onAdd}>
                   <AddIcon />
                 </Fab>
@@ -111,7 +111,7 @@ class ContributionPlanBundlesPage extends Component {
                 "contributionPlanBundle.createButton.tooltip"
               )
             )}
-        </div>
+        </StyledPage>
       )
     );
   }
@@ -130,13 +130,9 @@ const mapDispatchToProps = (dispatch) =>
 
 export default withModulesManager(
   injectIntl(
-    withTheme(
-      withStyles(styles)(
-        connect(
-          mapStateToProps,
-          mapDispatchToProps
-        )(ContributionPlanBundlesPage)
-      )
-    )
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(ContributionPlanBundlesPage)
   )
 );

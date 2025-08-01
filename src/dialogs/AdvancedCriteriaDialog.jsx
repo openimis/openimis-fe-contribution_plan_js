@@ -10,7 +10,7 @@ import {
   formatMessage,
   fetchCustomFilter,
 } from "@openimis/fe-core";
-import { withTheme, withStyles } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import AdvancedCriteriaRowValue from "./AdvancedCriteriaRowValue";
@@ -18,14 +18,12 @@ import AddCircle from '@mui/icons-material/Add';
 import { BENEFIT_PLAN, CLEARED_STATE_FILTER } from "../constants";
 import { isBase64Encoded, isEmptyObject } from "../utils";
 
-
-const styles = (theme) => ({
-  item: theme.paper.item,
-});
+const StyledDialog = styled('div')(({ theme }) => ({
+  '& .item': theme.paper.item,
+}));
 
 const AdvancedCriteriaDialog = ({
   intl,
-  classes,
   object,
   objectToSave,
   fetchCustomFilter,
@@ -156,7 +154,7 @@ const AdvancedCriteriaDialog = ({
   }, [object]);
 
   return (
-    <>
+    <StyledDialog>
           {filters.map((filter, index) => {
             return (<AdvancedCriteriaRowValue 
               customFilters={customFilters}
@@ -226,7 +224,7 @@ const AdvancedCriteriaDialog = ({
             </Button>
           </div>
         </div>
-  </>
+    </StyledDialog>
   );
 }
 
@@ -243,4 +241,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchCustomFilter,
 }, dispatch);
 
-export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaDialog))));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaDialog));
