@@ -250,7 +250,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                         <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                             <Contributions
                                 contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
-                                label={formatMessage(intl, "paymentPlan", "calculation")}
+                                label="paymentPlan.calculation"
                                 value={!!calculationId ? calculationId : null}
                                 onChange={this.updateAttribute}
                                 context={paymentPlanType}
@@ -265,7 +265,6 @@ class PaymentPlanHeadPanel extends FormPanel {
                                     : "socialProtection.BenefitPlanPicker"}
                                 withNull={true}
                                 readOnly={readOnly}
-                                label={formatMessage(intl, "paymentPlan", "benefitPlan")}
                                 required
                                 value={paymentPlan.benefitPlan !== undefined && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) ? null : paymentPlan.benefitPlan) : null}
                                 onChange={(v) => this.updateAttribute("benefitPlan", v)}
@@ -312,7 +311,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                         </Grid>
                     </Grid>
                     <Fragment>
-                        <Typography>
+                        <Typography component="div">
                             <div className={classes.item}>
                                 {isBenefitPlanType() ?
                                     <FormattedMessage module="contributionPlan" id="calculationParamsBFType"/> :
@@ -343,7 +342,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                         <>
                             <Divider />
                             <Fragment>
-                                <Typography>
+                                <Typography component="div">
                                     <div className={classes.item}>
                                         <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
                                     </div>
