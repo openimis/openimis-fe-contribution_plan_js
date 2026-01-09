@@ -56,10 +56,6 @@ class PaymentPlanHeadPanel extends FormPanel {
         };
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        super.componentDidUpdate(prevProps, prevState, snapshot);
-    }
-
     shouldValidate = (input) => {
         const { savedCode } = this.props;
         return input !== savedCode;
@@ -118,6 +114,18 @@ class PaymentPlanHeadPanel extends FormPanel {
 
     setAppliedFiltersRowStructure = (appliedFiltersRowStructure) => {
         this.setState({ appliedFiltersRowStructure: appliedFiltersRowStructure });
+    };
+
+    getCalculationSupportsAdvancedCriteria = () => {
+        const { calculationRulesList, edited } = this.props;
+        const calculationUuid = edited?.calculation;
+
+        if (!calculationUuid || !calculationRulesList || calculationRulesList.length === 0) {
+            return false;
+        }
+
+        const calculationRule = calculationRulesList.find(rule => rule.uuid === calculationUuid);
+        return calculationRule?.supportsAdvancedCriteria ?? false;
     };
 
     render() {
@@ -338,7 +346,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                     </Fragment>
-                    {isBenefitPlanType() && (
+                    {isBenefitPlanType() && this.getCalculationSupportsAdvancedCriteria() && (
                         <>
                             <Divider />
                             <Fragment>
@@ -433,6 +441,7 @@ const mapStateToProps = (store) => ({
     store.contributionPlan?.validationFields?.paymentPlanCode
         ?.validationError,
     savedCode: store.contributionPlan?.paymentPlan?.code,
+    calculationRulesList: store.calculation?.calculationRulesList || [],
 });
 
 export default withModulesManager(
