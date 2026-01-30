@@ -75,7 +75,7 @@ class ContributionPlanFilter extends Component {
     const { intl } = this.props;
     return (
       <StyledGrid container className="form">
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <TextInput
             module="contributionPlan"
             label="code"
@@ -85,7 +85,7 @@ class ContributionPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <TextInput
             module="contributionPlan"
             label="name"
@@ -95,7 +95,7 @@ class ContributionPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <NumberInput
             module="contributionPlan"
             label="periodicity"
@@ -114,7 +114,7 @@ class ContributionPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -129,7 +129,7 @@ class ContributionPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -140,7 +140,7 @@ class ContributionPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -154,7 +154,7 @@ class ContributionPlanFilter extends Component {
             label={formatMessage(intl, "contributionPlan", "isDeleted")}
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -173,6 +173,8 @@ class ContributionPlanFilter extends Component {
   }
 }
 
+export { StyledGrid };
+export { ContributionPlanFilter };
 export default withModulesManager(
   injectIntl(ContributionPlanFilter)
 );

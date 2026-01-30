@@ -54,4 +54,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchContributionPlanBundles }, dispatch);
 };
 
+export { ContributionPlanBundlePicker };
 export default connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundlePicker);

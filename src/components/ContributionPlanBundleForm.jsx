@@ -182,6 +182,7 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { ContributionPlanBundleForm };
 export default withHistory(
   withModulesManager(
     injectIntl(

@@ -223,4 +223,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchContributionPlans, coreConfirm, deleteContributionPlan, journalize }, dispatch);
 };
 
+export { ContributionPlanSearcher };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanSearcher)));

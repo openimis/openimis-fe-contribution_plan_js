@@ -114,6 +114,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ clearCurrentPaginationPage }, dispatch);
 
+export { StyledPage };
+export { ContributionPlansPage };
 export default withModulesManager(
   injectIntl(
     connect(mapStateToProps, mapDispatchToProps)(ContributionPlansPage)

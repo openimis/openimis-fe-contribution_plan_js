@@ -74,7 +74,7 @@ class ContributionPlanHeadPanel extends FormPanel {
     return (
       <StyledPanel>
         <Grid container className="tableTitle">
-          <Grid item>
+          <Grid>
             <Grid
               container
               align="center"
@@ -82,7 +82,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               direction="column"
               className="fullHeight"
             >
-              <Grid item>
+              <Grid>
                 <Typography>
                   <FormattedMessage
                     module="contributionPlan"
@@ -106,7 +106,7 @@ class ContributionPlanHeadPanel extends FormPanel {
           </Fragment>
         )}
         <Grid container className="item">
-          <Grid item xs={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_ITEM_SIZE} className="item">
             <ValidatedTextInput
               itemQueryIdentifier="contributionPlanCode"
               codeTakenLabel="contributionPlan.codeTaken"
@@ -125,7 +125,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               readOnly={!!contributionPlan.id}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_ITEM_SIZE} className="item">
             <TextInput
               module="contributionPlan"
               label="name"
@@ -134,7 +134,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("name", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_ITEM_SIZE} className="item">
             <Contributions
               contributionKey={
                 CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
@@ -145,7 +145,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               required
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_ITEM_SIZE} className="item">
             <PublishedComponent
               pubRef="product.ProductPicker"
               withNull={true}
@@ -157,7 +157,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("benefitPlan", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_ITEM_SIZE} className="item">
             <NumberInput
               module="contributionPlan"
               label="periodicity"
@@ -179,7 +179,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("periodicity", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_ITEM_SIZE} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -193,7 +193,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_ITEM_SIZE} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -254,6 +254,8 @@ const mapStateToProps = (store) => ({
   savedCode: store.contributionPlan?.contributionPlan?.code,
 });
 
+export { StyledPanel };
+export { ContributionPlanHeadPanel };
 export default withModulesManager(
   injectIntl(
     connect(

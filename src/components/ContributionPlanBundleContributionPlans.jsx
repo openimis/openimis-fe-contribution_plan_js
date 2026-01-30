@@ -148,23 +148,23 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         const { edited, contributionPlanBundleId } = this.props;
         return (
             <Fragment>
-                <Grid item xs={8}>
+                <Grid size={8}>
                     {isNew && (
-                        <Grid item className="item">
+                        <Grid className="item">
                             <Typography>
                                 <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.error" />
                             </Typography>
                         </Grid>
                     )}
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <Grid container justify="flex-end" alignItems="center">
-                        <Grid item>
+                        <Grid>
                             <Typography>
                                 <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.createContributionPlan" />
                             </Typography>
                         </Grid>
-                        <Grid item className="paperHeaderAction">
+                        <Grid className="paperHeaderAction">
                             <CreateContributionPlanBundleDetailsDialog
                                 disabled={isNew}
                                 contributionPlanBundle={edited}
@@ -184,13 +184,13 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         return (
             <StyledPaper>
                 <Grid container alignItems="center" direction="row" className="paperHeader">
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Typography className="tableTitle">
                             <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.title" values={{ count: isNew ? 0 : contributionPlanBundleContributionPlansTotalCount }} />
                         </Typography>
                     </Grid>
                     {this.renderActions(isNew)}
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Divider />
                     </Grid>
                 </Grid>
@@ -234,4 +234,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetch: fetchContributionPlanBundleContributionPlans, deleteContributionPlanBundleContributionPlan, coreConfirm, journalize }, dispatch);
 };
 
+export { StyledPaper };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundleContributionPlans)));

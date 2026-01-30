@@ -81,7 +81,7 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
                     <DialogContent>
                         <StyledDialog>
                             <Grid container direction="column" className="item">
-                                <Grid item className="item">
+                                <Grid className="item">
                                     <ContributionPlanPicker
                                         periodicity={!!contributionPlanBundle ? contributionPlanBundle.periodicity : null}
                                         withNull={true}
@@ -90,7 +90,7 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
                                         onChange={v => this.updateAttribute('contributionPlan', v)}
                                     />
                                 </Grid>
-                                <Grid item className="item">
+                                <Grid className="item">
                                     <PublishedComponent
                                         pubRef="core.DatePicker"
                                         module="contributionPlan"
@@ -99,7 +99,7 @@ class CreateContributionPlanBundleDetailsDialog extends Component {
                                         onChange={v => this.updateAttribute('dateValidFrom', v)}
                                     />
                                 </Grid>
-                                <Grid item className="item">
+                                <Grid className="item">
                                     <PublishedComponent
                                         pubRef="core.DatePicker"
                                         module="contributionPlan"
@@ -128,4 +128,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ createContributionPlanBundleContributionPlan }, dispatch);
 };
 
+export { StyledDialog };
 export default injectIntl(connect(null, mapDispatchToProps)(CreateContributionPlanBundleDetailsDialog));

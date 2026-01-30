@@ -121,7 +121,7 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
                     <DialogContent>
                         <StyledDialog>
                             <Grid container direction="column" className="item">
-                                <Grid item xs={12} className="item">
+                                <Grid size={12} className="item">
                                     <ContributionPlanPicker
                                         periodicity={!!contributionPlanBundle ? contributionPlanBundle.periodicity : null}
                                         value={contributionPlanAttached.contributionPlan}
@@ -129,7 +129,7 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
                                         readOnly={!isReplacing}
                                     />
                                 </Grid>
-                                <Grid item xs={12} className="item">
+                                <Grid size={12} className="item">
                                     <PublishedComponent
                                         pubRef="core.DatePicker"
                                         module="contributionPlan"
@@ -139,7 +139,7 @@ class UpdateContributionPlanBundleDetailsDialog extends Component {
                                         readOnly={!isReplacing}
                                     />
                                 </Grid>
-                                <Grid item xs={12} className="item">
+                                <Grid size={12} className="item">
                                     <PublishedComponent
                                         pubRef="core.DatePicker"
                                         module="contributionPlan"
@@ -173,4 +173,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ updateContributionPlanBundleContributionPlan, replaceContributionPlanBundleContributionPlan }, dispatch);
 };
 
+export { StyledDialog };
 export default injectIntl(connect(null, mapDispatchToProps)(UpdateContributionPlanBundleDetailsDialog));

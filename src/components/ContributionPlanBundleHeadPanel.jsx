@@ -51,7 +51,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
     return (
       <Fragment>
         <StyledGrid container className="tableTitle">
-          <Grid item>
+          <Grid>
             <Grid
               container
               align="center"
@@ -59,7 +59,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               direction="column"
               className="fullHeight"
             >
-              <Grid item>
+              <Grid>
                 <Typography>
                   <FormattedMessage
                     module="contributionPlan"
@@ -83,7 +83,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
           </Fragment>
         )}
         <StyledGrid container className="item">
-          <Grid item xs={3} className="item">
+          <Grid size={3} className="item">
             <ValidatedTextInput
               itemQueryIdentifier="contributionPlanBundleCode"
               codeTakenLabel="contributionPlan.bundleCodeTaken"
@@ -102,7 +102,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               readOnly={!!edited && !!edited.id ? true : false}
             />
           </Grid>
-          <Grid item xs={3} className="item">
+          <Grid size={3} className="item">
             <TextInput
               module="contributionPlan"
               label="name"
@@ -111,7 +111,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("name", v)}
             />
           </Grid>
-          <Grid item xs={2} className="item">
+          <Grid size={2} className="item">
             <NumberInput
               module="contributionPlan"
               label="periodicity"
@@ -132,7 +132,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               readOnly={!isReplacing && !!edited && !!edited.id ? true : false}
             />
           </Grid>
-          <Grid item xs={2} className="item">
+          <Grid size={2} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -144,7 +144,7 @@ class ContributionPlanBundleHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
             />
           </Grid>
-          <Grid item xs={2} className="item">
+          <Grid size={2} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -174,6 +174,8 @@ const mapStateToProps = (store) => ({
   savedCode: store.contributionPlan?.contributionPlanBundle?.code,
 });
 
+export { StyledGrid };
+export { ContributionPlanBundleHeadPanel };
 export default withModulesManager(
   injectIntl(
     connect(

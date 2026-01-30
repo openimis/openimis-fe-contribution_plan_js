@@ -159,7 +159,7 @@ class PaymentPlanHeadPanel extends FormPanel {
             return (
                 <StyledPanel>
                     <Grid container className="tableTitle">
-                        <Grid item style={{ flex: 1 }}>
+                        <Grid style={{ flex: 1 }}>
                             <Grid
                                 container
                                 align="center"
@@ -167,7 +167,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 direction="column"
                                 className="fullHeight"
                             >
-                                <Grid item style={{ flex: 1, display: "flex" }}>
+                                <Grid style={{ flex: 1, display: "flex" }}>
                                     <Typography style={{ marginTop: "6px" }}>
                                         <FormattedMessage 
                                           module="contributionPlan" 
@@ -204,7 +204,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                       </Button>
                     )}
                     <Grid container className="item">
-                        <Grid item xs={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_ITEM_SIZE} className="item">
                             <PaymentPlanTypePicker
                                 module="contributionPlan"
                                 label="type"
@@ -216,7 +216,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 withLabel
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_ITEM_SIZE} className="item">
                             <ValidatedTextInput
                                 module="contributionPlan"
                                 label="code"
@@ -236,7 +236,7 @@ class PaymentPlanHeadPanel extends FormPanel {
 
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_ITEM_SIZE} className="item">
                             <TextInput
                                 module="contributionPlan"
                                 label="name"
@@ -246,7 +246,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 onChange={(v) => this.updateAttribute("name", v)}
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_ITEM_SIZE} className="item">
                             <Contributions
                                 contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
                                 label={formatMessage(intl, "paymentPlan", "calculation")}
@@ -257,7 +257,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 required
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_ITEM_SIZE} className="item">
                             <PublishedComponent
                                 pubRef={paymentPlanType === PAYMENT_PLAN_TYPE.PRODUCT
                                     ? "product.ProductPicker"
@@ -272,7 +272,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                         {paymentPlanType !== 'benefitplan' && paymentPlanType !== 'benefit plan' && (
-                            <Grid item xs={GRID_ITEM_SIZE} className="item">
+                            <Grid size={GRID_ITEM_SIZE} className="item">
                                 <NumberInput
                                     module="contributionPlan"
                                     readOnly={readOnly}
@@ -288,7 +288,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 />
                             </Grid>
                         )}
-                        <Grid item xs={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_ITEM_SIZE} className="item">
                             <PublishedComponent
                                 pubRef="core.DatePicker"
                                 module="contributionPlan"
@@ -299,7 +299,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 onChange={(v) => this.updateAttribute("dateValidFrom", v)}
                             />
                         </Grid>
-                        <Grid item xs={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_ITEM_SIZE} className="item">
                             <PublishedComponent
                                 pubRef="core.DatePicker"
                                 module="contributionPlan"
@@ -380,7 +380,7 @@ class PaymentPlanHeadPanel extends FormPanel {
         return (
             <StyledPanel>
                 <Grid container className="tableTitle">
-                    <Grid item>
+                    <Grid>
                         <Grid
                             container
                             align="center"
@@ -388,7 +388,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             direction="column"
                             className="fullHeight"
                         >
-                            <Grid item>
+                            <Grid>
                                 <Typography>
                                     <FormattedMessage module="contributionPlan" id="paymentPlan.headPanel.title" />
                                 </Typography>
@@ -406,7 +406,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                     </Fragment>
                 )}
                 <Grid container className="item">
-                    <Grid item xs={GRID_ITEM_SIZE} className="item">
+                    <Grid size={GRID_ITEM_SIZE} className="item">
                         <PaymentPlanTypePicker
                             module="contributionPlan"
                             label="type"
@@ -435,6 +435,8 @@ const mapStateToProps = (store) => ({
     savedCode: store.contributionPlan?.paymentPlan?.code,
 });
 
+export { StyledPanel };
+export { PaymentPlanHeadPanel };
 export default withModulesManager(
     injectIntl(
         connect(

@@ -85,7 +85,7 @@ class ContributionPlanBundleFilter extends Component {
     const { intl } = this.props;
     return (
       <StyledGrid container className="form">
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <TextInput
             module="contributionPlan"
             label="code"
@@ -95,7 +95,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <TextInput
             module="contributionPlan"
             label="name"
@@ -105,7 +105,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <PublishedComponent
             pubRef="product.InsuranceProductPicker"
             module="contributionPlan"
@@ -116,7 +116,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <NumberInput
             module="contributionPlan"
             label="periodicity"
@@ -135,7 +135,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -150,7 +150,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -161,7 +161,7 @@ class ContributionPlanBundleFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -175,7 +175,7 @@ class ContributionPlanBundleFilter extends Component {
             label={formatMessage(intl, "contributionPlan", "isDeleted")}
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -194,6 +194,8 @@ class ContributionPlanBundleFilter extends Component {
   }
 }
 
+export { StyledGrid };
+export { ContributionPlanBundleFilter };
 export default withModulesManager(
   injectIntl(ContributionPlanBundleFilter)
 );

@@ -160,6 +160,8 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { StyledForm };
+export { ContributionPlanForm };
 export default withHistory(
   withModulesManager(
     injectIntl(

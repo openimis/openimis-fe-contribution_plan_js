@@ -64,4 +64,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchPickerContributionPlans }, dispatch);
 };
 
+export { ContributionPlanPicker };
 export default withModulesManager(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanPicker));

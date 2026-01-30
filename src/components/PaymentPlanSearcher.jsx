@@ -268,4 +268,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchPaymentPlans, coreConfirm, deletePaymentPlan, journalize }, dispatch);
 };
 
+export { PaymentPlanSearcher };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(PaymentPlanSearcher)));

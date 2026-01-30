@@ -153,6 +153,8 @@ const mapDispatchToProps = dispatch => {
         dispatch);
 };
 
+export { StyledForm };
+export { PaymentPlanForm };
 export default withHistory(
     withModulesManager(
         injectIntl(

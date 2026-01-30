@@ -69,4 +69,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ createContributionPlan, updateContributionPlan }, dispatch);
 };
 
+export { StyledPage };
 export default withHistory(withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanPage))));

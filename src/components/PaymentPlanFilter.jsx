@@ -97,7 +97,7 @@ class PaymentPlanFilter extends Component {
     const { intl } = this.props;
     return (
       <StyledGrid container className="form">
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <TextInput
             module="contributionPlan"
             label="code"
@@ -107,7 +107,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <TextInput
             module="contributionPlan"
             label="name"
@@ -117,7 +117,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={3} className="item">
+        <Grid size={3} className="item">
           <Contributions
             contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
             label={formatMessage(intl, "contributionPlan", "calculation")}
@@ -127,7 +127,7 @@ class PaymentPlanFilter extends Component {
             nullLabel={formatMessage(intl, "contributionPlan", "any")}
           />
         </Grid>
-        <Grid item xs={3} className="item">
+        <Grid size={3} className="item">
           <PublishedComponent
             pubRef="product.ProductPicker"
             withNull={true}
@@ -141,7 +141,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <NumberInput
             module="contributionPlan"
             label="periodicity"
@@ -160,7 +160,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -175,7 +175,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -187,7 +187,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -201,7 +201,7 @@ class PaymentPlanFilter extends Component {
             label={formatMessage(intl, "contributionPlan", "isDeleted")}
           />
         </Grid>
-        <Grid item xs={2} className="item">
+        <Grid size={2} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -220,6 +220,8 @@ class PaymentPlanFilter extends Component {
   }
 }
 
+export { StyledGrid };
+export { PaymentPlanFilter };
 export default withModulesManager(
   injectIntl(PaymentPlanFilter)
 );

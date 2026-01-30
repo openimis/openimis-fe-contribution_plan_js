@@ -241,4 +241,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchCustomFilter,
 }, dispatch);
 
+export { StyledDialog };
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaDialog));
