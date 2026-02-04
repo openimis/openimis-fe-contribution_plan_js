@@ -9,7 +9,7 @@ import PaymentPlanForm from "../components/PaymentPlanForm"
 import { RIGHT_PAYMENT_PLAN_REPLACE } from "../constants"
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme.page ?? {},
 }));
 
 class PaymentPlanPage extends Component {

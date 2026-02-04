@@ -13,11 +13,11 @@ import CreateContributionPlanBundleDetailsDialog from "../dialogs/CreateContribu
 import UpdateContributionPlanBundleDetailsDialog from "../dialogs/UpdateContributionPlanBundleDetailsDialog";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  ...theme.paper.paper,
-  '& .tableTitle': theme.table.title,
-  '& .paperHeader': theme.paper.paperHeader,
-  '& .paperHeaderAction': theme.paper.action,
-  '& .item': theme.paper.item
+  ...theme.paper?.paper ?? {},
+  '& .tableTitle': theme.table?.title ?? {},
+  '& .paperHeader': theme.paper?.paperHeader ?? {},
+  '& .paperHeaderAction': theme.paper?.action ?? {},
+  '& .item': theme.paper?.item ?? {}
 }));
 
 class ContributionPlanBundleContributionPlans extends PagedDataHandler {

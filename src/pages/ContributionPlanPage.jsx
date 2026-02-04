@@ -9,7 +9,7 @@ import ContributionPlanForm from "../components/ContributionPlanForm"
 import { RIGHT_CONTRIBUTION_PLAN_CREATE, RIGHT_CONTRIBUTION_PLAN_UPDATE } from "../constants"
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme.page ?? {},
 }));
 
 class ContributionPlanPage extends Component {

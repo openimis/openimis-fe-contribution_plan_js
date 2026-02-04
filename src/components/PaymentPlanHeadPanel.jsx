@@ -37,8 +37,8 @@ import AdvancedCriteriaDialog from "../dialogs/AdvancedCriteriaDialog";
 import { CLEARED_STATE_FILTER } from "../constants";
 
 const StyledPanel = styled('div')(({ theme }) => ({
-  '& .tableTitle': theme.table.title,
-  '& .item': theme.paper.item,
+  '& .tableTitle': theme.table?.title ?? {},
+  '& .item': theme.paper?.item ?? {},
   '& .fullHeight': {
     height: "100%"
   },

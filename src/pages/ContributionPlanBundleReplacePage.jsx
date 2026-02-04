@@ -9,7 +9,7 @@ import ContributionPlanBundleForm from "../components/ContributionPlanBundleForm
 import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE } from "../constants"
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme.page ?? {},
 }));
 
 class ContributionPlanBundlePage extends Component {

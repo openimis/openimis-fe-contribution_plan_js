@@ -17,10 +17,10 @@ import { fetchContributionPlan, clearContributionPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
 const StyledForm = styled('div')(({ theme }) => ({
-  ...theme.paper.paper,
-  '& .paperHeader': theme.paper.header,
-  '& .paperHeaderAction': theme.paper.action,
-  '& .item': theme.paper.item,
+  ...theme.paper?.paper ?? {},
+  '& .paperHeader': theme.paper?.header ?? {},
+  '& .paperHeaderAction': theme.paper?.action ?? {},
+  '& .item': theme.paper?.item ?? {},
 }));
 
 class ContributionPlanForm extends Component {

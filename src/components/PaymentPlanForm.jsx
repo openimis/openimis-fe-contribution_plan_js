@@ -18,11 +18,11 @@ import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 import _ from "lodash";
 
 const StyledForm = styled('div')(({ theme }) => ({
-  ...theme.paper.paper,
-  '& .paperHeader': theme.paper.header,
-  '& .paperHeaderAction': theme.paper.action,
-  '& .item': theme.paper.item,
-  '& .lockedPage': theme.page.locked,
+  ...theme.paper?.paper ?? {},
+  '& .paperHeader': theme.paper?.header ?? {},
+  '& .paperHeaderAction': theme.paper?.action ?? {},
+  '& .item': theme.paper?.item ?? {},
+  '& .lockedPage': theme.page?.locked ?? {},
 }));
 
 class PaymentPlanForm extends Component {

@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 const StyledDialog = styled('div')(({ theme }) => ({
-  '& .item': theme.paper.item
+  '& .item': theme.paper?.item ?? {}
 }));
 
 class UpdateContributionPlanBundleDetailsDialog extends Component {

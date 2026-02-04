@@ -23,8 +23,8 @@ import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
-  '& .fab': theme.fab,
+  ...theme.page ?? {},
+  '& .fab': theme.fab ?? {},
 }));
 
 class ContributionPlansPage extends Component {

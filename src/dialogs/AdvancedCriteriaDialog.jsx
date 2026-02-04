@@ -19,7 +19,7 @@ import { BENEFIT_PLAN, CLEARED_STATE_FILTER } from "../constants";
 import { isBase64Encoded, isEmptyObject } from "../utils";
 
 const StyledDialog = styled('div')(({ theme }) => ({
-  '& .item': theme.paper.item,
+  '& .item': theme.paper?.item ?? {},
 }));
 
 const AdvancedCriteriaDialog = ({
