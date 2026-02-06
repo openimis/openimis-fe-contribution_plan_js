@@ -29,19 +29,21 @@
     "@babel/runtime": "^7.9.6",
     "@vitejs/plugin-react": "^5.0.0",
     "vite": "^7.1.2",
-    "moment": "^2.25.3",
     "prop-types": "^15.7.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.0.5",
-    "redux-api-middleware": "^3.2.1",
-    "@mui/material": "^7.2.0",
-    "@mui/icons-material": "^7.2.0",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0"
+    "redux-api-middleware": "^3.2.1"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^7.2.0",
+    "@mui/icons-material": "^7.2.0",
+    "redux": "^4.0.5",
+    "react-router-dom": "^5.2.0",
+    "moment": "^2.25.3"
+  }
 }
