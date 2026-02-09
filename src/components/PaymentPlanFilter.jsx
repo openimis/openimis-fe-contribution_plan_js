@@ -11,6 +11,9 @@ import {
   NumberInput,
   PublishedComponent,
   Contributions,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_SMALL,
+  GRID_RESPONSIVE_LARGE,
 } from "@openimis/fe-core";
 import {
   DATE_TO_DATETIME_SUFFIX,
@@ -97,7 +100,7 @@ class PaymentPlanFilter extends Component {
     const { intl } = this.props;
     return (
       <StyledGrid container className="form">
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
           <TextInput
             module="contributionPlan"
             label="code"
@@ -107,7 +110,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
           <TextInput
             module="contributionPlan"
             label="name"
@@ -117,7 +120,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid size={3} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
           <Contributions
             contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
             label={formatMessage(intl, "contributionPlan", "calculation")}
@@ -127,7 +130,7 @@ class PaymentPlanFilter extends Component {
             nullLabel={formatMessage(intl, "contributionPlan", "any")}
           />
         </Grid>
-        <Grid size={3} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
           <PublishedComponent
             pubRef="product.ProductPicker"
             withNull={true}
@@ -141,7 +144,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_LARGE} className="item">
           <NumberInput
             module="contributionPlan"
             label="periodicity"
@@ -160,7 +163,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_SMALL} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -175,7 +178,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_SMALL} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -187,7 +190,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_SMALL} className="item">
           <FormControlLabel
             control={
               <Checkbox
@@ -201,7 +204,7 @@ class PaymentPlanFilter extends Component {
             label={formatMessage(intl, "contributionPlan", "isDeleted")}
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_SMALL} className="item">
           <FormControlLabel
             control={
               <Checkbox

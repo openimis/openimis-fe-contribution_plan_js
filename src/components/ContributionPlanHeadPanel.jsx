@@ -15,6 +15,8 @@ import {
   NumberInput,
   Contributions,
   ValidatedTextInput,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_LARGE,
 } from "@openimis/fe-core";
 import {
   contributionPlanCodeValidation,
@@ -40,7 +42,6 @@ const StyledPanel = styled('div')(({ theme }) => ({
   },
 }));
 
-const GRID_ITEM_SIZE = 3;
 
 class ContributionPlanHeadPanel extends FormPanel {
   shouldValidate = (input) => {
@@ -73,26 +74,16 @@ class ContributionPlanHeadPanel extends FormPanel {
     const contributionPlan = { product, calculation, ...others };
     return (
       <StyledPanel>
-        <Grid container className="tableTitle">
-          <Grid>
-            <Grid
-              container
-              align="center"
-              justify="center"
-              direction="column"
-              className="fullHeight"
-            >
-              <Grid>
-                <Typography>
-                  <FormattedMessage
-                    module="contributionPlan"
-                    id="contributionPlan.headPanel.title"
-                  />
-                </Typography>
-              </Grid>
-            </Grid>
+        <StyledPanel container className="item">
+          <Grid size={12} className="item">
+            <Typography variant="h6">
+              <FormattedMessage
+                module="contributionPlan"
+                id="contributionPlan.headPanel.title"
+              />
+            </Typography>
           </Grid>
-        </Grid>
+        </StyledPanel>
         <Divider />
         {mandatoryFieldsEmpty && (
           <Fragment>
@@ -106,7 +97,7 @@ class ContributionPlanHeadPanel extends FormPanel {
           </Fragment>
         )}
         <Grid container className="item">
-          <Grid size={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <ValidatedTextInput
               itemQueryIdentifier="contributionPlanCode"
               codeTakenLabel="contributionPlan.codeTaken"
@@ -125,7 +116,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               readOnly={!!contributionPlan.id}
             />
           </Grid>
-          <Grid size={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <TextInput
               module="contributionPlan"
               label="name"
@@ -134,7 +125,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("name", v)}
             />
           </Grid>
-          <Grid size={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <Contributions
               contributionKey={
                 CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
@@ -145,7 +136,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               required
             />
           </Grid>
-          <Grid size={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <PublishedComponent
               pubRef="product.ProductPicker"
               withNull={true}
@@ -157,7 +148,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("benefitPlan", v)}
             />
           </Grid>
-          <Grid size={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <NumberInput
               module="contributionPlan"
               label="periodicity"
@@ -179,7 +170,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("periodicity", v)}
             />
           </Grid>
-          <Grid size={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -193,7 +184,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
             />
           </Grid>
-          <Grid size={GRID_ITEM_SIZE} className="item">
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -232,7 +223,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               }
               onChange={this.updateAttribute}
               gridItemStyle="item"
-              gridItemSize={GRID_ITEM_SIZE}
+              gridItemSize={GRID_RESPONSIVE_STANDARD}
               setJsonExtValid={setJsonExtValid}
             />
           </Grid>

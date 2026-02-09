@@ -10,6 +10,8 @@ import {
     NumberInput,
     Contributions,
     ValidatedTextInput,
+    GRID_RESPONSIVE_STANDARD,
+    GRID_RESPONSIVE_LARGE,
 } from "@openimis/fe-core";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
@@ -51,7 +53,6 @@ const StyledPanel = styled('div')(({ theme }) => ({
   }
 }));
 
-const GRID_ITEM_SIZE = 3;
 
 class PaymentPlanHeadPanel extends FormPanel {
 
@@ -157,27 +158,17 @@ class PaymentPlanHeadPanel extends FormPanel {
                 this.state.data.periodicity = paymentPlan.periodicity;
             }
             return (
-                <StyledPanel>
-                    <Grid container className="tableTitle">
-                        <Grid style={{ flex: 1 }}>
-                            <Grid
-                                container
-                                align="center"
-                                justify="center"
-                                direction="column"
-                                className="fullHeight"
-                            >
-                                <Grid style={{ flex: 1, display: "flex" }}>
-                                    <Typography style={{ marginTop: "6px" }}>
-                                        <FormattedMessage 
-                                          module="contributionPlan" 
-                                          id="paymentPlan.headPanel.title" 
-                                        />
-                                    </Typography>
-                                </Grid>
-                            </Grid>
+                    <StyledPanel>
+                        <Grid container className="item">
+                          <Grid size={12} className="item">
+                            <Typography variant="h6">
+                              <FormattedMessage 
+                                module="contributionPlan" 
+                                id="paymentPlan.headPanel.title" 
+                              />
+                            </Typography>
+                          </Grid>
                         </Grid>
-                    </Grid>
                     <Divider />
                     {mandatoryFieldsEmpty && (
                         <Fragment>
@@ -204,7 +195,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                       </Button>
                     )}
                     <Grid container className="item">
-                        <Grid size={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                             <PaymentPlanTypePicker
                                 module="contributionPlan"
                                 label="type"
@@ -216,7 +207,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 withLabel
                             />
                         </Grid>
-                        <Grid size={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                             <ValidatedTextInput
                                 module="contributionPlan"
                                 label="code"
@@ -233,10 +224,9 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 clearAction={paymentPlanCodeClear}
                                 setValidAction={paymentPlanCodeSetValid}
                                 onChange={(v) => this.updateAttribute("code", v)}
-
                             />
                         </Grid>
-                        <Grid size={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                             <TextInput
                                 module="contributionPlan"
                                 label="name"
@@ -246,7 +236,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 onChange={(v) => this.updateAttribute("name", v)}
                             />
                         </Grid>
-                        <Grid size={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                             <Contributions
                                 contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
                                 label={formatMessage(intl, "paymentPlan", "calculation")}
@@ -257,7 +247,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 required
                             />
                         </Grid>
-                        <Grid size={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                             <PublishedComponent
                                 pubRef={paymentPlanType === PAYMENT_PLAN_TYPE.PRODUCT
                                     ? "product.ProductPicker"
@@ -272,7 +262,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                         {paymentPlanType !== 'benefitplan' && paymentPlanType !== 'benefit plan' && (
-                            <Grid size={GRID_ITEM_SIZE} className="item">
+                            <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                                 <NumberInput
                                     module="contributionPlan"
                                     readOnly={readOnly}
@@ -288,7 +278,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 />
                             </Grid>
                         )}
-                        <Grid size={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                             <PublishedComponent
                                 pubRef="core.DatePicker"
                                 module="contributionPlan"
@@ -299,7 +289,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 onChange={(v) => this.updateAttribute("dateValidFrom", v)}
                             />
                         </Grid>
-                        <Grid size={GRID_ITEM_SIZE} className="item">
+                        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                             <PublishedComponent
                                 pubRef="core.DatePicker"
                                 module="contributionPlan"
@@ -331,7 +321,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                 value={!!paymentPlan.jsonExt ? paymentPlan.jsonExt : null}
                                 onChange={this.updateAttribute}
                                 gridItemStyle="item"
-                                gridItemSize={GRID_ITEM_SIZE}
+                                gridItemResponsiveProps={GRID_RESPONSIVE_STANDARD}
                                 setRequiredValid={setRequiredValid}
                                 setJsonExtValid={setJsonExtValid}
                                 periodicity={!!paymentPlan.periodicity ? paymentPlan.periodicity : null}
@@ -379,21 +369,11 @@ class PaymentPlanHeadPanel extends FormPanel {
 
         return (
             <StyledPanel>
-                <Grid container className="tableTitle">
-                    <Grid>
-                        <Grid
-                            container
-                            align="center"
-                            justify="center"
-                            direction="column"
-                            className="fullHeight"
-                        >
-                            <Grid>
-                                <Typography>
-                                    <FormattedMessage module="contributionPlan" id="paymentPlan.headPanel.title" />
-                                </Typography>
-                            </Grid>
-                        </Grid>
+                <Grid container className="item">
+                    <Grid size={12} className="item">
+                        <Typography variant="h6">
+                            <FormattedMessage module="contributionPlan" id="paymentPlan.headPanel.title" />
+                        </Typography>
                     </Grid>
                 </Grid>
                 <Divider />
@@ -406,7 +386,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                     </Fragment>
                 )}
                 <Grid container className="item">
-                    <Grid size={GRID_ITEM_SIZE} className="item">
+                    <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                         <PaymentPlanTypePicker
                             module="contributionPlan"
                             label="type"

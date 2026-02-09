@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { injectIntl } from "react-intl";
+import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
 
-import { Grid, FormControlLabel, Checkbox } from "@mui/material";
-import { useTheme, styled } from "@mui/material/styles";
+import { Grid, FormControlLabel, Checkbox } from '@mui/material';
+import { useTheme, styled } from '@mui/material/styles';
 
 import {
   withModulesManager,
@@ -10,7 +10,10 @@ import {
   TextInput,
   NumberInput,
   PublishedComponent,
-} from "@openimis/fe-core";
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_SMALL,
+  GRID_RESPONSIVE_LARGE,
+} from '@openimis/fe-core';
 import {
   DATE_TO_DATETIME_SUFFIX,
   GREATER_OR_EQUAL_LOOKUP,
@@ -19,7 +22,7 @@ import {
   EMPTY_PERIODICITY_VALUE,
   MIN_PERIODICITY_VALUE,
   MAX_PERIODICITY_VALUE,
-} from "../constants";
+} from '../constants';
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   '&.form': {
@@ -38,7 +41,7 @@ class ContributionPlanBundleFilter extends Component {
 
   _filterTextFieldValue = (k) => {
     const { filters } = this.props;
-    return !!filters[k] ? filters[k].value : "";
+    return !!filters[k] ? filters[k].value : '';
   };
 
   _onChangeFilter = (k, v) => {
@@ -84,109 +87,109 @@ class ContributionPlanBundleFilter extends Component {
   render() {
     const { intl } = this.props;
     return (
-      <StyledGrid container className="form">
-        <Grid size={2} className="item">
+      <StyledGrid container className='form'>
+        <Grid size={GRID_RESPONSIVE_STANDARD} className='item'>
           <TextInput
-            module="contributionPlan"
-            label="code"
-            value={this._filterTextFieldValue("code")}
+            module='contributionPlan'
+            label='code'
+            value={this._filterTextFieldValue('code')}
             onChange={(v) =>
-              this._onChangeStringFilter("code", v, CONTAINS_LOOKUP)
+              this._onChangeStringFilter('code', v, CONTAINS_LOOKUP)
             }
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className='item'>
           <TextInput
-            module="contributionPlan"
-            label="name"
-            value={this._filterTextFieldValue("name")}
+            module='contributionPlan'
+            label='name'
+            value={this._filterTextFieldValue('name')}
             onChange={(v) =>
-              this._onChangeStringFilter("name", v, CONTAINS_LOOKUP)
+              this._onChangeStringFilter('name', v, CONTAINS_LOOKUP)
             }
           />
         </Grid>
-        <Grid size={2} className="item">
-          <PublishedComponent
-            pubRef="product.InsuranceProductPicker"
-            module="contributionPlan"
-            label="insuranceProduct"
-            value={this._filterValue("insuranceProduct")}
-            onChange={(v) =>
-              this._onChangeProductInsuranceProduct("insuranceProduct", v)
-            }
-          />
-        </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className='item'>
           <NumberInput
-            module="contributionPlan"
-            label="periodicity"
+            module='contributionPlan'
+            label='periodicity'
             /**
              * @see min set to @see EMPTY_PERIODICITY_VALUE when filter unset to avoid @see NumberInput error message
              */
             min={
-              !!this._filterValue("periodicity")
+              !!this._filterValue('periodicity')
                 ? MIN_PERIODICITY_VALUE
                 : EMPTY_PERIODICITY_VALUE
             }
             max={MAX_PERIODICITY_VALUE}
-            value={this._filterValue("periodicity")}
+            value={this._filterValue('periodicity')}
             onChange={(v) =>
-              this._onChangeFilter("periodicity", !!v ? v : null)
+              this._onChangeFilter('periodicity', !!v ? v : null)
             }
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className='item'>
           <PublishedComponent
-            pubRef="core.DatePicker"
-            module="contributionPlan"
-            label="dateValidFrom"
-            value={this._filterValue("dateValidFrom")}
+            pubRef='core.DatePicker'
+            module='contributionPlan'
+            label='dateValidFrom'
+            value={this._filterValue('dateValidFrom')}
             onChange={(v) =>
               this._onChangeDateFilter(
-                "dateValidFrom",
+                'dateValidFrom',
                 v,
-                GREATER_OR_EQUAL_LOOKUP
+                GREATER_OR_EQUAL_LOOKUP,
               )
             }
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className='item'>
           <PublishedComponent
-            pubRef="core.DatePicker"
-            module="contributionPlan"
-            label="dateValidTo"
-            value={this._filterValue("dateValidTo")}
+            pubRef='core.DatePicker'
+            module='contributionPlan'
+            label='dateValidTo'
+            value={this._filterValue('dateValidTo')}
             onChange={(v) =>
-              this._onChangeDateFilter("dateValidTo", v, LESS_OR_EQUAL_LOOKUP)
+              this._onChangeDateFilter('dateValidTo', v, LESS_OR_EQUAL_LOOKUP)
             }
           />
         </Grid>
-        <Grid size={2} className="item">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={!!this._filterValue("isDeleted")}
-                onChange={(event) =>
-                  this._onChangeFilter("isDeleted", event.target.checked)
-                }
-                name="isDeleted"
-              />
+        <Grid size={GRID_RESPONSIVE_SMALL} className='item'>
+          <PublishedComponent
+            pubRef='product.InsuranceProductPicker'
+            module='contributionPlan'
+            label='insuranceProduct'
+            value={this._filterValue('insuranceProduct')}
+            onChange={(v) =>
+              this._onChangeProductInsuranceProduct('insuranceProduct', v)
             }
-            label={formatMessage(intl, "contributionPlan", "isDeleted")}
           />
         </Grid>
-        <Grid size={2} className="item">
+        <Grid size={GRID_RESPONSIVE_SMALL} className='item'>
           <FormControlLabel
             control={
               <Checkbox
-                checked={!!this._filterValue("showHistory")}
+                checked={!!this._filterValue('isDeleted')}
                 onChange={(event) =>
-                  this._onChangeFilter("showHistory", event.target.checked)
+                  this._onChangeFilter('isDeleted', event.target.checked)
                 }
-                name="isDeleted"
+                name='isDeleted'
               />
             }
-            label={formatMessage(intl, "contributionPlan", "showHistory")}
+            label={formatMessage(intl, 'contributionPlan', 'isDeleted')}
+          />
+        </Grid>
+        <Grid size={GRID_RESPONSIVE_SMALL} className='item'>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={!!this._filterValue('showHistory')}
+                onChange={(event) =>
+                  this._onChangeFilter('showHistory', event.target.checked)
+                }
+                name='isDeleted'
+              />
+            }
+            label={formatMessage(intl, 'contributionPlan', 'showHistory')}
           />
         </Grid>
       </StyledGrid>
@@ -196,6 +199,4 @@ class ContributionPlanBundleFilter extends Component {
 
 export { StyledGrid };
 export { ContributionPlanBundleFilter };
-export default withModulesManager(
-  injectIntl(ContributionPlanBundleFilter)
-);
+export default withModulesManager(injectIntl(ContributionPlanBundleFilter));
