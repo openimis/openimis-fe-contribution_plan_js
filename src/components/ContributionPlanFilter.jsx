@@ -156,7 +156,7 @@ class ContributionPlanFilter extends Component {
             label={formatMessage(intl, 'contributionPlan', 'isDeleted')}
           />
         </Grid>
-        <Grid size={2} className='item'>
+        <Grid size={GRID_RESPONSIVE_SMALL} className='item'>
           <FormControlLabel
             control={
               <Checkbox

@@ -163,7 +163,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid size={GRID_RESPONSIVE_SMALL} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
@@ -178,7 +178,7 @@ class PaymentPlanFilter extends Component {
             }
           />
         </Grid>
-        <Grid size={GRID_RESPONSIVE_SMALL} className="item">
+        <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
           <PublishedComponent
             pubRef="core.DatePicker"
             module="contributionPlan"
