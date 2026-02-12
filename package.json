@@ -14,10 +14,7 @@
     "build": "vite build",
     "start": "vite",
     "format": "prettier src -w",
-    "prepare":  "npm run build"
-  },
-  "peerDependencies": {
-    "react-intl": "^7.1.11"
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -44,6 +41,7 @@
     "@mui/icons-material": "^7.2.0",
     "redux": "^5.0.1",
     "react-router-dom": "^5.2.0",
-    "moment": "^2.25.3"
+    "moment": "^2.25.3",
+    "react-intl": "^7.1.11"
   }
 }
