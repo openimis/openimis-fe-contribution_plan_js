@@ -90,28 +90,27 @@ class ContributionPlanSearcher extends Component {
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_UPDATE)) {
             result.push(
                 contributionPlan => !this.isDeletedFilterEnabled(contributionPlan) && withTooltip(
-                    <div>
-                        <IconButton
-                            href={contributionPlanPageLink(contributionPlan)}
-                            onClick={e => e.stopPropagation() && onDoubleClick(contributionPlan)}
-                            disabled={this.state.deleted.includes(contributionPlan.id)}>
-                            <EditIcon />
-                        </IconButton>
-                    </div>,
-                    formatMessage(intl, "contributionPlan", "editButton.tooltip")
+                    <Button
+                        href={contributionPlanPageLink(contributionPlan)}
+                        onClick={e => e.stopPropagation() && onDoubleClick(contributionPlan)}
+                        disabled={this.state.deleted.includes(contributionPlan.id)}
+                        startIcon={<EditIcon />}
+                    >
+                        {formatMessage(intl, "contributionPlan", "editButton.buttonText")}
+                    </Button>
                 )
             );
         }
         if (rights.includes(RIGHT_CONTRIBUTION_PLAN_DELETE)) {
             result.push(
                 contributionPlan => !this.isDeletedFilterEnabled(contributionPlan) && withTooltip(
-                    <div>
-                        <IconButton
-                            onClick={() => this.onDelete(contributionPlan)}
-                            disabled={this.state.deleted.includes(contributionPlan.id)}>
-                            <DeleteIcon />
-                        </IconButton>
-                    </div>,
+                    <Button
+                        onClick={() => this.onDelete(contributionPlan)}
+                        disabled={this.state.deleted.includes(contributionPlan.id)}
+                        startIcon={<DeleteIcon />}
+                    >
+                        {formatMessage(this.props.intl, "contributionPlan", "deleteButton.buttonText")}
+                    </Button>,
                     formatMessage(this.props.intl, "contributionPlan", "deleteButton.tooltip")
                 )
             );
