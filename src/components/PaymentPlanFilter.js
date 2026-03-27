@@ -145,6 +145,7 @@ class PaymentPlanFilter extends Component {
           <NumberInput
             module="contributionPlan"
             label="periodicity"
+            numberOfDecimals={0}
             /**
              * @see min set to @see EMPTY_PERIODICITY_VALUE when filter unset to avoid @see NumberInput error message
              */

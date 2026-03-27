@@ -279,6 +279,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                                     readOnly={readOnly}
                                     label="periodicity"
                                     required
+                                    numberOfDecimals={0}
                                     /**
                                     * @see min set to @see EMPTY_PERIODICITY_FILTER when filter unset to avoid @see NumberInput error message
                                     */

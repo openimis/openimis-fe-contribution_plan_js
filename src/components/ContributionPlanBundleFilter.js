@@ -133,6 +133,7 @@ class ContributionPlanBundleFilter extends Component {
           <NumberInput
             module="contributionPlan"
             label="periodicity"
+            numberOfDecimals={0}
             min={
               !!this._filterValue("periodicity")
                 ? MIN_PERIODICITY_VALUE
