@@ -56,10 +56,6 @@ class PaymentPlanHeadPanel extends FormPanel {
         };
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        super.componentDidUpdate(prevProps, prevState, snapshot);
-    }
-
     shouldValidate = (input) => {
         const { savedCode } = this.props;
         return input !== savedCode;
@@ -118,6 +114,18 @@ class PaymentPlanHeadPanel extends FormPanel {
 
     setAppliedFiltersRowStructure = (appliedFiltersRowStructure) => {
         this.setState({ appliedFiltersRowStructure: appliedFiltersRowStructure });
+    };
+
+    getCalculationSupportsAdvancedCriteria = () => {
+        const { calculationRulesList, edited } = this.props;
+        const calculationUuid = edited?.calculation;
+
+        if (!calculationUuid || !calculationRulesList || calculationRulesList.length === 0) {
+            return false;
+        }
+
+        const calculationRule = calculationRulesList.find(rule => rule.uuid === calculationUuid);
+        return calculationRule?.supportsAdvancedCriteria ?? false;
     };
 
     render() {
@@ -250,7 +258,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                         <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
                             <Contributions
                                 contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
-                                label={formatMessage(intl, "paymentPlan", "calculation")}
+                                label="paymentPlan.calculation"
                                 value={!!calculationId ? calculationId : null}
                                 onChange={this.updateAttribute}
                                 context={paymentPlanType}
@@ -265,7 +273,6 @@ class PaymentPlanHeadPanel extends FormPanel {
                                     : "socialProtection.BenefitPlanPicker"}
                                 withNull={true}
                                 readOnly={readOnly}
-                                label={formatMessage(intl, "paymentPlan", "benefitPlan")}
                                 required
                                 value={paymentPlan.benefitPlan !== undefined && paymentPlan.benefitPlan !== null ? (isEmptyObject(paymentPlan.benefitPlan) ? null : paymentPlan.benefitPlan) : null}
                                 onChange={(v) => this.updateAttribute("benefitPlan", v)}
@@ -312,7 +319,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                         </Grid>
                     </Grid>
                     <Fragment>
-                        <Typography>
+                        <Typography component="div">
                             <div className={classes.item}>
                                 {isBenefitPlanType() ?
                                     <FormattedMessage module="contributionPlan" id="calculationParamsBFType"/> :
@@ -339,11 +346,11 @@ class PaymentPlanHeadPanel extends FormPanel {
                             />
                         </Grid>
                     </Fragment>
-                    {isBenefitPlanType() && (
+                    {isBenefitPlanType() && this.getCalculationSupportsAdvancedCriteria() && (
                         <>
                             <Divider />
                             <Fragment>
-                                <Typography>
+                                <Typography component="div">
                                     <div className={classes.item}>
                                         <FormattedMessage module="contributionPlan" id="paymentPlan.advancedCriteria" />
                                     </div>
@@ -434,6 +441,7 @@ const mapStateToProps = (store) => ({
     store.contributionPlan?.validationFields?.paymentPlanCode
         ?.validationError,
     savedCode: store.contributionPlan?.paymentPlan?.code,
+    calculationRulesList: store.calculation?.calculationRulesList || [],
 });
 
 export default withModulesManager(
