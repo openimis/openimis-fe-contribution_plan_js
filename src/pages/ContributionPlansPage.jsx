@@ -20,7 +20,8 @@ import {
 } from "../constants";
 import ContributionPlanSearcher from "../components/ContributionPlanSearcher";
 import { Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { GetIconComponent } from "@openimis/fe-core";
+const AddIcon = GetIconComponent("Add")
 
 const StyledPage = styled('div')(({ theme }) => ({
   ...theme.page ?? {},

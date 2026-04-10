@@ -17,9 +17,11 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanFilter from "./PaymentPlanFilter";
 import { IconButton } from "@mui/material";
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from "@mui/icons-material/Delete";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const NoteAddIcon = GetIconComponent("NoteAdd");
+const EditIcon = GetIconComponent("Edit");
+const DeleteIcon = GetIconComponent("Delete")
 import { isEmptyObject } from "../utils";
 import {
     ROWS_PER_PAGE_OPTIONS,

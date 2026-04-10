@@ -9,9 +9,11 @@ import ContributionPlanBundleFilter from "./ContributionPlanBundleFilter"
 import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE, 
     DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
 import { IconButton } from "@mui/material";
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+
+import { GetIconComponent } from "@openimis/fe-core";
+const NoteAddIcon = GetIconComponent("NoteAdd");
+const EditIcon = GetIconComponent("Edit");
+const DeleteIcon = GetIconComponent("Delete");
 
 class ContributionPlanBundleSearcher extends Component {
     constructor(props) {

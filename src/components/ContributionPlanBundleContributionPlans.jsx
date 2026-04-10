@@ -7,7 +7,9 @@ import { fetchContributionPlanBundleContributionPlans, deleteContributionPlanBun
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Paper, IconButton, Grid, Typography, Divider } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import { GetIconComponent } from "@openimis/fe-core";
+
+const DeleteIcon = GetIconComponent("Delete");
 import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants";
 import CreateContributionPlanBundleDetailsDialog from "../dialogs/CreateContributionPlanBundleDetailsDialog";
 import UpdateContributionPlanBundleDetailsDialog from "../dialogs/UpdateContributionPlanBundleDetailsDialog";

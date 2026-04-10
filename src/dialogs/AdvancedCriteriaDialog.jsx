@@ -14,7 +14,9 @@ import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import AdvancedCriteriaRowValue from "./AdvancedCriteriaRowValue";
-import AddCircle from '@mui/icons-material/Add';
+import { GetIconComponent } from "@openimis/fe-core";
+
+const AddCircle = GetIconComponent("Add");
 import { BENEFIT_PLAN, CLEARED_STATE_FILTER } from "../constants";
 import { isBase64Encoded, isEmptyObject } from "../utils";
 
