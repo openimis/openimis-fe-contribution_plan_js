@@ -8,6 +8,7 @@ import {
   decodeId,
   Helmet,
   clearCurrentPaginationPage,
+  GetIconComponent,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { styled } from "@mui/material/styles";
@@ -21,7 +22,7 @@ import {
 } from "../constants";
 import ContributionPlanBundleSearcher from "../components/ContributionPlanBundleSearcher";
 import { Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+const AddIcon = GetIconComponent("Add")
 
 const StyledPage = styled('div')(({ theme }) => ({
   ...theme.page ?? {},

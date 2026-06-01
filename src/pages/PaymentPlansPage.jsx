@@ -21,7 +21,8 @@ import {
 } from "../constants";
 import PaymentPlanSearcher from "../components/PaymentPlanSearcher";
 import { Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { GetIconComponent } from "@openimis/fe-core";
+const AddIcon = GetIconComponent("Add")
 
 const StyledPage = styled('div')(({ theme }) => ({
   ...theme.page ?? {},

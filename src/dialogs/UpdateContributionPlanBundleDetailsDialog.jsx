@@ -4,9 +4,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import EditIcon from '@mui/icons-material/Edit';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import { FormattedMessage, formatMessage, formatMessageWithValues, PublishedComponent } from "@openimis/fe-core";
+import { 
+    FormattedMessage,
+    formatMessage,
+    formatMessageWithValues,
+    PublishedComponent,
+    GetIconComponent
+} from "@openimis/fe-core";
+
+
+const EditIcon = GetIconComponent("Edit");
+const NoteAddIcon = GetIconComponent("NoteAdd");
 import { Tooltip, Grid, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ContributionPlanPicker from '../pickers/ContributionPlanPicker';

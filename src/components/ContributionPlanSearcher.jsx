@@ -15,9 +15,10 @@ import { fetchContributionPlans, deleteContributionPlan } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanFilter from "./ContributionPlanFilter";
-import { IconButton, Button } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from "@mui/material";
+import { GetIconComponent } from "@openimis/fe-core";
+const EditIcon = GetIconComponent("Edit")
+const DeleteIcon = GetIconComponent("Delete")
 import {
     RIGHT_CONTRIBUTION_PLAN_UPDATE,
     RIGHT_CONTRIBUTION_PLAN_DELETE,
