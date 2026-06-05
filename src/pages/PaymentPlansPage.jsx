@@ -10,7 +10,7 @@ import {
   clearCurrentPaginationPage,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import {
   RIGHT_PAYMENT_PLAN_SEARCH,
@@ -20,13 +20,14 @@ import {
   MODULE_NAME,
 } from "../constants";
 import PaymentPlanSearcher from "../components/PaymentPlanSearcher";
-import { Fab } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
+import { Fab } from "@mui/material";
+import { GetIconComponent } from "@openimis/fe-core";
+const AddIcon = GetIconComponent("Add")
 
-const styles = (theme) => ({
-  page: theme.page,
-  fab: theme.fab,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page ?? {},
+  '& .fab': theme.fab ?? {},
+}));
 
 class PaymentPlansPage extends Component {
   onAdd = () =>
@@ -81,10 +82,10 @@ class PaymentPlansPage extends Component {
   };
 
   render() {
-    const { intl, classes, rights } = this.props;
+    const { intl, rights } = this.props;
     return (
       rights.includes(RIGHT_PAYMENT_PLAN_SEARCH) && (
-        <div className={classes.page}>
+        <StyledPage>
           <Helmet
             title={formatMessage(
               this.props.intl,
@@ -100,7 +101,7 @@ class PaymentPlansPage extends Component {
           />
           {rights.includes(RIGHT_PAYMENT_PLAN_CREATE) &&
             withTooltip(
-              <div className={classes.fab}>
+              <div className="fab">
                 <Fab color="primary" onClick={this.onAdd}>
                   <AddIcon />
                 </Fab>
@@ -111,7 +112,7 @@ class PaymentPlansPage extends Component {
                 "paymentPlan.createButton.tooltip"
               )
             )}
-        </div>
+        </StyledPage>
       )
     );
   }
@@ -128,12 +129,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ clearCurrentPaginationPage }, dispatch);
 
+export { StyledPage };
+export { PaymentPlansPage };
 export default withModulesManager(
   injectIntl(
-    withTheme(
-      withStyles(styles)(
-        connect(mapStateToProps, mapDispatchToProps)(PaymentPlansPage)
-      )
-    )
+    connect(mapStateToProps, mapDispatchToProps)(PaymentPlansPage)
   )
 );

@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { injectIntl } from "react-intl";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import {
   decodeId,
   formatMessage,
   fetchCustomFilter,
 } from "@openimis/fe-core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import AdvancedCriteriaRowValue from "./AdvancedCriteriaRowValue";
-import AddCircle from '@material-ui/icons/Add';
+import { GetIconComponent } from "@openimis/fe-core";
+
+const AddCircle = GetIconComponent("Add");
 import { BENEFIT_PLAN, CLEARED_STATE_FILTER } from "../constants";
 import { isBase64Encoded, isEmptyObject } from "../utils";
 
-
-const styles = (theme) => ({
-  item: theme.paper.item,
-});
+const StyledDialog = styled('div')(({ theme }) => ({
+  '& .item': theme.paper?.item ?? {},
+}));
 
 const AdvancedCriteriaDialog = ({
   intl,
-  classes,
   object,
   objectToSave,
   fetchCustomFilter,
@@ -156,7 +156,7 @@ const AdvancedCriteriaDialog = ({
   }, [object]);
 
   return (
-    <>
+    <StyledDialog>
           {filters.map((filter, index) => {
             return (<AdvancedCriteriaRowValue 
               customFilters={customFilters}
@@ -226,7 +226,7 @@ const AdvancedCriteriaDialog = ({
             </Button>
           </div>
         </div>
-  </>
+    </StyledDialog>
   );
 }
 
@@ -243,4 +243,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   fetchCustomFilter,
 }, dispatch);
 
-export default injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaDialog))));
+export { StyledDialog };
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(AdvancedCriteriaDialog));

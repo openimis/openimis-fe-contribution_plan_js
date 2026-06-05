@@ -9,7 +9,7 @@ import {
   journalize
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PaymentPlanHeadPanel from "./PaymentPlanHeadPanel";
@@ -17,13 +17,13 @@ import { fetchPaymentPlan, clearPaymentPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 import _ from "lodash";
 
-const styles = theme => ({
-  paper: theme.paper.paper,
-  paperHeader: theme.paper.header,
-  paperHeaderAction: theme.paper.action,
-  item: theme.paper.item,
-  lockedPage: theme.page.locked,
-});
+const StyledForm = styled('div')(({ theme }) => ({
+  ...theme.paper?.paper ?? {},
+  '& .paperHeader': theme.paper?.header ?? {},
+  '& .paperHeaderAction': theme.paper?.action ?? {},
+  '& .item': theme.paper?.item ?? {},
+  '& .lockedPage': theme.page?.locked ?? {},
+}));
 
 const PaymentPlanForm = ({
   intl,
@@ -116,31 +116,34 @@ const PaymentPlanForm = ({
 
   const shouldBeLocked = Boolean(clientMutationId);
 
-  return (
-    <div className={shouldBeLocked ? classes.lockedPage : null}>
-    <Helmet title={formatMessageWithValues(intl, "paymentPlan", "paymentPlan.page.title", titleParams())} />
-    <Form
-      module="paymentPlan"
-      title="paymentPlan.page.title"
-      titleParams={titleParams()}
-      edited={paymentPlan}
-      back={back}
-      canSave={canSave}
-      save={handleSave}
-      onEditedChanged={onEditedChanged}
-      HeadPanel={PaymentPlanHeadPanel}
-      mandatoryFieldsEmpty={isMandatoryFieldsEmpty()}
-      saveTooltip={formatMessage(intl, "paymentPlan", `saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`)}
-      setJsonExtValid={setJsonExtValid}
-      setRequiredValid={setRequiredValid}
-      paymentPlanId={paymentPlanId}
-      isReplacing={isReplacing}
-      openDirty={save}
-      readOnly={shouldBeLocked}
-    />
-    </div>
-  );
-};
+    setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
+    setRequiredValid = (valid) => this.setState({ requiredValid: !!valid });
+
+    return (
+      <StyledForm className={shouldBeLocked ? "lockedPage" : null}>
+        <Helmet title={formatMessageWithValues(this.props.intl, "paymentPlan", "paymentPlan.page.title", this.titleParams())} />
+        <Form
+            module="paymentPlan"
+            title="paymentPlan.page.title"
+            titleParams={titleParams()}
+            edited={paymentPlan}
+            back={back}
+            canSave={canSave}
+            save={handleSave}
+            onEditedChanged={onEditedChanged}
+            HeadPanel={PaymentPlanHeadPanel}
+            mandatoryFieldsEmpty={isMandatoryFieldsEmpty()}
+            saveTooltip={formatMessage(intl, "paymentPlan", `saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`)}
+            setJsonExtValid={setJsonExtValid}
+            setRequiredValid={setRequiredValid}
+            paymentPlanId={paymentPlanId}
+            isReplacing={isReplacing}
+            openDirty={save}
+            readOnly={shouldBeLocked}
+        />
+      </StyledForm>
+    )
+}
 
 const mapStateToProps = state => ({
   fetchingPaymentPlan: state.contributionPlan.fetchingPaymentPlan,
@@ -158,12 +161,12 @@ const mapDispatchToProps = dispatch => {
   }, dispatch);
 };
 
+export { StyledForm };
+export { PaymentPlanForm };
 export default withHistory(
-  withModulesManager(
-    injectIntl(
-      withTheme(withStyles(styles)(
-        connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm))
-      )
+    withModulesManager(
+        injectIntl(
+            connect(mapStateToProps, mapDispatchToProps)(PaymentPlanForm)
+        )
     )
-  )
 );

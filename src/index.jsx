@@ -1,7 +1,9 @@
 import React from "react";
 import messages_en from "./translations/en.json";
 import reducer from "./reducer";
-import { LocalOffer, Folder } from "@material-ui/icons";
+import { GetIconComponent } from "@openimis/fe-core";
+const LocalOffer = GetIconComponent("LocalOffer")
+const Folder = GetIconComponent("Folder")
 import ContributionPlansPage from "./pages/ContributionPlansPage";
 import ContributionPlanPage from "./pages/ContributionPlanPage";
 import ContributionPlanBundlesPage from "./pages/ContributionPlanBundlesPage";
@@ -49,38 +51,26 @@ const DEFAULT_CONFIG = {
         { key: "contributionPlan.route.replacePaymentPlan", ref: ROUTE_PAYMENT_PLAN_REPLACE },
     ],
     "core.Router": [
-        { path: ROUTE_CONTRIBUTION_PLANS, component: ContributionPlansPage },
-        { path: ROUTE_CONTRIBUTION_PLAN  + "/:contributionplan_id?", component: ContributionPlanPage },
-        { path: ROUTE_CONTRIBUTION_PLAN_BUNDLES, component: ContributionPlanBundlesPage },
-        { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE  + "/:contributionplanbundle_id?", component: ContributionPlanBundlePage },
-        { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE  + "/:contributionplanbundle_id", component: ContributionPlanBundleReplacePage },
-        { path: ROUTE_PAYMENT_PLANS, component: PaymentPlansPage },
-        { path: ROUTE_PAYMENT_PLAN  + "/:paymentplan_id?", component: PaymentPlanPage },
-        { path: ROUTE_PAYMENT_PLAN_REPLACE  + "/:paymentplan_id", component: PaymentPlanReplacePage },
+        { path: ROUTE_CONTRIBUTION_PLANS, text: "contributionPlan.contributionPlans.page.title", id: 'admin.contributionPlans',component: ContributionPlansPage, rights: [RIGHT_CONTRIBUTION_PLAN_SEARCH], icon: "LocalOffer" },
+        { path: ROUTE_CONTRIBUTION_PLAN  + "/:contributionplan_id?", component: ContributionPlanPage, rights: [RIGHT_CONTRIBUTION_PLAN_SEARCH], icon: "LocalOffer" },
+        { path: ROUTE_CONTRIBUTION_PLAN_BUNDLES, text: "contributionPlan.contributionPlanBundles.page.title", id: 'admin.contributionPlanBundles', component: ContributionPlanBundlesPage, rights: [RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH], icon: "Folder" },
+        { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE  + "/:contributionplanbundle_id?", component: ContributionPlanBundlePage, rights: [RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH], icon: "Folder" },
+        { path: ROUTE_CONTRIBUTION_PLAN_BUNDLE_REPLACE  + "/:contributionplanbundle_id", component: ContributionPlanBundleReplacePage, rights: [RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH], icon: "Folder" },
+        { path: ROUTE_PAYMENT_PLANS, text: "contributionPlan.paymentPlans.page.title", id: 'legalAndFinance.paymentPlans', component: PaymentPlansPage, rights: [RIGHT_PAYMENT_PLAN_SEARCH], icon: "LocalOffer" },
+        { path: ROUTE_PAYMENT_PLAN  + "/:paymentplan_id?", component: PaymentPlanPage, rights: [RIGHT_PAYMENT_PLAN_SEARCH], icon: "LocalOffer" },
+        { path: ROUTE_PAYMENT_PLAN_REPLACE  + "/:paymentplan_id", component: PaymentPlanReplacePage, rights: [RIGHT_PAYMENT_PLAN_SEARCH], icon: "LocalOffer" },
     ],
     "admin.MainMenu": [
         {
-            text: <FormattedMessage module="contributionPlan" id="contributionPlans.page.title" />,
-            icon: <LocalOffer />,
-            route: "/" + ROUTE_CONTRIBUTION_PLANS,
-            filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_SEARCH),
-            id: 'admin.contributionPlans'
+            route:  ROUTE_CONTRIBUTION_PLANS,
         },
         {
-            text: <FormattedMessage module="contributionPlan" id="contributionPlanBundles.page.title" />,
-            icon: <Folder />,
-            route: "/" + ROUTE_CONTRIBUTION_PLAN_BUNDLES,
-            filter: rights => rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_SEARCH),
-            id: 'admin.contributionPlanBundles'
+            route:  ROUTE_CONTRIBUTION_PLAN_BUNDLES,
         },
     ],
     "invoice.MainMenu": [
         {
-            text: <FormattedMessage module="contributionPlan" id="paymentPlans.page.title" />,
-            icon: <LocalOffer />,
-            route: "/" + ROUTE_PAYMENT_PLANS,
-            filter: rights => rights.includes(RIGHT_PAYMENT_PLAN_SEARCH),
-            id: 'legalAndFinance.paymentPlans'
+            route:  ROUTE_PAYMENT_PLANS,
         }
     ]
 }

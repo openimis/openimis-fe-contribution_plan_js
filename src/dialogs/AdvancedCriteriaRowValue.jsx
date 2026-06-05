@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { injectIntl } from "react-intl";
 import {
   PublishedComponent,
@@ -8,8 +8,8 @@ import {
   CustomFilterTypeStatusPicker,
   CustomFilterFieldStatusPicker
 } from "@openimis/fe-core";
-import { Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { 
   BOOLEAN,
@@ -20,13 +20,41 @@ import {
   BOOL_OPTIONS 
 } from "../constants";
 
-const styles = (theme) => ({
-  item: theme.paper.item,
-});
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  '& .item': theme.paper?.item ?? {},
+  '& .criteriaRow': {
+    width: '100%',
+    margin: 0,
+    backgroundColor: '#DFEDEF',
+    alignItems: 'flex-end',
+  },
+  '& .removeCell': {
+    width: '28px',
+    minWidth: '28px',
+    height: '100%',
+    marginTop: '24px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#006273',
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
+  '& .fieldCell': {
+    minWidth: '350px',
+  },
+  '& .filterCell': {
+    minWidth: '350px',
+  },
+  '& .valueCell': {
+    minWidth: '300px',
+  },
+  '& .amountCell': {
+    minWidth: '240px',
+  },
+}));
 
 const AdvancedCriteriaRowValue = ({
-  intl,
-  classes,
   customFilters,
   currentFilter,
   setCurrentFilter,
@@ -73,6 +101,7 @@ const AdvancedCriteriaRowValue = ({
       label: "paymentPlan.advancedCriteria.value",
       value: currentFilter.value,
       onChange: onAttributeChange("value"),
+      fullWidth: true,
     };
   
     switch (type) {
@@ -115,20 +144,22 @@ const AdvancedCriteriaRowValue = ({
   };
 
   return (
-    <Grid 
+    <StyledGrid 
       container 
       direction="row" 
-      className={classes.item}
-      style={{ backgroundColor: "#DFEDEF" }}
+      className="item criteriaRow"
+      columnSpacing={2}
+      rowSpacing={1}
     >
       {filters.length > 0 ? (
-        <div style={{ backgroundColor: '#DFEDEF', width: '10px', height: '25px', marginTop: '25px' }}>
+        <div className="removeCell" role="button" tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              removeFilter();
+            }
+          }}
+        >
           <span
-            style={{
-              transform: 'translate(-50%, -50%)',
-              fontSize: '16px',
-              color: '#006273',
-            }}
             onClick={removeFilter}
           >
             &#x2716;
@@ -136,7 +167,7 @@ const AdvancedCriteriaRowValue = ({
         </div> 
       ) : (<></>)
       }
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={4} className="item fieldCell">
         <CustomFilterFieldStatusPicker
           module="paymentPlan"
           label="paymentPlan.advancedCriteria.field"
@@ -146,7 +177,7 @@ const AdvancedCriteriaRowValue = ({
         />
       </Grid>
         {currentFilter.field !== "" ? (
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={2} className="item filterCell">
             <CustomFilterTypeStatusPicker
               module="paymentPlan"
               label="paymentPlan.advancedCriteria.filter"
@@ -158,12 +189,12 @@ const AdvancedCriteriaRowValue = ({
           </Grid>
         ) : (<></>) }
         {currentFilter.field !== "" && currentFilter.filter !== "" ? (
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={4} className="item valueCell">
             {renderInputBasedOnType(currentFilter.type)}
           </Grid>
         ) : (<></>) }
         {currentFilter.field !== "" && currentFilter.filter !== "" && currentFilter.value !== "" ? (
-          <Grid item xs={2} className={classes.item}>
+          <Grid size={2} className="item amountCell">
             <NumberInput
               min={0}
               displayZero
@@ -171,11 +202,13 @@ const AdvancedCriteriaRowValue = ({
               label="paymentPlan.advancedCriteria.amount"
               value={currentFilter.amount}
               onChange={onAttributeChange("amount")}
+              fullWidth
             />
           </Grid>
         ) : (<></>) }
-    </Grid>
+    </StyledGrid>
   );
 };
 
-export default injectIntl(withTheme(withStyles(styles)(connect(null, null)(AdvancedCriteriaRowValue))));
+export { StyledGrid };
+export default injectIntl(connect(null, null)(AdvancedCriteriaRowValue));

@@ -3,14 +3,14 @@ import { withModulesManager, withHistory, historyPush, formatMessageWithValues }
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { replacePaymentPlan } from "../actions"
 import PaymentPlanForm from "../components/PaymentPlanForm"
 import { RIGHT_PAYMENT_PLAN_REPLACE } from "../constants"
 
-const styles = theme => ({
-    page: theme.page,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page ?? {},
+}));
 
 class PaymentPlanPage extends Component {
     back = () => {
@@ -33,10 +33,10 @@ class PaymentPlanPage extends Component {
     titleParams = paymentPlan => ({ label: !!paymentPlan.name ? paymentPlan.name : null });
 
     render() {
-        const { classes, rights, paymentPlanId } = this.props;
+        const { rights, paymentPlanId } = this.props;
         return (
             rights.includes(RIGHT_PAYMENT_PLAN_REPLACE) && (
-                <div className={classes.page}>
+                <StyledPage>
                     <PaymentPlanForm
                         paymentPlanId={paymentPlanId}
                         back={this.back}
@@ -45,7 +45,7 @@ class PaymentPlanPage extends Component {
                         titleParams={this.titleParams}
                         isReplacing={true}
                     />
-                </div>
+                </StyledPage>
             )
         )
     }
@@ -60,4 +60,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ replacePaymentPlan }, dispatch);
 };
 
-export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PaymentPlanPage))))));
+export { StyledPage };
+export default withHistory(withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(PaymentPlanPage))));

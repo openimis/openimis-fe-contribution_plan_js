@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import _ from "lodash";
 import {
   Form,
   withModulesManager,
@@ -9,19 +10,19 @@ import {
   journalize,
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from '@mui/material/styles';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanHeadPanel from "./ContributionPlanHeadPanel";
 import { fetchContributionPlan, clearContributionPlan } from "../actions";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 
-const styles = (theme) => ({
-  paper: theme.paper.paper,
-  paperHeader: theme.paper.header,
-  paperHeaderAction: theme.paper.action,
-  item: theme.paper.item,
-});
+const StyledForm = styled('div')(({ theme }) => ({
+  ...theme.paper?.paper ?? {},
+  '& .paperHeader': theme.paper?.header ?? {},
+  '& .paperHeaderAction': theme.paper?.action ?? {},
+  '& .item': theme.paper?.item ?? {},
+}));
 
 class ContributionPlanForm extends Component {
   constructor(props) {
@@ -109,7 +110,7 @@ class ContributionPlanForm extends Component {
   render() {
     const { intl, back, save } = this.props;
     return (
-      <Fragment>
+      <StyledForm>
         <Helmet
           title={formatMessageWithValues(
             this.props.intl,
@@ -137,7 +138,7 @@ class ContributionPlanForm extends Component {
           setJsonExtValid={this.setJsonExtValid}
           openDirty={save}
         />
-      </Fragment>
+      </StyledForm>
     );
   }
 }
@@ -160,14 +161,12 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
+export { StyledForm };
+export { ContributionPlanForm };
 export default withHistory(
   withModulesManager(
     injectIntl(
-      withTheme(
-        withStyles(styles)(
-          connect(mapStateToProps, mapDispatchToProps)(ContributionPlanForm)
-        )
-      )
+      connect(mapStateToProps, mapDispatchToProps)(ContributionPlanForm)
     )
   )
 );

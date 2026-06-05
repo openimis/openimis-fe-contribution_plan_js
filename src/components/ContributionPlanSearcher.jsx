@@ -15,9 +15,10 @@ import { fetchContributionPlans, deleteContributionPlan } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanFilter from "./ContributionPlanFilter";
-import { Button } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { IconButton } from "@mui/material";
+import { GetIconComponent } from "@openimis/fe-core";
+const EditIcon = GetIconComponent("Edit")
+const DeleteIcon = GetIconComponent("Delete")
 import {
     RIGHT_CONTRIBUTION_PLAN_UPDATE,
     RIGHT_CONTRIBUTION_PLAN_DELETE,
@@ -222,4 +223,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchContributionPlans, coreConfirm, deleteContributionPlan, journalize }, dispatch);
 };
 
+export { ContributionPlanSearcher };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanSearcher)));

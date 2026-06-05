@@ -3,14 +3,14 @@ import { withModulesManager, withHistory, historyPush, formatMessageWithValues }
 import { injectIntl } from "react-intl";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { replaceContributionPlanBundle } from "../actions"
 import ContributionPlanBundleForm from "../components/ContributionPlanBundleForm"
 import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE } from "../constants"
 
-const styles = theme => ({
-    page: theme.page,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page ?? {},
+}));
 
 class ContributionPlanBundlePage extends Component {
     back = () => {
@@ -32,10 +32,10 @@ class ContributionPlanBundlePage extends Component {
     titleParams = contributionPlanBundle => ({ label: !!contributionPlanBundle.name ? contributionPlanBundle.name : null });
 
     render() {
-        const { classes, rights, contributionPlanBundleId } = this.props;
+        const { rights, contributionPlanBundleId } = this.props;
         return (
             rights.includes(RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE) && (
-                <div className={classes.page}>
+                <StyledPage>
                     <ContributionPlanBundleForm
                         contributionPlanBundleId={contributionPlanBundleId}
                         back={this.back}
@@ -44,7 +44,7 @@ class ContributionPlanBundlePage extends Component {
                         titleParams={this.titleParams}
                         isReplacing={true}
                     />
-                </div>
+                </StyledPage>
             )
         )
     }
@@ -59,4 +59,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ replaceContributionPlanBundle }, dispatch);
 };
 
-export default withHistory(withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundlePage))))));
+export { StyledPage };
+export default withHistory(withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundlePage))));

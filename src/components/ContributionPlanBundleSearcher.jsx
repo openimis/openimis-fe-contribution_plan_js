@@ -8,10 +8,12 @@ import { connect } from "react-redux";
 import ContributionPlanBundleFilter from "./ContributionPlanBundleFilter"
 import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_DELETE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_REPLACE, 
     DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
-import { IconButton } from "@material-ui/core";
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { IconButton } from "@mui/material";
+
+import { GetIconComponent } from "@openimis/fe-core";
+const NoteAddIcon = GetIconComponent("NoteAdd");
+const EditIcon = GetIconComponent("Edit");
+const DeleteIcon = GetIconComponent("Delete");
 
 class ContributionPlanBundleSearcher extends Component {
     constructor(props) {
@@ -220,4 +222,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetchContributionPlanBundles, deleteContributionPlanBundle, coreConfirm, journalize }, dispatch);
 };
 
+export { ContributionPlanBundleSearcher };
 export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundleSearcher)));

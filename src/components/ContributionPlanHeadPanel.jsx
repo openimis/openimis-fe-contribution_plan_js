@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 
-import { Grid, Divider, Typography } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid, Divider, Typography } from "@mui/material";
+import { styled } from '@mui/material/styles';
 
 import {
   withModulesManager,
@@ -15,6 +15,8 @@ import {
   NumberInput,
   Contributions,
   ValidatedTextInput,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_LARGE,
 } from "@openimis/fe-core";
 import {
   contributionPlanCodeValidation,
@@ -32,15 +34,14 @@ import {
   RIGHT_CALCULATION_UPDATE,
 } from "../constants";
 
-const styles = (theme) => ({
-  tableTitle: theme.table.title,
-  item: theme.paper.item,
-  fullHeight: {
+const StyledPanel = styled('div')(({ theme }) => ({
+  '& .tableTitle': theme.table?.title ?? {},
+  '& .item': theme.paper?.item ?? {},
+  '& .fullHeight': {
     height: "100%",
   },
-});
+}));
 
-const GRID_ITEM_SIZE = 3;
 
 class ContributionPlanHeadPanel extends FormPanel {
   shouldValidate = (input) => {
@@ -51,7 +52,6 @@ class ContributionPlanHeadPanel extends FormPanel {
   render() {
     const {
       intl,
-      classes,
       mandatoryFieldsEmpty,
       setJsonExtValid,
       isCodeValid,
@@ -73,31 +73,21 @@ class ContributionPlanHeadPanel extends FormPanel {
     const calculation = !!calculationId ? { id: calculationId } : null;
     const contributionPlan = { product, calculation, ...others };
     return (
-      <Fragment>
-        <Grid container className={classes.tableTitle}>
-          <Grid item>
-            <Grid
-              container
-              align="center"
-              justify="center"
-              direction="column"
-              className={classes.fullHeight}
-            >
-              <Grid item>
-                <Typography>
-                  <FormattedMessage
-                    module="contributionPlan"
-                    id="contributionPlan.headPanel.title"
-                  />
-                </Typography>
-              </Grid>
-            </Grid>
+      <StyledPanel>
+        <StyledPanel container className="item">
+          <Grid size={12} className="item">
+            <Typography variant="h6">
+              <FormattedMessage
+                module="contributionPlan"
+                id="contributionPlan.headPanel.title"
+              />
+            </Typography>
           </Grid>
-        </Grid>
+        </StyledPanel>
         <Divider />
         {mandatoryFieldsEmpty && (
           <Fragment>
-            <div className={classes.item}>
+            <div className="item">
               <FormattedMessage
                 module="contributionPlan"
                 id="mandatoryFieldsEmptyError"
@@ -106,8 +96,8 @@ class ContributionPlanHeadPanel extends FormPanel {
             <Divider />
           </Fragment>
         )}
-        <Grid container className={classes.item}>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+        <Grid container className="item">
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <ValidatedTextInput
               itemQueryIdentifier="contributionPlanCode"
               codeTakenLabel="contributionPlan.codeTaken"
@@ -126,7 +116,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               readOnly={!!contributionPlan.id}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <TextInput
               module="contributionPlan"
               label="name"
@@ -135,7 +125,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("name", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <Contributions
               contributionKey={
                 CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
@@ -146,7 +136,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               required
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <PublishedComponent
               pubRef="product.ProductPicker"
               withNull={true}
@@ -158,7 +148,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("benefitPlan", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <NumberInput
               module="contributionPlan"
               label="periodicity"
@@ -180,7 +170,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("periodicity", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -194,7 +184,7 @@ class ContributionPlanHeadPanel extends FormPanel {
               onChange={(v) => this.updateAttribute("dateValidFrom", v)}
             />
           </Grid>
-          <Grid item xs={GRID_ITEM_SIZE} className={classes.item}>
+          <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
             <PublishedComponent
               pubRef="core.DatePicker"
               module="contributionPlan"
@@ -210,14 +200,14 @@ class ContributionPlanHeadPanel extends FormPanel {
         </Grid>
         <Divider />
         <Fragment>
-          <div className={classes.item}>
+          <div className="item">
             <FormattedMessage
               module="contributionPlan"
               id="calculationParams"
             />
           </div>
           <Divider />
-          <Grid container className={classes.item}>
+          <Grid container className="item">
             <Contributions
               contributionKey={CONTRIBUTIONPLAN_CALCULATION_CONTRIBUTION_KEY}
               intl={intl}
@@ -232,13 +222,13 @@ class ContributionPlanHeadPanel extends FormPanel {
                 !!contributionPlan.jsonExt ? contributionPlan.jsonExt : null
               }
               onChange={this.updateAttribute}
-              gridItemStyle={classes.item}
-              gridItemSize={GRID_ITEM_SIZE}
+              gridItemStyle="item"
+              gridItemSize={GRID_RESPONSIVE_STANDARD}
               setJsonExtValid={setJsonExtValid}
             />
           </Grid>
         </Fragment>
-      </Fragment>
+      </StyledPanel>
     );
   }
 }
@@ -255,11 +245,13 @@ const mapStateToProps = (store) => ({
   savedCode: store.contributionPlan?.contributionPlan?.code,
 });
 
+export { StyledPanel };
+export { ContributionPlanHeadPanel };
 export default withModulesManager(
   injectIntl(
     connect(
       mapStateToProps,
       null
-    )(withTheme(withStyles(styles)(ContributionPlanHeadPanel)))
+    )(ContributionPlanHeadPanel)
   )
 );

@@ -1,32 +1,29 @@
 import React, { Component } from "react";
 import { FormattedMessage, withModulesManager, SelectInput } from "@openimis/fe-core";
-import { fetchPickerPaymentPlans } from "../actions"
+import { fetchPickerContributionPlans } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-class PaymentPlanPicker extends Component {
+class ContributionPlanPicker extends Component {
     componentDidMount() {
-        this.props.fetchPickerPaymentPlans(this.props.modulesManager, this.queryParams());
+        this.props.fetchPickerContributionPlans(this.props.modulesManager, this.queryParams());
     }
 
     queryParams = () => {
-        const { periodicity, benefitPlanId, withDeleted = false } = this.props;
+        const { periodicity, withDeleted = false } = this.props;
         let params = [];
         params.push(`isDeleted: ${withDeleted}`);
         if (!!periodicity) {
             params.push(`periodicity: ${periodicity}`);
         }
-        if (!!benefitPlanId) {
-            params.push(`benefitPlanId: "${benefitPlanId}"`);
-        }
         return params;
     }
 
     render() {
-        const { modulesManager, pickerPaymentPlans, value, onChange, required = false,
+        const { modulesManager, pickerContributionPlans, value, onChange, required = false,
             withNull = false, nullLabel = null, withLabel = true, readOnly = false } = this.props;
         let options = [
-            ...pickerPaymentPlans.map(v => ({
+            ...pickerContributionPlans.map(v => ({
                 value: v,
                 label: `${v.code} - ${v.name}`
             }))
@@ -37,21 +34,21 @@ class PaymentPlanPicker extends Component {
                 label: nullLabel || <FormattedMessage module="contributionPlan" id="emptyLabel" />
             })
         }
-        let paymentPlanPickerValue = null;
-        const paymentPlanPickerProjection = modulesManager.getRef("contributionPlan.PaymentPlanPicker.projection");
-        if (!!value && !!paymentPlanPickerProjection) {
-            paymentPlanPickerValue = {};
-            paymentPlanPickerProjection.forEach(key => {
-                paymentPlanPickerValue[key] = value[key]
+        let contributionPlanPickerValue = null;
+        const contributionPlanPickerProjection = modulesManager.getRef("contributionPlan.ContributionPlanPicker.projection");
+        if (!!value && !!contributionPlanPickerProjection) {
+            contributionPlanPickerValue = {};
+            contributionPlanPickerProjection.forEach(key => {
+                contributionPlanPickerValue[key] = value[key]
             });
         }
         return (
             <SelectInput
                 module="contributionPlan"
-                label={withLabel ? "paymentPlanPicker.label" : null}
+                label={withLabel ? "contributionPlan.label" : null}
                 required={required}
                 options={options}
-                value={paymentPlanPickerValue}
+                value={contributionPlanPickerValue}
                 onChange={onChange}
                 readOnly={readOnly}
             />
@@ -60,11 +57,12 @@ class PaymentPlanPicker extends Component {
 }
 
 const mapStateToProps = state => ({
-    pickerPaymentPlans: state.contributionPlan.pickerPaymentPlans
+    pickerContributionPlans: state.contributionPlan.pickerContributionPlans
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ fetchPickerPaymentPlans }, dispatch);
+    return bindActionCreators({ fetchPickerContributionPlans }, dispatch);
 };
 
-export default withModulesManager(connect(mapStateToProps, mapDispatchToProps)(PaymentPlanPicker));
+export { ContributionPlanPicker };
+export default withModulesManager(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanPicker));

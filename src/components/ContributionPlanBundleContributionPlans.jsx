@@ -2,23 +2,25 @@ import React, { Fragment } from "react";
 import { injectIntl } from 'react-intl';
 import { withModulesManager, FormattedMessage, formatMessage, formatMessageWithValues, formatDateFromISO, Table,
     PublishedComponent, withTooltip, coreConfirm, journalize, PagedDataHandler, decodeId } from "@openimis/fe-core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { fetchContributionPlanBundleContributionPlans, deleteContributionPlanBundleContributionPlan } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Paper, IconButton, Grid, Typography, Divider } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Paper, IconButton, Grid, Typography, Divider } from "@mui/material";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const DeleteIcon = GetIconComponent("Delete");
 import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants";
 import CreateContributionPlanBundleDetailsDialog from "../dialogs/CreateContributionPlanBundleDetailsDialog";
 import UpdateContributionPlanBundleDetailsDialog from "../dialogs/UpdateContributionPlanBundleDetailsDialog";
 
-const styles = theme => ({
-    tableTitle: theme.table.title,
-    paper: theme.paper.paper,
-    paperHeader: theme.paper.paperHeader,
-    paperHeaderAction: theme.paper.action,
-    item: theme.paper.item
-});
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  ...theme.paper?.paper ?? {},
+  '& .tableTitle': theme.table?.title ?? {},
+  '& .paperHeader': theme.paper?.paperHeader ?? {},
+  '& .paperHeaderAction': theme.paper?.action ?? {},
+  '& .item': theme.paper?.item ?? {}
+}));
 
 class ContributionPlanBundleContributionPlans extends PagedDataHandler {
     constructor(props) {
@@ -145,26 +147,26 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
     isRowDeleted = contributionPlanBundleContributionPlan => this.state.deleted.includes(contributionPlanBundleContributionPlan.id);
 
     renderActions = isNew => {
-        const { classes, edited, contributionPlanBundleId } = this.props;
+        const { edited, contributionPlanBundleId } = this.props;
         return (
             <Fragment>
-                <Grid item xs={8}>
+                <Grid size={8}>
                     {isNew && (
-                        <Grid item className={classes.item}>
+                        <Grid className="item">
                             <Typography>
                                 <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.error" />
                             </Typography>
                         </Grid>
                     )}
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <Grid container justify="flex-end" alignItems="center">
-                        <Grid item>
+                        <Grid>
                             <Typography>
                                 <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.createContributionPlan" />
                             </Typography>
                         </Grid>
-                        <Grid item className={classes.paperHeaderAction}>
+                        <Grid className="paperHeaderAction">
                             <CreateContributionPlanBundleDetailsDialog
                                 disabled={isNew}
                                 contributionPlanBundle={edited}
@@ -178,19 +180,19 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
     }
 
     render() {
-        const { classes, contributionPlanBundleId, fetchingContributionPlanBundleContributionPlans, errorContributionPlanBundleContributionPlans,
+        const { contributionPlanBundleId, fetchingContributionPlanBundleContributionPlans, errorContributionPlanBundleContributionPlans,
             contributionPlanBundleContributionPlans, contributionPlanBundleContributionPlansPageInfo, contributionPlanBundleContributionPlansTotalCount } = this.props;
         const isNew = !contributionPlanBundleId;
         return (
-            <Paper className={classes.paper}>
-                <Grid container alignItems="center" direction="row" className={classes.paperHeader}>
-                    <Grid item xs={12}>
-                        <Typography className={classes.tableTitle}>
+            <StyledPaper>
+                <Grid container alignItems="center" direction="row" className="paperHeader">
+                    <Grid size={12}>
+                        <Typography className="tableTitle">
                             <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.title" values={{ count: isNew ? 0 : contributionPlanBundleContributionPlansTotalCount }} />
                         </Typography>
                     </Grid>
                     {this.renderActions(isNew)}
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Divider />
                     </Grid>
                 </Grid>
@@ -213,7 +215,7 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
                     rowLocked={this.isRowDeleted}
                     rowDisabled={this.isRowDeleted}
                 />
-            </Paper>
+            </StyledPaper>
         )
     }    
 }
@@ -234,4 +236,5 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({ fetch: fetchContributionPlanBundleContributionPlans, deleteContributionPlanBundleContributionPlan, coreConfirm, journalize }, dispatch);
 };
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundleContributionPlans)))));
+export { StyledPaper };
+export default withModulesManager(injectIntl(connect(mapStateToProps, mapDispatchToProps)(ContributionPlanBundleContributionPlans)));
