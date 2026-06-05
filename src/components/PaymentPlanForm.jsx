@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
-    Form,
-    withModulesManager,
-    withHistory,
-    formatMessage,
-    formatMessageWithValues,
-    Helmet,
-    journalize
+  Form,
+  withModulesManager,
+  withHistory,
+  formatMessage,
+  formatMessageWithValues,
+  Helmet,
+  journalize
 } from "@openimis/fe-core";
 import { injectIntl } from "react-intl";
 import { styled } from "@mui/material/styles";
@@ -25,132 +25,140 @@ const StyledForm = styled('div')(({ theme }) => ({
   '& .lockedPage': theme.page?.locked ?? {},
 }));
 
-class PaymentPlanForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            paymentPlan: {},
-            jsonExtValid: true,
-            requiredValid: false,
-            clientMutationId: null,
-        };
+const PaymentPlanForm = ({
+  intl,
+  back,
+  paymentPlanId,
+  save,
+  isReplacing = false,
+  classes,
+  modulesManager,
+  fetchPaymentPlan,
+  clearPaymentPlan,
+  fetchedPaymentPlan,
+  paymentPlan: propsPaymentPlan,
+  submittingMutation,
+  mutation,
+  journalize,
+  titleParams: propsTitleParams,
+}) => {
+  const [paymentPlan, setPaymentPlan] = useState({});
+  const [jsonExtValid, setJsonExtValidState] = useState(true);
+  const [requiredValid, setRequiredValidState] = useState(false);
+  const [clientMutationId, setClientMutationId] = useState(null);
+
+  const prevSubmittingMutationRef = useRef();
+
+  useEffect(() => {
+    if (!!paymentPlanId) {
+      fetchPaymentPlan(modulesManager, paymentPlanId);
+    } else {
+      clearPaymentPlan();
+      setPaymentPlan({});
     }
+  }, [paymentPlanId, modulesManager, fetchPaymentPlan, clearPaymentPlan]);
 
-    componentDidMount() {
-        if (!!this.props.paymentPlanId) {
-            this.props.fetchPaymentPlan(this.props.modulesManager, this.props.paymentPlanId);
-        }
+  useEffect(() => {
+    if (!!fetchedPaymentPlan && !!paymentPlanId && propsPaymentPlan) {
+      setPaymentPlan(propsPaymentPlan);
     }
+  }, [fetchedPaymentPlan, propsPaymentPlan, paymentPlanId]);
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.fetchedPaymentPlan !== this.props.fetchedPaymentPlan && !!this.props.fetchedPaymentPlan) {
-            this.setState(
-                (_, props) => ({ paymentPlan: props.paymentPlan })
-            );
-        }
-        if (prevProps.submittingMutation && !this.props.submittingMutation) {
-            this.props.journalize(this.props.mutation);
-            this.setState((state, props) => ({
-              clientMutationId: props.mutation.clientMutationId,
-            }));
-        }
+  useEffect(() => {
+    if (prevSubmittingMutationRef.current && !submittingMutation) {
+      journalize(mutation);
+      setClientMutationId(mutation.clientMutationId);
     }
+    prevSubmittingMutationRef.current = submittingMutation;
+  }, [submittingMutation, mutation, journalize]);
 
-    isMandatoryFieldsEmpty = () => {
-        const { paymentPlan } = this.state;
-        if (
-            !!paymentPlan.code &&
-            !!paymentPlan.name &&
-            !!paymentPlan.benefitPlanTypeName &&
-            !!paymentPlan.calculation &&
-            !!paymentPlan.benefitPlan &&
-            !!paymentPlan.periodicity &&
-            !!paymentPlan.dateValidFrom
-        ) {
-            return false;
-        }
-        return true;
+  const isMandatoryFieldsEmpty = useCallback(() =>
+    !(
+      !!paymentPlan.code &&
+      !!paymentPlan.name &&
+      !!paymentPlan.benefitPlanTypeName &&
+      !!paymentPlan.calculation &&
+      !!paymentPlan.benefitPlan &&
+      !!paymentPlan.periodicity &&
+      !!paymentPlan.dateValidFrom
+    ),
+    [paymentPlan]
+  );
+
+  const isPeriodicityValid = useCallback(() => {
+    let periodicityInt = parseInt(paymentPlan.periodicity);
+    return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
+  }, [paymentPlan.periodicity]);
+
+  const doesPaymentPlanChange = useCallback(() => {
+    if (_.isEqual(propsPaymentPlan, paymentPlan)) {
+      return false;
     }
+    return true;
+  }, [propsPaymentPlan, paymentPlan]);
 
-    isPeriodicityValid = () => {
-        let periodicityInt = parseInt(this.state.paymentPlan.periodicity);
-        return !!periodicityInt ? periodicityInt >= MIN_PERIODICITY_VALUE && periodicityInt <= MAX_PERIODICITY_VALUE : false;
-    }
+  const canSave = useCallback(() =>
+    !isMandatoryFieldsEmpty() &&
+    isPeriodicityValid() &&
+    !!jsonExtValid &&
+    doesPaymentPlanChange(),
+    [isMandatoryFieldsEmpty, isPeriodicityValid, jsonExtValid, doesPaymentPlanChange]
+  );
 
-    doesPaymentPlanChange = () => {
-        const { paymentPlan } = this.props;
-        if (_.isEqual(paymentPlan, this.state.paymentPlan)) {
-          return false;
-        }
-        return true;
-      };
+  const handleSave = useCallback((paymentPlan) => save(paymentPlan), [save]);
 
-    canSave = () =>  
-        !this.isMandatoryFieldsEmpty() &&
-        this.isPeriodicityValid() &&
-        !!this.state.jsonExtValid &&
-        this.doesPaymentPlanChange();
+  const onEditedChanged = useCallback((paymentPlan) => setPaymentPlan(paymentPlan), []);
 
-    save = paymentPlan => this.props.save(paymentPlan);
+  const titleParams = useCallback(() => propsTitleParams(paymentPlan), [propsTitleParams, paymentPlan]);
 
-    onEditedChanged = paymentPlan => this.setState({ paymentPlan })
+  const setJsonExtValid = useCallback((valid) => setJsonExtValidState(!!valid), []);
+  const setRequiredValid = useCallback((valid) => setRequiredValidState(!!valid), []);
 
-    titleParams = () => this.props.titleParams(this.state.paymentPlan);
+  const shouldBeLocked = Boolean(clientMutationId);
 
     setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
     setRequiredValid = (valid) => this.setState({ requiredValid: !!valid });
 
-    render() {
-        const {
-          intl,
-          back,
-          paymentPlanId,
-          save,
-          isReplacing = false,
-        } = this.props;
-        const shouldBeLocked = Boolean(this.state.clientMutationId);
-        return (
-            <StyledForm className={shouldBeLocked ? "lockedPage" : null}>
-                <Helmet title={formatMessageWithValues(this.props.intl, "paymentPlan", "paymentPlan.page.title", this.titleParams())} />
-                <Form
-                    module="paymentPlan"
-                    title="paymentPlan.page.title"
-                    titleParams={this.titleParams()}
-                    edited={this.state.paymentPlan}
-                    back={back}
-                    canSave={this.canSave}
-                    save={this.save}
-                    onEditedChanged={this.onEditedChanged}
-                    HeadPanel={PaymentPlanHeadPanel}
-                    mandatoryFieldsEmpty={this.isMandatoryFieldsEmpty()}
-                    saveTooltip={formatMessage(intl, "paymentPlan", `saveButton.tooltip.${this.canSave() ? 'enabled' : 'disabled'}`)}
-                    setJsonExtValid={this.setJsonExtValid}
-                    setRequiredValid={this.setRequiredValid}
-                    paymentPlanId={paymentPlanId}
-                    isReplacing={isReplacing}
-                    openDirty={save}
-                    readOnly={shouldBeLocked}
-                />
-            </StyledForm>
-        )
-    }
+    return (
+      <StyledForm className={shouldBeLocked ? "lockedPage" : null}>
+        <Helmet title={formatMessageWithValues(this.props.intl, "paymentPlan", "paymentPlan.page.title", this.titleParams())} />
+        <Form
+            module="paymentPlan"
+            title="paymentPlan.page.title"
+            titleParams={titleParams()}
+            edited={paymentPlan}
+            back={back}
+            canSave={canSave}
+            save={handleSave}
+            onEditedChanged={onEditedChanged}
+            HeadPanel={PaymentPlanHeadPanel}
+            mandatoryFieldsEmpty={isMandatoryFieldsEmpty()}
+            saveTooltip={formatMessage(intl, "paymentPlan", `saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`)}
+            setJsonExtValid={setJsonExtValid}
+            setRequiredValid={setRequiredValid}
+            paymentPlanId={paymentPlanId}
+            isReplacing={isReplacing}
+            openDirty={save}
+            readOnly={shouldBeLocked}
+        />
+      </StyledForm>
+    )
 }
 
 const mapStateToProps = state => ({
-    fetchingPaymentPlan: state.contributionPlan.fetchingPaymentPlan,
-    fetchedPaymentPlan: state.contributionPlan.fetchedPaymentPlan,
-    paymentPlan: state.contributionPlan.paymentPlan,
-    errorPaymentPlan: state.contributionPlan.errorPaymentPlan,
-    submittingMutation: state.contributionPlan.submittingMutation,
-    mutation: state.contributionPlan.mutation,
-    isCodeValid: state.contributionPlan?.validationFields?.paymentPlanCode?.isValid,
+  fetchingPaymentPlan: state.contributionPlan.fetchingPaymentPlan,
+  fetchedPaymentPlan: state.contributionPlan.fetchedPaymentPlan,
+  paymentPlan: state.contributionPlan.paymentPlan,
+  errorPaymentPlan: state.contributionPlan.errorPaymentPlan,
+  submittingMutation: state.contributionPlan.submittingMutation,
+  mutation: state.contributionPlan.mutation,
+  isCodeValid: state.contributionPlan?.validationFields?.paymentPlanCode?.isValid,
 });
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({
-        fetchPaymentPlan, clearPaymentPlan, journalize
-    },
-        dispatch);
+  return bindActionCreators({
+    fetchPaymentPlan, clearPaymentPlan, journalize
+  }, dispatch);
 };
 
 export { StyledForm };
