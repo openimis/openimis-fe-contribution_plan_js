@@ -116,12 +116,9 @@ const PaymentPlanForm = ({
 
   const shouldBeLocked = Boolean(clientMutationId);
 
-    setJsonExtValid = (valid) => this.setState({ jsonExtValid: !!valid });
-    setRequiredValid = (valid) => this.setState({ requiredValid: !!valid });
-
     return (
       <StyledForm className={shouldBeLocked ? "lockedPage" : null}>
-        <Helmet title={formatMessageWithValues(this.props.intl, "paymentPlan", "paymentPlan.page.title", this.titleParams())} />
+        <Helmet title={formatMessageWithValues(intl, "paymentPlan", "paymentPlan.page.title", titleParams())} />
         <Form
             module="paymentPlan"
             title="paymentPlan.page.title"
