@@ -309,7 +309,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                     </Grid>
                     <Fragment>
                         <Typography component="div">
-                            <div className={classes.item}>
+                            <div className="item">
                                 {isBenefitPlanType() ?
                                     <FormattedMessage module="contributionPlan" id="calculationParamsBFType"/> :
                                     <FormattedMessage module="contributionPlan" id="calculationParams"/>
