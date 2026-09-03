@@ -9,16 +9,14 @@ import {
     withTooltip,
     coreConfirm,
     journalize,
-    Contributions
+    Contributions,
+    GetIconComponent,
 } from "@openimis/fe-core";
 import { fetchContributionPlans, deleteContributionPlan } from "../actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ContributionPlanFilter from "./ContributionPlanFilter";
-import { IconButton } from "@mui/material";
-import { GetIconComponent } from "@openimis/fe-core";
-const EditIcon = GetIconComponent("Edit")
-const DeleteIcon = GetIconComponent("Delete")
+import Button from "@mui/material/Button";
 import {
     RIGHT_CONTRIBUTION_PLAN_UPDATE,
     RIGHT_CONTRIBUTION_PLAN_DELETE,
@@ -26,6 +24,9 @@ import {
     DEFAULT_PAGE_SIZE,
     CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY
 } from "../constants";
+
+const EditIcon = GetIconComponent("Edit");
+const DeleteIcon = GetIconComponent("Delete");
 
 class ContributionPlanSearcher extends Component {
     constructor(props) {
