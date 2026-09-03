@@ -31,7 +31,6 @@ const PaymentPlanForm = ({
   paymentPlanId,
   save,
   isReplacing = false,
-  classes,
   modulesManager,
   fetchPaymentPlan,
   clearPaymentPlan,
@@ -56,6 +55,9 @@ const PaymentPlanForm = ({
       clearPaymentPlan();
       setPaymentPlan({});
     }
+    return () => {
+      clearPaymentPlan();
+    };
   }, [paymentPlanId, modulesManager, fetchPaymentPlan, clearPaymentPlan]);
 
   useEffect(() => {
@@ -101,8 +103,9 @@ const PaymentPlanForm = ({
     !isMandatoryFieldsEmpty() &&
     isPeriodicityValid() &&
     !!jsonExtValid &&
+    !!requiredValid &&
     doesPaymentPlanChange(),
-    [isMandatoryFieldsEmpty, isPeriodicityValid, jsonExtValid, doesPaymentPlanChange]
+    [isMandatoryFieldsEmpty, isPeriodicityValid, jsonExtValid, requiredValid, doesPaymentPlanChange]
   );
 
   const handleSave = useCallback((paymentPlan) => save(paymentPlan), [save]);
@@ -116,30 +119,30 @@ const PaymentPlanForm = ({
 
   const shouldBeLocked = Boolean(clientMutationId);
 
-    return (
-      <StyledForm className={shouldBeLocked ? "lockedPage" : null}>
-        <Helmet title={formatMessageWithValues(intl, "paymentPlan", "paymentPlan.page.title", titleParams())} />
-        <Form
-            module="paymentPlan"
-            title="paymentPlan.page.title"
-            titleParams={titleParams()}
-            edited={paymentPlan}
-            back={back}
-            canSave={canSave}
-            save={handleSave}
-            onEditedChanged={onEditedChanged}
-            HeadPanel={PaymentPlanHeadPanel}
-            mandatoryFieldsEmpty={isMandatoryFieldsEmpty()}
-            saveTooltip={formatMessage(intl, "paymentPlan", `saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`)}
-            setJsonExtValid={setJsonExtValid}
-            setRequiredValid={setRequiredValid}
-            paymentPlanId={paymentPlanId}
-            isReplacing={isReplacing}
-            openDirty={save}
-            readOnly={shouldBeLocked}
-        />
-      </StyledForm>
-    )
+  return (
+    <StyledForm className={shouldBeLocked ? "lockedPage" : null}>
+      <Helmet title={formatMessageWithValues(intl, "paymentPlan", "paymentPlan.page.title", titleParams())} />
+      <Form
+          module="paymentPlan"
+          title="paymentPlan.page.title"
+          titleParams={titleParams()}
+          edited={paymentPlan}
+          back={back}
+          canSave={canSave}
+          save={handleSave}
+          onEditedChanged={onEditedChanged}
+          HeadPanel={PaymentPlanHeadPanel}
+          mandatoryFieldsEmpty={isMandatoryFieldsEmpty()}
+          saveTooltip={formatMessage(intl, "paymentPlan", `saveButton.tooltip.${canSave() ? 'enabled' : 'disabled'}`)}
+          setJsonExtValid={setJsonExtValid}
+          setRequiredValid={setRequiredValid}
+          paymentPlanId={paymentPlanId}
+          isReplacing={isReplacing}
+          openDirty={save}
+          readOnly={shouldBeLocked}
+      />
+    </StyledForm>
+  )
 }
 
 const mapStateToProps = state => ({
