@@ -10,11 +10,16 @@ class ContributionPlanPicker extends Component {
     }
 
     queryParams = () => {
-        const { periodicity, withDeleted = false } = this.props;
+        const { periodicity, withDeleted = false, benefitPlanTypeModel } = this.props;
         let params = [];
         params.push(`isDeleted: ${withDeleted}`);
         if (!!periodicity) {
             params.push(`periodicity: ${periodicity}`);
+        }
+        // Restricts the list to the plans attached to a given kind of benefit plan
+        // (e.g. "product"): the argument is already exposed by the contributionPlan query.
+        if (!!benefitPlanTypeModel) {
+            params.push(`benefitPlanType_Model: "${benefitPlanTypeModel}"`);
         }
         return params;
     }
