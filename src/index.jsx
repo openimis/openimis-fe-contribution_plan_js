@@ -43,7 +43,7 @@ const DEFAULT_CONFIG = {
         { key: "contributionPlan.ContributionPlanBundlePicker", ref: ContributionPlanBundlePicker },
         { key: "contributionPlan.ContributionPlanBundlePicker.projection", ref: ["id", "code", "name", "periodicity", "dateValidFrom", "dateValidTo", "isDeleted", "replacementUuid"] },
         { key: "contributionPlan.ContributionPlanPicker", ref: ContributionPlanPicker },
-        { key: "contributionPlan.ContributionPlanPicker.projection", ref: ["id", "code", "name"] },
+        { key: "contributionPlan.ContributionPlanPicker.projection", ref: ["id", "code", "name", "benefitPlanId", "benefitPlan"] },
         { key: "contributionPlan.route.paymentPlans", ref: ROUTE_PAYMENT_PLANS },
         { key: "contributionPlan.route.paymentPlan", ref: ROUTE_PAYMENT_PLAN },
         { key: "contributionPlan.PaymentPlanPicker", ref: PaymentPlanPicker },
