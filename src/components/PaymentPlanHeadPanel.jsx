@@ -247,7 +247,7 @@ class PaymentPlanHeadPanel extends FormPanel {
                         <Grid size={GRID_RESPONSIVE_STANDARD} className="item">
                             <Contributions
                                 contributionKey={CONTRIBUTIONPLAN_CALCULATIONRULE_CONTRIBUTION_KEY}
-                                label="paymentPlan.calculation"
+                                label={formatMessage(intl, "contributionPlan", "paymentPlan.calculation")}
                                 value={!!calculationId ? calculationId : null}
                                 onChange={this.updateAttribute}
                                 context={paymentPlanType}
