@@ -43,7 +43,7 @@ const PaymentPlanForm = ({
 }) => {
   const [paymentPlan, setPaymentPlan] = useState({});
   const [jsonExtValid, setJsonExtValidState] = useState(true);
-  const [requiredValid, setRequiredValidState] = useState(false);
+  const [requiredValid, setRequiredValidState] = useState(true);
   const [clientMutationId, setClientMutationId] = useState(null);
 
   const prevSubmittingMutationRef = useRef();
