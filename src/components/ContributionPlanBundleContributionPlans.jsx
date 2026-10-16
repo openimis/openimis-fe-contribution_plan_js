@@ -39,9 +39,7 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
             this.refetchContributionPlanBundleContributionPlans();
-        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
-            this.state.confirmedAction();
-        }
+    }
     }
 
     refetchContributionPlanBundleContributionPlans = () => this.onChangeRowsPerPage(DEFAULT_PAGE_SIZE);
@@ -119,7 +117,8 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         const { intl, coreConfirm, deleteContributionPlanBundleContributionPlan } = this.props;
         let confirm = () => coreConfirm(
             formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.title", { label: contributionPlanBundleContributionPlan.contributionPlan.name }),
-            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.message", { label: contributionPlanBundleContributionPlan.contributionPlan.name })
+            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.message", { label: contributionPlanBundleContributionPlan.contributionPlan.name }),
+          { onConfirm: confirmedAction },
         );
         let confirmedAction = () => {
             deleteContributionPlanBundleContributionPlan(
@@ -136,10 +135,7 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
             );
             this.setState({ toDelete: contributionPlanBundleContributionPlan.id });
         }
-        this.setState(
-            { confirmedAction },
-            confirm
-        )
+        confirm();
     }
 
     isReplaced = contributionPlanBundleContributionPlan => !!contributionPlanBundleContributionPlan.replacementUuid;

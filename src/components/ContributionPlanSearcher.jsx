@@ -41,9 +41,7 @@ class ContributionPlanSearcher extends Component {
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
             this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
-        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
-            this.state.confirmedAction();
-        }
+    }
     }
 
     fetch = params => this.props.fetchContributionPlans(this.props.modulesManager, params);
@@ -124,7 +122,8 @@ class ContributionPlanSearcher extends Component {
         const { intl, coreConfirm, deleteContributionPlan } = this.props;
         let confirm = () => coreConfirm(
             formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.title", { label: contributionPlan.name }),
-            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.message", { label: contributionPlan.name })
+            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.message", { label: contributionPlan.name }),
+          { onConfirm: confirmedAction },
         );
         let confirmedAction = () => {
             deleteContributionPlan(
@@ -138,10 +137,7 @@ class ContributionPlanSearcher extends Component {
             );
             this.setState({ toDelete: contributionPlan.id });
         }
-        this.setState(
-            { confirmedAction },
-            confirm
-        )
+        confirm();
     }
 
     isDeletedFilterEnabled = contributionPlan => contributionPlan.isDeleted;

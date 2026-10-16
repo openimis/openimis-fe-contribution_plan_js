@@ -28,9 +28,7 @@ class ContributionPlanBundleSearcher extends Component {
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
             this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
-        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
-            this.state.confirmedAction();
-        }
+    }
     }
 
     fetch = (params) => this.props.fetchContributionPlanBundles(params);
@@ -119,7 +117,8 @@ class ContributionPlanBundleSearcher extends Component {
         const { intl, coreConfirm, deleteContributionPlanBundle } = this.props;
         let confirm = () => coreConfirm(
             formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlanBundle.confirm.title", { label: contributionPlanBundle.name }),
-            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.message", { label: contributionPlanBundle.name })
+            formatMessageWithValues(intl, "contributionPlan", "deleteContributionPlan.confirm.message", { label: contributionPlanBundle.name }),
+          { onConfirm: confirmedAction },
         );
         let confirmedAction = () => {
             deleteContributionPlanBundle(
@@ -133,10 +132,7 @@ class ContributionPlanBundleSearcher extends Component {
             );
             this.setState({ toDelete: contributionPlanBundle.id });
         }
-        this.setState(
-            { confirmedAction },
-            confirm
-        )
+        confirm();
     }
 
     isReplaced = contributionPlanBundle => !!contributionPlanBundle.replacementUuid;

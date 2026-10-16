@@ -46,9 +46,7 @@ class PaymentPlanSearcher extends Component {
         if (prevProps.submittingMutation && !this.props.submittingMutation) {
             this.props.journalize(this.props.mutation);
             this.setState(state => ({ deleted: state.deleted.concat(state.toDelete) }));
-        } else if (prevProps.confirmed !== this.props.confirmed && !!this.props.confirmed && !!this.state.confirmedAction) {
-            this.state.confirmedAction();
-        }
+    }
     }
 
     fetch = params => this.props.fetchPaymentPlans(this.props.modulesManager, params);
@@ -166,7 +164,8 @@ class PaymentPlanSearcher extends Component {
         const { intl, coreConfirm, deletePaymentPlan } = this.props;
         let confirm = () => coreConfirm(
             formatMessageWithValues(intl, "paymentPlan", "deletePaymentPlan.confirm.title", { label: paymentPlan.name }),
-            formatMessageWithValues(intl, "paymentPlan", "deletePaymentPlan.confirm.message", { label: paymentPlan.name })
+            formatMessageWithValues(intl, "paymentPlan", "deletePaymentPlan.confirm.message", { label: paymentPlan.name }),
+          { onConfirm: confirmedAction },
         );
         let confirmedAction = () => {
             deletePaymentPlan(
@@ -180,10 +179,7 @@ class PaymentPlanSearcher extends Component {
             );
             this.setState({ toDelete: paymentPlan.id });
         }
-        this.setState(
-            { confirmedAction },
-            confirm
-        )
+        confirm();
     }
 
     isReplaced = paymentPlan => !!paymentPlan.replacementUuid;
