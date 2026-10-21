@@ -38,7 +38,6 @@ const AdvancedCriteriaDialog = ({
   updateAttributes,
   getDefaultAppliedCustomFilters,
   additionalParams,
-  confirmed,
   edited,
   readOnly = false,
 }) => {
@@ -165,10 +164,11 @@ const AdvancedCriteriaDialog = ({
               index={index}
               filters={filters}
               setFilters={setFilters}
-              readOnly={confirmed || readOnly}
+              readOnly={readOnly}
             />)
           })}
-          { !confirmed ? (
+          {/* Locked by `readOnly` only: state.core.confirmed locked it after any
+              other dialog's "Yes" (OP-3215). */}
           <div 
             style={{ backgroundColor: "#DFEDEF", paddingLeft: "10px", paddingBottom: "10px" }}
           >
@@ -191,12 +191,11 @@ const AdvancedCriteriaDialog = ({
                 "marginBottom": "6px", 
                 fontSize: "0.8rem" 
               }}
-              disabled={confirmed || readOnly}
+              disabled={readOnly}
             >
               {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.addFilters")}
             </Button>
           </div>
-          ) : (<></>) }
           <div>
           <div style={{ float: 'left' }}>
             <Button
@@ -205,7 +204,7 @@ const AdvancedCriteriaDialog = ({
               style={{
                 border: '0px',
               }}
-              disabled={confirmed || readOnly}
+              disabled={readOnly}
             >
               {formatMessage(intl, 'individual', 'paymentPlan.advancedCriteria.button.clearAllFilters')}
             </Button>
@@ -220,7 +219,7 @@ const AdvancedCriteriaDialog = ({
               variant="contained" 
               color="primary" 
               autoFocus
-              disabled={!object || confirmed || readOnly}
+              disabled={!object || readOnly}
             >
               {formatMessage(intl, "paymentPlan", "paymentPlan.advancedCriteria.button.filter")}
             </Button>
@@ -232,7 +231,6 @@ const AdvancedCriteriaDialog = ({
 
 const mapStateToProps = (state, props) => ({
   rights: !!state.core && !!state.core.user && !!state.core.user.i_user ? state.core.user.i_user.rights : [],
-  confirmed: state.core.confirmed,
   fetchingCustomFilters: state.core.fetchingCustomFilters,
   errorCustomFilters: state.core.errorCustomFilters,
   fetchedCustomFilters: state.core.fetchedCustomFilters,

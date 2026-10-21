@@ -223,7 +223,6 @@ const mapStateToProps = state => ({
     contributionPlanBundleContributionPlans: state.contributionPlan.contributionPlanBundleContributionPlans,
     contributionPlanBundleContributionPlansPageInfo: state.contributionPlan.contributionPlanBundleContributionPlansPageInfo,
     contributionPlanBundleContributionPlansTotalCount: state.contributionPlan.contributionPlanBundleContributionPlansTotalCount,
-    confirmed: state.core.confirmed,
     submittingMutation: state.contributionPlan.submittingMutation,
     mutation: state.contributionPlan.mutation
 });
