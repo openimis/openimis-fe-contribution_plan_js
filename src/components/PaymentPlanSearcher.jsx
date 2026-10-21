@@ -257,7 +257,6 @@ const mapStateToProps = state => ({
     paymentPlans: state.contributionPlan.paymentPlans,
     paymentPlansPageInfo: state.contributionPlan.paymentPlansPageInfo,
     paymentPlansTotalCount: state.contributionPlan.paymentPlansTotalCount,
-    confirmed: state.core.confirmed,
     submittingMutation: state.contributionPlan.submittingMutation,
     mutation: state.contributionPlan.mutation
 });

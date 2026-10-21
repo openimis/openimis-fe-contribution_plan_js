@@ -211,7 +211,6 @@ const mapStateToProps = state => ({
     contributionPlans: state.contributionPlan.contributionPlans,
     contributionPlansPageInfo: state.contributionPlan.contributionPlansPageInfo,
     contributionPlansTotalCount: state.contributionPlan.contributionPlansTotalCount,
-    confirmed: state.core.confirmed,
     submittingMutation: state.contributionPlan.submittingMutation,
     mutation: state.contributionPlan.mutation
 });
