@@ -10,7 +10,7 @@ class PaymentPlanPicker extends Component {
     }
 
     queryParams = () => {
-        const { periodicity, benefitPlanId, withDeleted = false } = this.props;
+        const { periodicity, benefitPlanId, benefitPlanType, withDeleted = false } = this.props;
         let params = [];
         params.push(`isDeleted: ${withDeleted}`);
         if (!!periodicity) {
@@ -18,6 +18,10 @@ class PaymentPlanPicker extends Component {
         }
         if (!!benefitPlanId) {
             params.push(`benefitPlanId: "${benefitPlanId}"`);
+        }
+        // e.g. PAYMENT_PLAN_TYPE.BENEFIT_PLAN, to leave out the plans of insurance products
+        if (benefitPlanType) {
+            params.push(`benefitPlanType_Model: "${benefitPlanType}"`);
         }
         return params;
     }
