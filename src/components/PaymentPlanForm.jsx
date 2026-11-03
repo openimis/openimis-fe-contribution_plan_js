@@ -40,10 +40,11 @@ const PaymentPlanForm = ({
   mutation,
   journalize,
   titleParams: propsTitleParams,
+  isCodeValid,
 }) => {
   const [paymentPlan, setPaymentPlan] = useState({});
   const [jsonExtValid, setJsonExtValidState] = useState(true);
-  const [requiredValid, setRequiredValidState] = useState(false);
+  const [requiredValid, setRequiredValidState] = useState(true);
   const [clientMutationId, setClientMutationId] = useState(null);
 
   const prevSubmittingMutationRef = useRef();
@@ -104,8 +105,9 @@ const PaymentPlanForm = ({
     isPeriodicityValid() &&
     !!jsonExtValid &&
     !!requiredValid &&
+    !!isCodeValid &&
     doesPaymentPlanChange(),
-    [isMandatoryFieldsEmpty, isPeriodicityValid, jsonExtValid, requiredValid, doesPaymentPlanChange]
+    [isMandatoryFieldsEmpty, isPeriodicityValid, jsonExtValid, requiredValid, isCodeValid, doesPaymentPlanChange]
   );
 
   const handleSave = useCallback((paymentPlan) => save(paymentPlan), [save]);

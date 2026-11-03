@@ -49,8 +49,12 @@ class ContributionPlanBundleForm extends Component {
       this.setState((state, props) => ({
         contributionPlanBundle: props.contributionPlanBundle,
       }));
-      const contributionPlanBundleRouteRef = this.props.modulesManager.getRef('contributionPlan.route.contributionPlanBundle');
-      this.props.history.replace(`/${contributionPlanBundleRouteRef}/${decodeId(this.props.contributionPlanBundle.id)}`);
+      // Only a newly created bundle moves to its edit page (to add contribution plans);
+      // an edited or replaced bundle stays on its own route.
+      if (!this.props.contributionPlanBundleId && !this.props.isReplacing) {
+        const contributionPlanBundleRouteRef = this.props.modulesManager.getRef('contributionPlan.route.contributionPlanBundle');
+        this.props.history.replace(`/${contributionPlanBundleRouteRef}/${decodeId(this.props.contributionPlanBundle.id)}`);
+      }
     }
     if (prevProps.submittingMutation && !this.props.submittingMutation) {
       this.props.journalize(this.props.mutation);
