@@ -281,7 +281,7 @@ function reducer(
         ...state,
         fetchingPaymentPlans: false,
         fetchedPaymentPlans: true,
-        paymentPlans: parseData(action.payload.data.paymentPlan)?.map((paymentPlan) => ({
+        paymentPlans: parseData(action.payload.data.paymentPlanByProgram || action.payload.data.paymentPlan)?.map((paymentPlan) => ({
           ...paymentPlan,
           // benefitPlan is double-encoded by the backend (graphene JSONString
           // wraps a json.dumps(...) result).  Parse it here so consumers like
@@ -291,9 +291,9 @@ function reducer(
             ? JSON.parse(JSON.parse(paymentPlan.benefitPlan))
             : null,
         })),
-        paymentPlansPageInfo: pageInfo(action.payload.data.paymentPlan),
-        paymentPlansTotalCount: !!action.payload.data.paymentPlan
-          ? action.payload.data.paymentPlan.totalCount
+        paymentPlansPageInfo: pageInfo(action.payload.data.paymentPlanByProgram || action.payload.data.paymentPlan),
+        paymentPlansTotalCount: !!(action.payload.data.paymentPlanByProgram || action.payload.data.paymentPlan)
+          ? (action.payload.data.paymentPlanByProgram || action.payload.data.paymentPlan).totalCount
           : null,
         errorPaymentPlans: formatGraphQLError(action.payload),
       };
@@ -316,7 +316,7 @@ function reducer(
         ...state,
         fetchingPaymentPlan: false,
         fetchedPaymentPlan: true,
-        paymentPlan: parseData(action.payload.data.paymentPlan)?.map((paymentPlan) => ({
+        paymentPlan: parseData(action.payload.data.paymentPlanByProgram || action.payload.data.paymentPlan)?.map((paymentPlan) => ({
           ...paymentPlan,
           benefitPlan: JSON.parse(paymentPlan.benefitPlan),
         }))?.[0],
@@ -349,7 +349,7 @@ function reducer(
         ...state,
         fetchingPickerPaymentPlans: false,
         fetchedPickerPaymentPlans: true,
-        pickerPaymentPlans: parseData(action.payload.data.paymentPlan),
+        pickerPaymentPlans: parseData(action.payload.data.paymentPlanByProgram || action.payload.data.paymentPlan),
         errorPickerPaymentPlans: formatGraphQLError(action.payload),
       };
     case "CONTRIBUTIONPLAN_PICKERPAYMENTPLANS_ERR":
