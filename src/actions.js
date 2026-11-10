@@ -148,8 +148,9 @@ export function fetchContributionPlanBundleContributionPlans(
 }
 
 export function fetchPaymentPlans(modulesManager, params) {
+  const byProgram = params?.some((param) => typeof param === "string" && param.startsWith("programId:"));
   const payload = formatPageQueryWithCount(
-    "paymentPlan",
+    byProgram ? "paymentPlanByProgram" : "paymentPlan",
     params,
     PAYMENTPLAN_FULL_PROJECTION(modulesManager)
   );
