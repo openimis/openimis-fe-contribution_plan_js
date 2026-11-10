@@ -24,7 +24,7 @@ const CONTRIBUTIONPLAN_FULL_PROJECTION = (modulesManager) => [
   "isDeleted",
 ];
 
-const CONTRIBUTIONPLAN_PICKER_PROJECTION = () => ["id", "code", "name"];
+const CONTRIBUTIONPLAN_PICKER_PROJECTION = () => ["id", "code", "name", "benefitPlanId", "benefitPlan"];
 
 const CONTRIBUTIONPLANBUNDLE_FULL_PROJECTION = () => [
   "id",

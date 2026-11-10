@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormattedMessage, withModulesManager, SelectInput } from "@openimis/fe-core";
+import { FormattedMessage, formatGQLString, withModulesManager, SelectInput } from "@openimis/fe-core";
 import { fetchPickerContributionPlans } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -9,12 +9,28 @@ class ContributionPlanPicker extends Component {
         this.props.fetchPickerContributionPlans(this.props.modulesManager, this.queryParams());
     }
 
+    componentDidUpdate(prevProps) {
+        // The list of plans depends on the filters below: reload them when one of them changes.
+        const { periodicity, withDeleted = false, benefitPlanTypeModel } = this.props;
+        if (
+            prevProps.periodicity !== periodicity ||
+            (prevProps.withDeleted ?? false) !== withDeleted ||
+            prevProps.benefitPlanTypeModel !== benefitPlanTypeModel
+        ) {
+            this.props.fetchPickerContributionPlans(this.props.modulesManager, this.queryParams());
+        }
+    }
     queryParams = () => {
-        const { periodicity, withDeleted = false } = this.props;
+        const { periodicity, withDeleted = false, benefitPlanTypeModel } = this.props;
         let params = [];
         params.push(`isDeleted: ${withDeleted}`);
         if (!!periodicity) {
             params.push(`periodicity: ${periodicity}`);
+        }
+        // Restricts the list to the plans attached to a given kind of benefit plan
+        // (e.g. "product"): the argument is already exposed by the contributionPlan query.
+        if (!!benefitPlanTypeModel) {
+            params.push(`benefitPlanType_Model: "${formatGQLString(benefitPlanTypeModel)}"`);
         }
         return params;
     }
