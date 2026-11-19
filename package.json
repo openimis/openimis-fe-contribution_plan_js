@@ -38,8 +38,8 @@
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
     "moment": "^2.25.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0",
     "react-intl": "^7.1.11",
     "react-router-dom": "^5.2.0",
     "redux": "^5.0.1"
