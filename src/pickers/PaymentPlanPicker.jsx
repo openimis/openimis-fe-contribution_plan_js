@@ -84,10 +84,13 @@ const PaymentPlanPicker = (props) => {
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("contributionPlan", modulesManager);
   const [search, setSearch] = useState(null);
+  // Listing the plans, each with its benefit plan, takes the backend seconds: pages mount
+  // the picker in their filters and forms, so nothing is queried until the list is opened.
+  const [opened, setOpened] = useState(false);
 
   const params = queryParams({ periodicity, benefitPlanId, benefitPlanType, withDeleted });
   const { operation, variables } = searchQuery(params, search);
-  const { isLoading, data, error } = useGraphqlQuery(operation, variables);
+  const { isLoading, data, error } = useGraphqlQuery(operation, variables, { skip: true, refreshKey: opened });
   const options = useMemo(() => mergeConnections(data), [data]);
 
   // As before, the value is shown through the fields of the published projection only.
@@ -111,7 +114,11 @@ const PaymentPlanPicker = (props) => {
       value={pickerValue}
       getOptionLabel={paymentPlanLabel}
       onChange={(plan) => onChange(plan ?? null)}
-      onInputChange={(text) => setSearch(text ?? null)}
+      // Called without text when the list opens, then with what the user types.
+      onInputChange={(text) => {
+        setOpened(true);
+        setSearch(text ?? null);
+      }}
     />
   );
 };
