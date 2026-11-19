@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies -- Vitest runs from the frontend assembly */
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   beforeEach, describe, expect, it, vi,
 } from 'vitest';
@@ -48,11 +48,34 @@ const modulesManager = {
 };
 
 const useGraphqlQuery = vi.fn();
+// The requests the picker's queries sent to the server, as opposed to the renders that
+// merely called the hook.
+let sentRequests = [];
+
+// Sends a request when fe-core's useGraphqlQuery does: on mount unless `skip`, then each
+// time the operation, the variables or the `refreshKey` change.
+const useFakeGraphqlQuery = (operation, variables, config = {}) => {
+  const [data, setData] = useState(null);
+  const last = useRef(null);
+  useEffect(() => {
+    const prev = last.current;
+    last.current = { operation, variables, refreshKey: config.refreshKey };
+    const send = prev
+      ? operation !== prev.operation || JSON.stringify(variables) !== JSON.stringify(prev.variables)
+        || (config.refreshKey !== undefined && config.refreshKey !== prev.refreshKey)
+      : !config.skip;
+    if (!send) return;
+    sentRequests.push({ operation, variables });
+    setData(fakeServer(operation, variables));
+  });
+  return { isLoading: false, error: null, data };
+};
 const fetchPickerPaymentPlans = vi.fn(() => ({ type: 'TEST_FETCH' }));
 
 // The fe-core barrel cannot be loaded from a module test. Autocomplete keeps the
 // contract of fe-core's: options are what the caller gives, onChange receives the
-// chosen option, onInputChange receives what the user types (debounce left out).
+// chosen option, onInputChange receives what the user types (debounce left out), and is
+// called without a search when the list opens.
 vi.mock('@openimis/fe-core', async () => {
   const { createElement: h } = await import('react');
   const { Autocomplete: MuiAutocomplete, TextField } = await import('@mui/material');
@@ -74,8 +97,9 @@ vi.mock('@openimis/fe-core', async () => {
       isOptionEqualToValue: isOptionEqualToValue ?? ((o, v) => o.id === v?.id),
       filterOptions,
       disabled: readOnly,
-      onChange: (_, v) => onChange(v),
-      onInputChange: (_, q, reason) => reason === 'input' && onInputChange(q),
+      onChange: (__, v) => onChange(v),
+      onOpen: () => onInputChange(),
+      onInputChange: (__, q, reason) => reason === 'input' && onInputChange(q),
       renderInput: (params) => h(TextField, { ...params, label: text }),
     }),
   };
@@ -97,9 +121,8 @@ const sentQueries = () => [
 
 describe('PaymentPlanPicker', () => {
   beforeEach(() => {
-    useGraphqlQuery.mockImplementation((operation, variables) => ({
-      isLoading: false, error: null, data: fakeServer(operation, variables),
-    }));
+    sentRequests = [];
+    useGraphqlQuery.mockImplementation(useFakeGraphqlQuery);
   });
 
   it('only queries payment plans that are not deleted by default', () => {
@@ -147,5 +170,39 @@ describe('PaymentPlanPicker', () => {
   it('shows the current value with the label of its option', () => {
     renderPicker({ value: { ...LAST_PLAN, periodicity: 1, notInProjection: 'x' } });
     expect(screen.getByRole('combobox')).toHaveValue(label(LAST_PLAN));
+  });
+
+  // A page mounts the picker in its filters or its form: listing every payment plan, each
+  // with its benefit plan, costs the backend seconds that nobody asked for until the list
+  // is opened.
+  it('sends no query until the list is opened', async () => {
+    renderPicker({ benefitPlanType: 'benefitplan' });
+    await Promise.resolve();
+    expect(sentRequests).toEqual([]);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('combobox'));
+    expect(sentRequests).toHaveLength(1);
+    expect(sentRequests[0].operation).toContain('isDeleted: false');
+    expect(sentRequests[0].operation).toContain('benefitPlanType_Model: "benefitplan"');
+    expect(await screen.findByRole('option', { name: label(FIRST_PAGE[0]) })).toBeInTheDocument();
+  });
+
+  it('sends no query for a read-only picker showing its value', async () => {
+    renderPicker({ readOnly: true, value: LAST_PLAN });
+    await Promise.resolve();
+    expect(screen.getByRole('combobox')).toHaveValue(label(LAST_PLAN));
+    expect(sentRequests).toEqual([]);
+  });
+
+  it('lists the plans once however often the list is reopened', async () => {
+    renderPicker();
+    const user = userEvent.setup();
+    const combobox = screen.getByRole('combobox');
+    await user.click(combobox);
+    await user.keyboard('{Escape}');
+    await user.click(document.body);
+    await user.click(combobox);
+    expect(sentRequests).toHaveLength(1);
   });
 });
