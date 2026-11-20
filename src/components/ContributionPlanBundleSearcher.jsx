@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react"
-import { injectIntl } from 'react-intl';
+
 import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher, withTooltip,
-    coreConfirm, journalize } from "@openimis/fe-core";
+    coreConfirm, journalize, injectIntl } from "@openimis/fe-core";
 import { fetchContributionPlanBundles, deleteContributionPlanBundle } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";

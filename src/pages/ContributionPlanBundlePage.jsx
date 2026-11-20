@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import { withModulesManager, withHistory, historyPush, formatMessageWithValues } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
+import { withModulesManager, withHistory, historyPush, formatMessageWithValues, injectIntl } from "@openimis/fe-core";
+
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { styled } from "@mui/material/styles";
@@ -9,7 +9,7 @@ import ContributionPlanBundleForm from "../components/ContributionPlanBundleForm
 import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_CREATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE } from "../constants"
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page ?? {},
+  ...(theme.page ?? {}),
 }));
 
 class ContributionPlanBundlePage extends Component {

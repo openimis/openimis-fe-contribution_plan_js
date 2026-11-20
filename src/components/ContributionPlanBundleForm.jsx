@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
 import _ from "lodash";
 
 import {
@@ -13,6 +12,7 @@ import {
   Helmet,
   decodeId,
   journalize,
+  injectIntl,
 } from "@openimis/fe-core";
 import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 import {

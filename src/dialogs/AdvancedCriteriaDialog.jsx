@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { injectIntl } from "react-intl";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -9,6 +8,7 @@ import {
   decodeId,
   formatMessage,
   fetchCustomFilter,
+  injectIntl,
 } from "@openimis/fe-core";
 import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";

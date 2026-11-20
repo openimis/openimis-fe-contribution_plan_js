@@ -1,12 +1,12 @@
 import React from "react";
-import { injectIntl } from "react-intl";
 import {
   PublishedComponent,
   TextInput,
   NumberInput,
   SelectInput,
   CustomFilterTypeStatusPicker,
-  CustomFilterFieldStatusPicker
+  CustomFilterFieldStatusPicker,
+  injectIntl
 } from "@openimis/fe-core";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";

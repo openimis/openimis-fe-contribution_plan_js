@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import { withModulesManager, withHistory, historyPush, formatMessageWithValues } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
+import { withModulesManager, withHistory, historyPush, formatMessageWithValues, injectIntl } from "@openimis/fe-core";
+
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { styled } from "@mui/material/styles";
@@ -9,7 +9,7 @@ import PaymentPlanForm from "../components/PaymentPlanForm"
 import { RIGHT_PAYMENT_PLAN_CREATE, RIGHT_PAYMENT_PLAN_UPDATE } from "../constants"
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page ?? {},
+  ...(theme.page ?? {}),
 }));
 
 class PaymentPlanPage extends Component {
