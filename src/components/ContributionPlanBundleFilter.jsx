@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 
 import { Grid, FormControlLabel, Checkbox } from '@mui/material';
 import { useTheme, styled } from '@mui/material/styles';
@@ -13,6 +12,7 @@ import {
   GRID_RESPONSIVE_STANDARD,
   GRID_RESPONSIVE_SMALL,
   GRID_RESPONSIVE_LARGE,
+  injectIntl,
 } from '@openimis/fe-core';
 import {
   DATE_TO_DATETIME_SUFFIX,

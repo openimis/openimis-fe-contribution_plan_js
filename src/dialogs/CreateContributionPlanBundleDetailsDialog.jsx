@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { GetIconComponent } from "@openimis/fe-core";
+import { GetIconComponent, injectIntl } from "@openimis/fe-core";
 
 const AddIcon = GetIconComponent("Add");
 import { FormattedMessage, formatMessageWithValues, PublishedComponent } from "@openimis/fe-core";
@@ -12,7 +12,6 @@ import { Fab, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ContributionPlanPicker from '../pickers/ContributionPlanPicker';
 import { createContributionPlanBundleContributionPlan } from "../actions";
-import { injectIntl } from 'react-intl';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
