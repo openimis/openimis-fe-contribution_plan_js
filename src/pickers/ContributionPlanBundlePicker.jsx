@@ -39,6 +39,7 @@ class ContributionPlanBundlePicker extends Component {
                 value={!!value ? value : null}
                 onChange={onChange}
                 readOnly={readOnly}
+                loading={this.props.fetching}
             />
         )
     }
