@@ -1,7 +1,17 @@
 import React, { Component, Fragment } from "react"
-import { injectIntl } from 'react-intl';
-import { withModulesManager, formatMessage, formatMessageWithValues, formatDateFromISO, Searcher, withTooltip,
-    coreConfirm, journalize } from "@openimis/fe-core";
+
+import {
+  withModulesManager,
+  formatMessage,
+  formatMessageWithValues,
+  formatDateFromISO,
+  Searcher,
+  withTooltip,
+  coreConfirm,
+  journalize,
+  injectIntl,
+  GetIconComponent,
+} from "@openimis/fe-core";
 import { fetchContributionPlanBundles, deleteContributionPlanBundle } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -10,7 +20,6 @@ import { RIGHT_CONTRIBUTION_PLAN_BUNDLE_UPDATE, RIGHT_CONTRIBUTION_PLAN_BUNDLE_D
     DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants"
 import { IconButton } from "@mui/material";
 
-import { GetIconComponent } from "@openimis/fe-core";
 const NoteAddIcon = GetIconComponent("NoteAdd");
 const EditIcon = GetIconComponent("Edit");
 const DeleteIcon = GetIconComponent("Delete");
@@ -87,7 +96,7 @@ class ContributionPlanBundleSearcher extends Component {
                     <div>
                         <IconButton
                             href={contributionPlanBundlePageLink(contributionPlanBundle)}
-                            onClick={e => e.stopPropagation() && onDoubleClick(contributionPlanBundle)}
+                            onClick={e => e.stopPropagation()}
                             disabled={this.state.deleted.includes(contributionPlanBundle.id) || this.isReplaced(contributionPlanBundle)}>
                             <EditIcon />
                         </IconButton>

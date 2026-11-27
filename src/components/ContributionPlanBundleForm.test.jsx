@@ -5,7 +5,8 @@ import {
   describe, expect, it, vi,
 } from 'vitest';
 
-vi.mock('@openimis/fe-core', () => ({
+vi.mock('@openimis/fe-core', async () => ({
+  injectIntl: (await import("@openimis/fe-core/testing")).injectIntl,
   Form: () => null,
   Helmet: () => null,
   withModulesManager: (component) => component,

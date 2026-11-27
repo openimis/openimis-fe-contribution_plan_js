@@ -6,9 +6,9 @@ import {
   formatMessage,
   formatMessageWithValues,
   Helmet,
-  journalize
+  journalize,
+  injectIntl
 } from "@openimis/fe-core";
-import { injectIntl } from "react-intl";
 import { styled } from "@mui/material/styles";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -18,7 +18,7 @@ import { MAX_PERIODICITY_VALUE, MIN_PERIODICITY_VALUE } from "../constants";
 import _ from "lodash";
 
 const StyledForm = styled('div')(({ theme }) => ({
-  ...theme.paper?.paper ?? {},
+  ...theme.paper?.paper,
   '& .paperHeader': theme.paper?.header ?? {},
   '& .paperHeaderAction': theme.paper?.action ?? {},
   '& .item': theme.paper?.item ?? {},

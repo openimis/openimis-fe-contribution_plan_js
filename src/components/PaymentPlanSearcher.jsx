@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { injectIntl } from "react-intl";
 import {
     withModulesManager,
     formatMessage,
@@ -10,7 +9,8 @@ import {
     coreConfirm,
     journalize,
     PublishedComponent,
-    Contributions
+    Contributions,
+    injectIntl
 } from "@openimis/fe-core";
 import { fetchPaymentPlans, deletePaymentPlan } from "../actions";
 import { bindActionCreators } from "redux";
@@ -134,7 +134,7 @@ class PaymentPlanSearcher extends Component {
                     <div>
                         <IconButton
                             href={paymentPlanPageLink(paymentPlan)}
-                            onClick={e => e.stopPropagation() && onDoubleClick(paymentPlan)}
+                            onClick={e => e.stopPropagation()}
                             disabled={this.state.deleted.includes(paymentPlan.id) || this.isReplaced(paymentPlan)}>
                             <EditIcon />
                         </IconButton>

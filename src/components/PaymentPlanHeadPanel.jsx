@@ -12,9 +12,9 @@ import {
     ValidatedTextInput,
     GRID_RESPONSIVE_STANDARD,
     GRID_RESPONSIVE_LARGE,
+    injectIntl,
 } from "@openimis/fe-core";
 import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
 import { styled } from "@mui/material/styles";
 import {
     EMPTY_PERIODICITY_VALUE,
