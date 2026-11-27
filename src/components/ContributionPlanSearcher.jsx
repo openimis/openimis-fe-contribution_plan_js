@@ -92,7 +92,7 @@ class ContributionPlanSearcher extends Component {
                 contributionPlan => !this.isDeletedFilterEnabled(contributionPlan) && withTooltip(
                     <Button
                         href={contributionPlanPageLink(contributionPlan)}
-                        onClick={e => e.stopPropagation() && onDoubleClick(contributionPlan)}
+                        onClick={e => e.stopPropagation()}
                         disabled={this.state.deleted.includes(contributionPlan.id)}
                         startIcon={<EditIcon />}
                     >

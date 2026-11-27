@@ -25,7 +25,7 @@ import { Fab } from "@mui/material";
 const AddIcon = GetIconComponent("Add")
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...(theme.page ?? {}),
+  ...theme.page,
   '& .fab': theme.fab ?? {},
 }));
 

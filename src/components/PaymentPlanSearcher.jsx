@@ -134,7 +134,7 @@ class PaymentPlanSearcher extends Component {
                     <div>
                         <IconButton
                             href={paymentPlanPageLink(paymentPlan)}
-                            onClick={e => e.stopPropagation() && onDoubleClick(paymentPlan)}
+                            onClick={e => e.stopPropagation()}
                             disabled={this.state.deleted.includes(paymentPlan.id) || this.isReplaced(paymentPlan)}>
                             <EditIcon />
                         </IconButton>
