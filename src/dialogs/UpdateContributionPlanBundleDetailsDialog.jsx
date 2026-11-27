@@ -9,7 +9,8 @@ import {
     formatMessage,
     formatMessageWithValues,
     PublishedComponent,
-    GetIconComponent
+    GetIconComponent,
+    injectIntl
 } from "@openimis/fe-core";
 
 
@@ -19,7 +20,6 @@ import { Tooltip, Grid, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ContributionPlanPicker from '../pickers/ContributionPlanPicker';
 import { updateContributionPlanBundleContributionPlan, replaceContributionPlanBundleContributionPlan } from "../actions";
-import { injectIntl } from 'react-intl';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 

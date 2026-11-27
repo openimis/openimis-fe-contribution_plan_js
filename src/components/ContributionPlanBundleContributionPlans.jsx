@@ -1,21 +1,34 @@
 import React, { Fragment } from "react";
-import { injectIntl } from 'react-intl';
-import { withModulesManager, FormattedMessage, formatMessage, formatMessageWithValues, formatDateFromISO, Table,
-    PublishedComponent, withTooltip, coreConfirm, journalize, PagedDataHandler, decodeId } from "@openimis/fe-core";
+
+import {
+  withModulesManager,
+  FormattedMessage,
+  formatMessage,
+  formatMessageWithValues,
+  formatDateFromISO,
+  Table,
+  PublishedComponent,
+  withTooltip,
+  coreConfirm,
+  journalize,
+  PagedDataHandler,
+  injectIntl,
+  GetIconComponent,
+} from "@openimis/fe-core";
 import { styled } from "@mui/material/styles";
 import { fetchContributionPlanBundleContributionPlans, deleteContributionPlanBundleContributionPlan } from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Paper, IconButton, Grid, Typography, Divider } from "@mui/material";
-import { GetIconComponent } from "@openimis/fe-core";
 
-const DeleteIcon = GetIconComponent("Delete");
 import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS } from "../constants";
 import CreateContributionPlanBundleDetailsDialog from "../dialogs/CreateContributionPlanBundleDetailsDialog";
 import UpdateContributionPlanBundleDetailsDialog from "../dialogs/UpdateContributionPlanBundleDetailsDialog";
 
+const DeleteIcon = GetIconComponent("Delete");
+
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  ...theme.paper?.paper ?? {},
+  ...theme.paper?.paper,
   '& .tableTitle': theme.table?.title ?? {},
   '& .paperHeader': theme.paper?.paperHeader ?? {},
   '& .paperHeaderAction': theme.paper?.action ?? {},
@@ -156,7 +169,9 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
                     )}
                 </Grid>
                 <Grid size={4}>
-                    <Grid container justify="flex-end" alignItems="center">
+                    <Grid container justify="flex-end" sx={{
+                        alignItems: "center"
+                    }}>
                         <Grid>
                             <Typography>
                                 <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.createContributionPlan" />
@@ -172,7 +187,7 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
                     </Grid>
                 </Grid>
             </Fragment>
-        )
+        );
     }
 
     render() {
@@ -181,7 +196,9 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
         const isNew = !contributionPlanBundleId;
         return (
             <StyledPaper>
-                <Grid container alignItems="center" direction="row" className="paperHeader">
+                <Grid container direction="row" className="paperHeader" sx={{
+                    alignItems: "center"
+                }}>
                     <Grid size={12}>
                         <Typography className="tableTitle">
                             <FormattedMessage module="contributionPlan" id="contributionPlanBundle.contributionPlansAttachedPanel.title" values={{ count: isNew ? 0 : contributionPlanBundleContributionPlansTotalCount }} />
@@ -212,7 +229,7 @@ class ContributionPlanBundleContributionPlans extends PagedDataHandler {
                     rowDisabled={this.isRowDeleted}
                 />
             </StyledPaper>
-        )
+        );
     }    
 }
 

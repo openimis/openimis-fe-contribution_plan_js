@@ -8,7 +8,8 @@ import {
   describe, expect, it, vi,
 } from 'vitest';
 
-vi.mock('@openimis/fe-core', () => ({
+vi.mock('@openimis/fe-core', async () => ({
+  injectIntl: (await import("@openimis/fe-core/testing")).injectIntl,
   GetIconComponent: (name) => function Icon() { return <span>{name}</span>; },
   formatMessage: (intl, module, key) => key,
   decodeId: (id) => id,
