@@ -51,13 +51,15 @@ class ContributionPlanPicker extends Component {
                 value={contributionPlanPickerValue}
                 onChange={onChange}
                 readOnly={readOnly}
+                loading={this.props.fetching}
             />
         )
     }
 }
 
 const mapStateToProps = state => ({
-    pickerContributionPlans: state.contributionPlan.pickerContributionPlans
+    pickerContributionPlans: state.contributionPlan.pickerContributionPlans,
+    fetching: state.contributionPlan.fetchingPickerContributionPlans,
 });
 
 const mapDispatchToProps = dispatch => {
